@@ -1,0 +1,60 @@
+<?php
+
+function arava_orders_schema() {
+
+  $schema['orders'] = array(
+
+    'fields' => array(
+      'oid' => array(
+        'description' => 'The primary identifier for an order.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'paid' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'default' => 0,
+      ),
+      'date' => array(
+        'type' => 'int',
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('oid'),
+  );
+
+  $schema['order_items'] = array(
+    'fields' => array(
+          'oiid' => array(
+            'description' => 'The primary identifier for an order item.',
+            'type' => 'serial',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+          ),
+          'entity_id' => array(
+            'description' => 'The entity id of the item that was ordered.',
+            'type' => 'int',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+            'default' => 0,
+          ),
+          'oid' => array(
+            'description' => 'The order this item belongs to.',
+            'type' => 'int',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+            'default' => 0,
+          ),
+        ),
+        'foreign keys' => array(
+          'oid' => array(
+            'table' => 'orders',
+            'columns' => array('oid' => 'oid'),
+          ),
+        ),
+        'primary key' => array('oiid'),
+  );
+
+  return $schema;
+}

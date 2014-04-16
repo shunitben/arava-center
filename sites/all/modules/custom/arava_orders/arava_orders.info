@@ -1,0 +1,6 @@
+name = Arava Orders
+description = Takes care of all arava center orders logic.
+core = 7.x
+
+files[] = arava_orders.install
+files[] = arava_orders.views.inc
