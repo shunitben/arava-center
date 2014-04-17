@@ -1,26 +1,30 @@
-<?php 
+<?php
+
+/**
+ * @todo:
+ * finish this file according to the .install
+ */
 
 function hook_views_data() {
 
-  // First, the entry $data['orders']['table'] describes properties of
+  // First, the entry $data['payments']['table'] describes properties of
   // the actual table – not its content.
 
   // The 'group' index will be used as a prefix in the UI for any of this
   // table's fields, sort criteria, etc. so it's easy to tell where they came
   // from.
-  $data['orders']['table']['group'] = t('Orders');
+  $data['payments']['table']['group'] = t('Payments');
 
   // Define this as a base table – a table that can be described in itself by
   // views (and not just being brought in as a relationship). 
-  $data['orders']['table']['base'] = array(
-    'field' => 'oid', // This is the identifier field for the view.
-    'title' => t('Orders'),
-    'help' => t('Orders contain order items'),
+  $data['payments']['table']['base'] = array(
+    'field' => 'pid', // This is the identifier field for the view.
+    'title' => t('payments'),
     'weight' => -10,
   );
 
   // Next, describe each of the individual fields in this table to Views. This
-  // is done by describing $data['orders']['FIELD_NAME']. This part of
+  // is done by describing $data['payments']['FIELD_NAME']. This part of
   // the array may then have further entries:
   //   - title: The label for the table field, as presented in Views.
   //   - help: The description text for the table field.
@@ -35,25 +39,25 @@ function hook_views_data() {
   //
   // The handler descriptions are described with examples below.
 
-  $data['orders']['oid'] = array(
-    'title' => t('Order ID'),
+  $data['payments']['pid'] = array(
+    'title' => t('Payment ID'),
 
-    // Define a relationship to the order_items table, so orders views can
+    // Define a relationship to the order_items table, so payments views can
     // add a relationship to order items. If you want to define a relationship the
     // other direction, use hook_views_data_alter(), or use the 'implicit' join
     // method described above.
     'relationship' => array(
       'base' => 'order_items', // The name of the table to join with.
-      'base field' => 'oid', // The name of the field on the joined table.
+      'base field' => 'pid', // The name of the field on the joined table.
       'handler' => 'views_handler_relationship',
       'label' => t('Order Items'),
       'title' => t('Order Items'),
     ),
   );
 
-  $data['orders']['paid'] = array(
+  $data['payments']['paid'] = array(
     'title' => t('Paid'),
-    'help' => t('Has the order been paid for?'),
+    'help' => t('Has the payment been paid, or just generated?'),
     'field' => array(
       'handler' => 'views_handler_field_boolean',
       'click sortable' => TRUE,
@@ -76,8 +80,8 @@ function hook_views_data() {
   );
 
     // Example timestamp field.
-    $data['orders']['date'] = array(
-      'title' => t('Order Date'),
+    $data['payments']['date_modified'] = array(
+      'title' => t('Payment Date'),
       'field' => array(
         'handler' => 'views_handler_field_date',
         'click sortable' => TRUE,
@@ -126,7 +130,7 @@ function hook_views_data() {
       'field' => 'entity_id',
     ),
 
-    'orders' => array(
+    'payments' => array(
         'left_field' => 'oid',
         'field' => 'oid',
     )
@@ -207,12 +211,12 @@ function hook_views_data() {
       'sort' => array(
         'handler' => 'views_handler_sort',
       ),
-      // Define a relationship to the orders table, so order_items views can
-      // add a relationship to orders. If you want to define a relationship the
+      // Define a relationship to the payments table, so order_items views can
+      // add a relationship to payments. If you want to define a relationship the
       // other direction, use hook_views_data_alter(), or use the 'implicit' join
       // method described above.
       'relationship' => array(
-        'base' => 'orders', // The name of the table to join with.
+        'base' => 'payments', // The name of the table to join with.
         'base field' => 'oid', // The name of the field on the joined table.
         'handler' => 'views_handler_relationship',
         'label' => t('Order ID'),

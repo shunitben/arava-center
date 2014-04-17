@@ -2,10 +2,10 @@
 
 function arava_orders_schema() {
 
-  $schema['orders'] = array(
+  $schema['payments'] = array(
 
     'fields' => array(
-      'oid' => array(
+      'pid' => array(
         'description' => 'The primary identifier for an order.',
         'type' => 'serial',
         'unsigned' => TRUE,
@@ -16,12 +16,19 @@ function arava_orders_schema() {
         'size' => 'tiny',
         'default' => 0,
       ),
-      'date' => array(
+      'uid' => array(
+        'description' => 'The user id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'date_modified' => array(
         'type' => 'int',
         'default' => 0,
       ),
     ),
-    'primary key' => array('oid'),
+    'primary key' => array('pid'),
   );
 
   $schema['order_items'] = array(
@@ -31,6 +38,13 @@ function arava_orders_schema() {
             'type' => 'serial',
             'unsigned' => TRUE,
             'not null' => TRUE,
+          ),
+          'uid' => array(
+            'description' => 'The user id.',
+            'type' => 'int',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+            'default' => 0,
           ),
           'amount' => array(
             'type' => 'float',
@@ -46,17 +60,27 @@ function arava_orders_schema() {
             'not null' => TRUE,
             'default' => 0,
           ),
-          'oid' => array(
-            'description' => 'The order this item belongs to.',
+          'pid' => array(
+            'description' => 'The payment id this belongs to (if it costs money).',
             'type' => 'int',
             'unsigned' => TRUE,
             'not null' => TRUE,
             'default' => 0,
           ),
+          'relevant' => array(
+            'type' => 'int',
+            'description' => '0 if this item was cancelled.',
+            'size' => 'tiny',
+            'default' => 0,
+          ),
+          'date_modified' => array(
+            'type' => 'int',
+            'default' => 0,
+          ),
         ),
         'foreign keys' => array(
           'oid' => array(
-            'table' => 'orders',
+            'table' => 'payments',
             'columns' => array('oid' => 'oid'),
           ),
         ),

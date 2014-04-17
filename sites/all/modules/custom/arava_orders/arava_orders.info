@@ -4,3 +4,4 @@ core = 7.x
 
 files[] = arava_orders.install
 files[] = arava_orders.views.inc
+files[] = Orders.class.inc
