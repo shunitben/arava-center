@@ -32,6 +32,13 @@ function arava_orders_schema() {
             'unsigned' => TRUE,
             'not null' => TRUE,
           ),
+          'amount' => array(
+            'type' => 'float',
+            'description' => 'The amount of this item ordered',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+            'default' => 0,
+          ),
           'entity_id' => array(
             'description' => 'The entity id of the item that was ordered.',
             'type' => 'int',

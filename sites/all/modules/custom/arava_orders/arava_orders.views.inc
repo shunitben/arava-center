@@ -180,6 +180,21 @@ function hook_views_data() {
   );
 
   // Example numeric text field.
+    $data['order_items']['amount'] = array(
+      'title' => t('Amount Ordered'),
+      'field' => array(
+        'handler' => 'views_handler_field_numeric',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_numeric',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    );
+
+  // Example numeric text field.
     $data['order_items']['oid'] = array(
       'title' => t('Order ID'),
       'field' => array(
