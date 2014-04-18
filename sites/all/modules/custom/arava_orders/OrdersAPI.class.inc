@@ -1,6 +1,6 @@
 <?php
 
-class Orders {
+class OrdersAPI {
 
 	protected $user;
 
@@ -19,14 +19,20 @@ class Orders {
 			$uid = $this->user->uid;
 		}
 
-		$query = db_query("SELECT node.nid AS nid
-												FROM node node
-												INNER JOIN order_items items ON node.nid = items.entity_id
-												INNER JOIN field_data_field_semester semester ON node.nid = semester.entity_id
-												WHERE field_semester_target_id = $semester
-													AND items.uid = $uid
-													AND items.relevant = 1
-													AND node.type = '$type'");
+		$sql = "SELECT node.nid AS nid
+						FROM node node
+						INNER JOIN order_items items ON node.nid = items.entity_id";
+		if ($semester) {
+			$sql .= " INNER JOIN field_data_field_semester semester ON node.nid = semester.entity_id";
+		}
+		$sql .= " WHERE items.uid = $uid
+							AND items.relevant = 1
+							AND node.type = '$type'";
+		if ($semester) {
+			$sql .= " AND field_semester_target_id = $semester";
+		}
+
+		$query = db_query($sql);
 
 		$result = array();
 		foreach ($query as $row) {
@@ -100,6 +106,15 @@ class Orders {
 		if (!empty($user->payment_in_progress) && is_array($user->payment_in_progress)) {
 			return $user->payment_in_progress[LANGUAGE_NONE][0]['value'];
 		}
+
+		$pid = db_insert('payments')
+			->fields(array(
+				'paid' => 0,
+				'uid' => $this->user->uid,
+				'date_modified' => time(),
+			))
+			->execute();
+		return $pid;
 	}
 
 }

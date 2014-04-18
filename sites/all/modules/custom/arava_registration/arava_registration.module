@@ -41,6 +41,10 @@ function arava_registration_course_selection($form, &$form_state) {
 	$rows = explode('<!--new row-->', $view_parts[0]);
 	unset($rows[0]);
 
+	module_load_include('inc', 'arava_orders', 'OrdersAPI.class');
+	$ordersAPI = new OrdersAPI();
+	$selected = $ordersAPI->getAllOrdersForUser('course', _get_current_semester());
+
 	$form['#tree'] = true;
 
 	$form['above'] = array(
@@ -59,7 +63,7 @@ function arava_registration_course_selection($form, &$form_state) {
 			'#collapsible' => false,
 			'checkbox' => array(
 				'#type' => 'checkbox',
-				'#default_value' => 0, //@todo: do a query to see if user already picked this course
+				'#default_value' => in_array($nid, $selected) ? 1 : 0,
 			),
 			'info' => array(
 				'#markup' => $row,
@@ -101,8 +105,8 @@ function arava_registration_course_selection_submit($form, &$form_state) {
 		}
 	}
 
-	module_load_include('inc', 'arava_orders', 'Orders.class');
-	$ordersAPI = new Orders();
+	module_load_include('inc', 'arava_orders', 'OrdersAPI.class');
+	$ordersAPI = new OrdersAPI();
 
 	// get the courses this user is already signed up for
 	$curr_orders = $ordersAPI->getAllOrdersForUser('course', _get_current_semester());
