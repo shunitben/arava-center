@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * Implements hook_node_presave($node)
+ * @param $node
+ */
+function arava_center_node_presave($node) {
+	if ($node->type == 'course') {
+		// update lesson_times form the information in lesson_days and lesson_hours, mixed up with the semester dates.
+		// only do this if:
+				// 1. times are empty and days+lessons are full
+		if ((empty($node->field_lesson_times) && !empty($node->field_lesson_days) && !empty($node->field_lesson_hours))
+				// 2. days or lessons have changed
+				|| (isset($node->original) && ($node->original->field_lesson_days != $node->field_lesson_days ||
+						$node->original->field_lesson_hours[LANGUAGE_NONE][0]['value'] != $node->field_lesson_hours[LANGUAGE_NONE][0]['value'] ||
+					  $node->original->field_lesson_hours[LANGUAGE_NONE][0]['value2'] != $node->field_lesson_hours[LANGUAGE_NONE][0]['value2']))) {
+
+			// get the semester dates
+			$course_wrapper = entity_metadata_wrapper('node', $node);
+			$semester_dates = $course_wrapper->field_semester->field_semester_dates->value();
+			$semester_starts = $semester_dates['value'];
+			$semester_ends = $semester_dates['value2'];
+
+			// generate the lesson dates
+			$lessons = array();
+			foreach ($node->field_lesson_days[LANGUAGE_NONE] as $day) {
+				$lesson_day = strtotime("this " . $day['value'], $semester_starts);
+				while ($lesson_day < $semester_ends) {
+					$lesson_starts = $lesson_day + $node->field_lesson_hours[LANGUAGE_NONE][0]['value'];
+					$lesson_ends = $lesson_day + $node->field_lesson_hours[LANGUAGE_NONE][0]['value2'];
+					$lessons[$lesson_starts] = array(
+						'value' => $lesson_starts,
+						'value2' => $lesson_ends,
+					);
+
+					$lesson_day = strtotime("this " . $day['value'], $lesson_day + 60*60*24*7);
+				}
+			}
+			ksort($lessons);
+			// save the lesson dates
+			$node->field_lesson_times[LANGUAGE_NONE] = array_values($lessons);
+
+			// set the lesson times type to recurring:
+			$node->field_lesson_times_type[LANGUAGE_NONE][0]['value'] = 'recurring';
+		}
+
+		// if a change was made to the manual times, set the lesson times type to manual:
+		else {
+
+			$old_times = array();
+			foreach ($node->original->field_lesson_times[LANGUAGE_NONE] as $time) {
+				$old_times[$time['value']] = array($time['value'], $time['value2']);
+			}
+			ksort($old_times);
+
+			$new_times = array();
+			foreach ($node->field_lesson_times[LANGUAGE_NONE] as $time) {
+				$new_times[$time['value']] = array($time['value'], $time['value2']);
+			}
+			ksort($new_times);
+
+			if ($old_times != $new_times) {
+				$node->field_lesson_times_type[LANGUAGE_NONE][0]['value'] = 'manual';
+			}
+		}
+	}
+}
+
+function arava_center_form_alter(&$form, &$form_state, $form_id) {
+
+	if (!empty($form['field_lesson_times_type']) && $form['field_lesson_times_type'][LANGUAGE_NONE]['#default_value'] == 'manual') {
+		$form['#groups']['group_recurring']->format_settings['formatter'] = 'closed';
+		$form['#groups']['group_manual']->format_settings['formatter'] = 'open';
+	}
+}
