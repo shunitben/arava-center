@@ -5,6 +5,7 @@
  */
 function arava_registration_course_selection($form, &$form_state) {
 
+	// get the view and separate its html into "above", "rows" and "below"
 	$view = _arava_registration_generate_view('course_selection', 'block_1');
 	$view_parts = explode('<!--rows start-->', $view);
 	$above = $view_parts[0];
@@ -13,9 +14,12 @@ function arava_registration_course_selection($form, &$form_state) {
 	$rows = explode('<!--new row-->', $view_parts[0]);
 	unset($rows[0]);
 
+	// get the courses that are already selected
 	module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
 	$mySemesterAPI = new MySemesterAPI();
 	$selected = $mySemesterAPI->getAllCoursesForUser();
+
+	// build the form
 
 	$form['#tree'] = true;
 
@@ -55,14 +59,27 @@ function arava_registration_course_selection($form, &$form_state) {
 	return $form;
 }
 
+/**
+ * Course selection validation function
+ *
+ * @param $form
+ * @param $form_state
+ */
 function arava_registration_course_selection_validate($form, &$form_state) {
-	// validate that hours don't collide
+	// @todo: validate that hours don't collide
 
-	// validate that user hasn't unchecked courses they've already paid for
+	// @todo: validate that user hasn't unchecked courses they've already paid for
 }
 
+/**
+ * Course selection submit function
+ *
+ * @param $form
+ * @param $form_state
+ */
 function arava_registration_course_selection_submit($form, &$form_state) {
 
+	// get the information from the form
 	$selected = array();
 	foreach ($form_state['values']['courses'] as $course_id => $course) {
 		if ($course['checkbox'] == 1) {
@@ -90,6 +107,6 @@ function arava_registration_course_selection_submit($form, &$form_state) {
 		}
 	}
 
-	// redirect
+	// redirect to next page
 	$form_state['redirect'] = array('accommodation-selection');
 }

@@ -30,6 +30,8 @@ class MySemesterAPI {
 	}
 
 	/**
+	 * Get the id of the current semester and keep it in semester_id
+	 *
 	 * @return mixed
 	 */
 	protected function getCurrentSemester() {
@@ -43,6 +45,8 @@ class MySemesterAPI {
 	}
 
 	/**
+	 * Get the user's my_semester node and keep it in user_semester
+	 *
 	 * @param $semester_id
 	 * @return bool|mixed|null
 	 */
@@ -84,6 +88,8 @@ class MySemesterAPI {
 	}
 
 	/**
+	 * Get all courses ids for the user
+	 *
 	 * @return array
 	 */
 	public function getAllCoursesForUser() {
@@ -97,6 +103,8 @@ class MySemesterAPI {
 	}
 
 	/**
+	 * Add a course to the user's my_semester
+	 *
 	 * @param $course
 	 */
 	public function addCourse($course) {
@@ -114,6 +122,8 @@ class MySemesterAPI {
 
 
 	/**
+	 * Remove a course from the user's my semester
+	 *
 	 * @param $course
 	 */
 	public function removeCourse($course) {
