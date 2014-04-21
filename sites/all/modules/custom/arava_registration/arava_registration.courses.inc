@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Page callback for course-selection
+ * Page callback for course
  */
-function arava_registration_course_selection($form, &$form_state) {
+function arava_registration_course($form, &$form_state) {
 
 	// get the view and separate its html into "above", "rows" and "below"
 	$view = _arava_registration_generate_view('course_selection', 'block_1');
@@ -65,7 +65,7 @@ function arava_registration_course_selection($form, &$form_state) {
  * @param $form
  * @param $form_state
  */
-function arava_registration_course_selection_validate($form, &$form_state) {
+function arava_registration_course_validate($form, &$form_state) {
 	// @todo: validate that hours don't collide
 
 	// @todo: validate that user hasn't unchecked courses they've already paid for
@@ -77,7 +77,7 @@ function arava_registration_course_selection_validate($form, &$form_state) {
  * @param $form
  * @param $form_state
  */
-function arava_registration_course_selection_submit($form, &$form_state) {
+function arava_registration_course_submit($form, &$form_state) {
 
 	// get the information from the form
 	$selected = array();
@@ -108,5 +108,5 @@ function arava_registration_course_selection_submit($form, &$form_state) {
 	}
 
 	// redirect to next page
-	$form_state['redirect'] = array('accommodation-selection');
+	$form_state['redirect'] = array('registration/accommodation');
 }

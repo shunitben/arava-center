@@ -6,14 +6,25 @@
  */
 function arava_registration_menu() {
 
-	$items['course-selection'] = array(
+	$items['registration/course'] = array(
 		'title' => t('Course Selection'),
 		'page callback' => 'drupal_get_form',
-		'page arguments' => array('arava_registration_course_selection'),
-		'access arguments' => array('signup to courses and accomodation'),
+		'page arguments' => array('arava_registration_course'),
+		'access arguments' => array('signup to courses and accommodation'),
 		'type' => MENU_NORMAL_ITEM,
 		'file' => 'arava_registration.courses.inc'
 	);
+
+	$items['registration/accommodation'] = array(
+		'title' => t('Accomodation Selection'),
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('arava_registration_accommodation'),
+		'access arguments' => array('signup to courses and accommodation'),
+		'type' => MENU_NORMAL_ITEM,
+		'file' => 'arava_registration.accommodation.inc'
+	);
+
+
 
 	return $items;
 }
@@ -23,8 +34,8 @@ function arava_registration_menu() {
  */
 function arava_registration_permission() {
 	return array(
-		'signup to courses and accomodation' => array(
-			'title' => t('Signup to courses and accomodation'),
+		'signup to courses and accommodation' => array(
+			'title' => t('Signup to courses and accommodation'),
 		)
 	);
 }

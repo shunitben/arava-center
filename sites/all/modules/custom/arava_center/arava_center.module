@@ -66,8 +66,14 @@ function arava_center_node_presave($node) {
 	}
 }
 
+/**
+ * Implements hook_form_alter
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
 function arava_center_form_alter(&$form, &$form_state, $form_id) {
-
+	// open the right fieldset for lesson time, according to lesson_times_type
 	if (!empty($form['field_lesson_times_type']) && $form['field_lesson_times_type'][LANGUAGE_NONE]['#default_value'] == 'manual') {
 		$form['#groups']['group_recurring']->format_settings['formatter'] = 'closed';
 		$form['#groups']['group_manual']->format_settings['formatter'] = 'open';
