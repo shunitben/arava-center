@@ -9,3 +9,5 @@ sites/*/private
 .idea
 META-INF
 arava-center.iml
+/nbproject/private/
+nbproject
