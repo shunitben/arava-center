@@ -1,0 +1,12 @@
+name = arava registration wizard
+core = 7.x
+package = Features
+dependencies[] = calendar
+dependencies[] = date_views
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = calendar
+features[views_view][] = course_selection
+features_exclude[dependencies][ctools] = ctools
+project path = sites/all/modules/feature

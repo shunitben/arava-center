@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the arava registration wizard feature.
+ */
+
+include_once 'arava_registration_wizard.features.inc';
