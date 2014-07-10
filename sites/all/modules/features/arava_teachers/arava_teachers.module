@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the arava_teachers feature.
+ */
+
+include_once 'arava_teachers.features.inc';

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the arava_management feature.
+ */
+
+include_once 'arava_management.features.inc';
