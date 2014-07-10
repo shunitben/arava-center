@@ -115,5 +115,5 @@ function arava_registration_meals_submit($form, &$form_state) {
   $mySemesterAPI->setMealsFoodInfo($allergies, $other_allergies, $food['vegan']);
   $mySemesterAPI->setMealsPresenceInfo($presence['days'], $guests['number'], $guests['days']);
 
-	$form_state['redirect'] = array('extra');
+	$form_state['redirect'] = array('registration/extra');
 }

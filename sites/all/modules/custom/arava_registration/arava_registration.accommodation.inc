@@ -72,5 +72,5 @@ function arava_registration_accommodation_submit($form, &$form_state) {
   // save the users requested accomodation
   $mySemesterAPI->selectAccomodation($accomodation);
 
-	$form_state['redirect'] = array('meals');
+	$form_state['redirect'] = array('registration/meals');
 }
