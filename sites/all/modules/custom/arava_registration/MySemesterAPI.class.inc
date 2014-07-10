@@ -145,4 +145,19 @@ class MySemesterAPI {
 		}
 	}
 
+  public function getAccomodationForUser() {
+    if ($this->user_semester == null) return null;
+
+    $accomodation = $this->user_semester->field_my_accomodation->value();
+
+    return !empty($accomodation) ? $accomodation->nid : null;
+  }
+
+  public function selectAccomodation($accomodation) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $user_semester_node->field_my_accomodation[LANGUAGE_NONE][0]['target_id'] = $accomodation;
+    field_attach_update('node', $user_semester_node);
+  }
+
 }

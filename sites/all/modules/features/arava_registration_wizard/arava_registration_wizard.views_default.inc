@@ -11,6 +11,97 @@ function arava_registration_wizard_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'accomodation_selection';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'node';
+  $view->human_name = 'Accomodation Selection';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'הרשמה ללינה';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Link */
+  $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['view_node']['text'] = 'מידע נוסף';
+  /* Field: Content: Price */
+  $handler->display->display_options['fields']['field_price']['id'] = 'field_price';
+  $handler->display->display_options['fields']['field_price']['table'] = 'field_data_field_price';
+  $handler->display->display_options['fields']['field_price']['field'] = 'field_price';
+  $handler->display->display_options['fields']['field_price']['label'] = 'Price per semester';
+  $handler->display->display_options['fields']['field_price']['settings'] = array(
+    'thousand_separator' => ',',
+    'prefix_suffix' => 1,
+  );
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['nid']['alter']['text'] = '<span class="hidden">nid:[nid]</span>';
+  $handler->display->display_options['fields']['nid']['element_type'] = '0';
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
+  /* Sort criterion: Content: Price (field_price) */
+  $handler->display->display_options['sorts']['field_price_value']['id'] = 'field_price_value';
+  $handler->display->display_options['sorts']['field_price_value']['table'] = 'field_data_field_price';
+  $handler->display->display_options['sorts']['field_price_value']['field'] = 'field_price_value';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'accomodation' => 'accomodation',
+  );
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block_1');
+  $translatables['accomodation_selection'] = array(
+    t('Master'),
+    t('הרשמה ללינה'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('מידע נוסף'),
+    t('Price per semester'),
+    t('<span class="hidden">nid:[nid]</span>'),
+    t('Block'),
+  );
+  $export['accomodation_selection'] = $view;
+
+  $view = new view();
   $view->name = 'calendar';
   $view->description = '';
   $view->tag = 'Calendar';

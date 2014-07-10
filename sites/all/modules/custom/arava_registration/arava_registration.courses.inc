@@ -5,16 +5,9 @@
  */
 function arava_registration_course($form, &$form_state) {
 
-	// get the view and separate its html into "above", "rows" and "below"
-	$view = _arava_registration_generate_view('course_selection', 'block_1');
-	$view_parts = explode('<!--rows start-->', $view);
-	$above = $view_parts[0];
-	$view_parts = explode('<!--rows end-->', $view_parts[1]);
-	$below = $view_parts[1];
-	$rows = explode('<!--new row-->', $view_parts[0]);
-	unset($rows[0]);
+  $parts = _arava_registration_get_separated_view('course_selection', 'block_1');
 
-	// get the courses that are already selected
+  // get the courses that are already selected
 	module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
 	$mySemesterAPI = new MySemesterAPI();
 	$selected = $mySemesterAPI->getAllCoursesForUser();
@@ -24,14 +17,14 @@ function arava_registration_course($form, &$form_state) {
 	$form['#tree'] = true;
 
 	$form['above'] = array(
-		'#markup' => $above,
+		'#markup' => $parts['above'],
 	);
 
 	$form['courses'] = array(
 		'#type' => 'fieldset',
 		'#collapsible' => false,
 	);
-	foreach ($rows as $row) {
+	foreach ($parts['rows'] as $row) {
 		preg_match('/nid:[0-9]+/', $row, $matches);
 		$nid = str_replace('nid:', '', $matches[0]);
 		$form['courses'][$nid] = array(
@@ -48,7 +41,7 @@ function arava_registration_course($form, &$form_state) {
 	}
 
 	$form['below'] = array(
-		'#markup' => $below,
+		'#markup' => $parts['below'],
 	);
 
 	$form['submit'] = array(
