@@ -69,7 +69,7 @@ function arava_registration_accommodation_submit($form, &$form_state) {
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
 
-  // get the courses this user is already signed up for
+  // save the users requested accomodation
   $mySemesterAPI->selectAccomodation($accomodation);
 
 	$form_state['redirect'] = array('meals');

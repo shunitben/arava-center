@@ -145,6 +145,10 @@ class MySemesterAPI {
 		}
 	}
 
+  /**
+   * Get the selected accomodation nid, if exists
+   * @return int / null
+   */
   public function getAccomodationForUser() {
     if ($this->user_semester == null) return null;
 
@@ -153,10 +157,75 @@ class MySemesterAPI {
     return !empty($accomodation) ? $accomodation->nid : null;
   }
 
+  /**
+   * Set the user's selected accomodation to my_semester
+   * @param $accomodation
+   */
   public function selectAccomodation($accomodation) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
 
     $user_semester_node->field_my_accomodation[LANGUAGE_NONE][0]['target_id'] = $accomodation;
+    field_attach_update('node', $user_semester_node);
+  }
+
+  /**
+   * Get all the meals info for a user
+   * @return array
+   */
+  public function getMealsInfoForUser() {
+    // some of the info (allergies and preferences) lives in the user
+    // and some (days of presence, extra guests) lives in my_semester
+    $user = user_load($this->user->uid);
+    $user_wrapper = entity_metadata_wrapper('user', $user);
+    $meals_info = array(
+      'gluten' => $user_wrapper->field_gluten->value(),
+      'dairy' => $user_wrapper->field_dairy->value(),
+      'peanuts' => $user_wrapper->field_peanuts->value(),
+      'other_allergies' => $user_wrapper->field_other_allergies->value(),
+      'vegan' => $user_wrapper->field_vegan->value(),
+    );
+    if ($this->user_semester != null) {
+      $meals_info['days_present'] = $this->user_semester->field_days_present->value();
+      $meals_info['extra_guests'] = $this->user_semester->field_extra_guests_num->value();
+      $meals_info['extra_days_present'] = $this->user_semester->field_extra_days_present->value();
+    }
+
+
+    return $meals_info;
+  }
+
+  public function setMealsFoodInfo($allergies, $other_allergies, $vegan) {
+    $user = user_load($this->user->uid);
+    $user->field_gluten[LANGUAGE_NONE][0]['value'] = $allergies['gluten'];
+    $user->field_dairy[LANGUAGE_NONE][0]['value'] = $allergies['dairy'];
+    $user->field_peanuts[LANGUAGE_NONE][0]['value'] = $allergies['peanuts'];
+    $user->field_other_allergies[LANGUAGE_NONE][0]['value'] = $other_allergies;
+    $user->field_vegan[LANGUAGE_NONE][0]['value'] = $vegan;
+
+    field_attach_update('user', $user);
+  }
+
+  public function setMealsPresenceInfo($presence_days, $num_guests, $guests_presence_days) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $days = array();
+    foreach ($presence_days as $day) {
+      if (!empty($day)) {
+        $days[]['value'] = $day;
+      }
+    }
+    $user_semester_node->field_days_present[LANGUAGE_NONE] = $days;
+
+    $user_semester_node->field_extra_guests_num[LANGUAGE_NONE][0]['value'] = !empty($num_guests) ? $num_guests : 0;
+
+    $days = array();
+    foreach ($guests_presence_days as $day) {
+      if (!empty($day)) {
+        $days[]['value'] = $day;
+      }
+    }
+    $user_semester_node->field_extra_days_present[LANGUAGE_NONE] = $days;
+
     field_attach_update('node', $user_semester_node);
   }
 

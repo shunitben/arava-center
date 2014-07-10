@@ -24,6 +24,24 @@ function arava_registration_menu() {
 		'file' => 'arava_registration.accommodation.inc'
 	);
 
+  $items['registration/meals'] = array(
+    'title' => t('Meals Info'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_meals'),
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.meals.inc'
+  );
+
+  $items['registration/extra'] = array(
+    'title' => t('Extra Info'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_extra'),
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.extra.inc'
+  );
+
 
 
 	return $items;
@@ -60,6 +78,11 @@ function _arava_registration_get_separated_view($view, $display) {
   );
 }
 
+/**
+ * @param $view_name
+ * @param $display_name
+ * @return mixed
+ */
 function _arava_registration_generate_view($view_name, $display_name) {
 	$view = views_get_view($view_name);
 	$view->set_display($display_name);
@@ -67,6 +90,20 @@ function _arava_registration_generate_view($view_name, $display_name) {
 	return $view->render();
 }
 
+/**
+ *
+ */
+function _arava_registration_days_of_week_options() {
+  return array(
+    'sunday' => t('Sunday'),
+    'monday' => t('Monday'),
+    'tuesday' => t('Tuesday'),
+    'wednesday' => t('Wednesday'),
+    'thursday' => t('Thursday'),
+    'friday' => t('Friday'),
+    'saturday' => t('Saturday'),
+  );
+}
 
 
 
