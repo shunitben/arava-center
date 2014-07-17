@@ -305,7 +305,9 @@ class MySemesterAPI {
     foreach ($my_courses as $my_course) {
       // depending on the situation, my_courses may be full field collection objects, or just a reference
       if (!isset($my_course['field_course'])) {
-        $my_course = entity_load('field_collection_item', array($my_course['value']));
+        if (isset($my_course['value'])) {
+          $my_course = entity_load('field_collection_item', array($my_course['value']));
+        }
         $my_course = array_shift($my_course);
         $target_id = $my_course->field_course[LANGUAGE_NONE][0]['target_id'];
       }
