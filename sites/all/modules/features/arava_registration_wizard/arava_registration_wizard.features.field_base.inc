@@ -135,7 +135,7 @@ function arava_registration_wizard_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_dairy',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(),
     'indexes' => array(
@@ -361,7 +361,7 @@ function arava_registration_wizard_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_gluten',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(),
     'indexes' => array(
@@ -703,7 +703,7 @@ function arava_registration_wizard_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_other_allergies',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(
       'format' => array(
@@ -799,7 +799,7 @@ function arava_registration_wizard_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_peanuts',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(),
     'indexes' => array(
@@ -1188,7 +1188,7 @@ function arava_registration_wizard_field_default_field_bases() {
     'entity_types' => array(),
     'field_name' => 'field_vegan',
     'field_permissions' => array(
-      'type' => 0,
+      'type' => 2,
     ),
     'foreign keys' => array(),
     'indexes' => array(
