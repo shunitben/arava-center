@@ -11,3 +11,6 @@ META-INF
 arava-center.iml
 /nbproject/private/
 nbproject
+.DS_Store
+*.DS_Store
+database/arava_center.sql

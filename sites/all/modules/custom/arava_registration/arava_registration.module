@@ -41,8 +41,21 @@ function arava_registration_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.extra.inc'
   );
+  $items['registration/payment'] = array(
+    'title' => t('Payment'),
+    'page callback' => 'drupal_get_form',
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+  );
 
-
+  $items['admin/config/arava-center/takanon-links'] = array(
+    'title' => t('Takanon links'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_takanon_links'),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.admin.inc'
+  );
 
 	return $items;
 }

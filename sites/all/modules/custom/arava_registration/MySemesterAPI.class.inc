@@ -229,4 +229,40 @@ class MySemesterAPI {
     field_attach_update('node', $user_semester_node);
   }
 
+  /**
+   * Get all the extra info for a user
+   * @return array
+   */
+  public function getExtraInfoForUser() {
+    if ($this->user_semester == null) return null;
+
+    $extra_info = array(
+      'comments' => $this->user_semester->field_comments->value(),
+      'takanon_moa' => $this->user_semester->field_takanon_moa->value(),
+      'takanon_school' => $this->user_semester->field_takanon_school->value(),
+      'takanon_amuta' => $this->user_semester->field_takanon_amuta->value(),
+      'health_declaration' => $this->user_semester->field_health_declaration->value(),
+      'waver' => $this->user_semester->field_waver->value(),
+    );
+
+    return $extra_info;
+  }
+
+  /**
+   * Set the user's extra info to my_semester
+   * @param $extra_info
+   */
+  public function setExtraInfo($extra_info) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $extra_info['comments'];
+    $user_semester_node->field_takanon_moa[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_moa'];
+    $user_semester_node->field_takanon_school[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_school'];
+    $user_semester_node->field_takanon_amuta[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_amuta'];
+    $user_semester_node->field_health_declaration[LANGUAGE_NONE][0]['value'] = $extra_info['health_declaration'];
+    $user_semester_node->field_waver[LANGUAGE_NONE][0]['value'] = $extra_info['waver'];
+
+    field_attach_update('node', $user_semester_node);
+  }
+
 }
