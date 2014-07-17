@@ -1,5 +1,16 @@
 <?php
 
+function arava_registration_general_settings($form, &$form_state) {
+  $form['arava_center_pay_for_accomodation_on_registration'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Pay for accomodation when registering'),
+    '#default_value' => variable_get('arava_center_pay_for_accomodation_on_registration', ''),
+  );
+
+  return system_settings_form($form);
+}
+
+
 function arava_registration_takanon_links($form, &$form_state) {
   $form['arava_center_takanon_moa_link'] = array(
     '#type' => 'textfield',

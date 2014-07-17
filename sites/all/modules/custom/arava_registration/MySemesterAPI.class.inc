@@ -22,11 +22,21 @@ class MySemesterAPI {
 	 * Construct:
 	 * Load current user's my_semester node
 	 */
-	public function __construct() {
-		global $user;
+	public function __construct($uid = null, stdClass $my_semester = null) {
+    if ($uid === null) {
+      global $user;
+    }
+		else {
+      $user = user_load($uid);
+    }
 		$this->user = $user;
 		$this->getCurrentSemester();
-		$this->getUserSemester($this->semester_id);
+    if ($my_semester != null) {
+      $this->user_semester = entity_metadata_wrapper('node', $my_semester);
+    }
+    else {
+      $this->getUserSemester($this->semester_id);
+    }
 	}
 
 	/**
@@ -116,8 +126,9 @@ class MySemesterAPI {
 		$course_field_collection_wrapper->field_course->set($course);
 		$course_field_collection_wrapper->save(true);
 
-	 field_attach_update('node', $user_semester_node);
+	  field_attach_update('node', $user_semester_node);
 
+    $this->updatePaymentTotal($user_semester_node);
 	}
 
 
@@ -143,6 +154,8 @@ class MySemesterAPI {
 				break;
 			}
 		}
+
+    $this->updatePaymentTotal($user_semester_node);
 	}
 
   /**
@@ -166,6 +179,8 @@ class MySemesterAPI {
 
     $user_semester_node->field_my_accomodation[LANGUAGE_NONE][0]['target_id'] = $accomodation;
     field_attach_update('node', $user_semester_node);
+
+    $this->updatePaymentTotal($user_semester_node);
   }
 
   /**
@@ -227,6 +242,8 @@ class MySemesterAPI {
     $user_semester_node->field_extra_days_present[LANGUAGE_NONE] = $days;
 
     field_attach_update('node', $user_semester_node);
+
+    $this->updatePaymentTotal($user_semester_node);
   }
 
   /**
@@ -263,6 +280,75 @@ class MySemesterAPI {
     $user_semester_node->field_waver[LANGUAGE_NONE][0]['value'] = $extra_info['waver'];
 
     field_attach_update('node', $user_semester_node);
+  }
+
+  /**
+   * Update Payment Total - should be called after any update to my semester that might affect the payment
+   *
+   * @param $user_semester // we need this fresh, with any new info, not cached
+   * @return int
+   */
+  public function updatePaymentTotal($user_semester) {
+    $user_semester_wrapper = entity_metadata_wrapper('node', $user_semester);
+
+    // Payment total includes accommodation, courses, and extra meals.
+    // @todo: meals calculation, when we know the requirements.
+
+    $price = 0;
+
+    $accomodation = $user_semester_wrapper->field_my_accomodation->value();
+    if (!empty($accomodation)) {
+      $price += $user_semester_wrapper->field_my_accomodation->field_price->value();
+    }
+
+    $my_courses = !empty($user_semester->field_my_courses) ? $user_semester->field_my_courses[LANGUAGE_NONE] : array();
+    foreach ($my_courses as $my_course) {
+      // depending on the situation, my_courses may be full field collection objects, or just a reference
+      if (!isset($my_course['field_course'])) {
+        $my_course = entity_load('field_collection_item', array($my_course['value']));
+        $my_course = array_shift($my_course);
+        $target_id = $my_course->field_course[LANGUAGE_NONE][0]['target_id'];
+      }
+      else {
+        $target_id = $my_course['field_course'][LANGUAGE_NONE][0]['target_id'];
+      }
+      $course = entity_metadata_wrapper('node', node_load($target_id));
+      $course_price = $course->field_price->value();
+      if ($course_price > 0) {
+        $price += $course_price;
+      }
+    }
+
+    // no need to save if nothing's changed
+    if ($price != $user_semester_wrapper->field_payment_total->value()) {
+      $user_semester_node = node_load($this->user_semester->getIdentifier());
+      $user_semester_node->field_payment_total[LANGUAGE_NONE][0]['value'] = $price;
+      field_attach_update('node', $user_semester_node);
+    }
+
+    return $price;
+  }
+
+  public function getPaymentDue() {
+
+    $due = $this->user_semester->field_payment_total->value();
+
+    // For now, we don't pay for the room when first ordering, only after approval.
+    // We only pay for the no-accommodation plan (or in other words, don't pay the for the bed right now).
+    $pay_for_bed_later = !variable_get('arava_center_pay_for_accomodation_on_registration');
+    if ($pay_for_bed_later) {
+      $query = db_select('field_data_field_price', 'price');
+      $query->join('node', 'node', 'price.entity_id = node.nid');
+      $query->condition('node.type', 'accomodation');
+      $query->addExpression('MIN(field_price_value)', 'min_field_price_value');
+
+      $lowest_accomodation = $query->execute()->fetchField();
+      $my_accomodation = $this->user_semester->field_my_accomodation->field_price->value();
+      $diff = $my_accomodation - $lowest_accomodation;
+      $due = $due - $diff;
+    }
+
+    return $due;
   }
 
 }

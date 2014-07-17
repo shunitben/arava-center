@@ -6,7 +6,10 @@
  */
 function arava_registration_menu() {
 
-	$items['registration/course'] = array(
+  /**
+   * Registration steps
+   */
+  $items['registration/course'] = array(
 		'title' => t('Course Selection'),
 		'page callback' => 'drupal_get_form',
 		'page arguments' => array('arava_registration_course'),
@@ -43,13 +46,26 @@ function arava_registration_menu() {
   );
   $items['registration/payment'] = array(
     'title' => t('Payment'),
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'arava_registration_payment_page',
     'access arguments' => array('signup to courses and accommodation'),
     'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.payment.inc'
+  );
+
+  /**
+   * Configurations
+   */
+  $items['admin/config/arava-center/general'] = array(
+    'title' => t('Arava General'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_general_settings'),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.admin.inc'
   );
 
   $items['admin/config/arava-center/takanon-links'] = array(
-    'title' => t('Takanon links'),
+    'title' => t('Arava Takanon links'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_takanon_links'),
     'access arguments' => array('administer menu'),
@@ -69,6 +85,20 @@ function arava_registration_permission() {
 			'title' => t('Signup to courses and accommodation'),
 		)
 	);
+}
+
+/**
+ * Implements hook_node_presave($node)
+ * @param $node
+ */
+function arava_registration_node_presave($node) {
+  if ($node->type == 'my_semester') {
+    // keep payment due up-to-date
+    module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+    $mySemesterAPI = new MySemesterAPI($node->field_user[LANGUAGE_NONE][0]['target_id'], $node);
+    $payment_due = $mySemesterAPI->updatePaymentTotal($node);
+    $node->field_payment_total[LANGUAGE_NONE][0]['value'] = $payment_due;
+  }
 }
 
 /**
@@ -117,7 +147,4 @@ function _arava_registration_days_of_week_options() {
     'saturday' => t('Saturday'),
   );
 }
-
-
-
 
