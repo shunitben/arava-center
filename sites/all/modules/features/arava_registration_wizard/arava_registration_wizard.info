@@ -136,6 +136,7 @@ features[user_permission][] = signup to courses and accommodation
 features[views_view][] = accomodation_selection
 features[views_view][] = calendar
 features[views_view][] = course_selection
+features[views_view][] = registration_summary
 features_exclude[dependencies][ctools] = ctools
 features_exclude[dependencies][options] = options
 project path = sites/all/modules/feature

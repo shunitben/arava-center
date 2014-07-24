@@ -75,7 +75,6 @@ function arava_registration_course($form, &$form_state) {
 function arava_registration_course_validate($form, &$form_state) {
 	// @todo: validate that hours don't collide
 
-	// @todo: validate that user hasn't unchecked courses they've already paid for
 }
 
 /**
