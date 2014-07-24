@@ -499,6 +499,15 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['field_semester_target_id']['field'] = 'field_semester_target_id';
   $handler->display->display_options['relationships']['field_semester_target_id']['label'] = 'semester';
   $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
+  /* Relationship: Content: Taxonomy terms on node */
+  $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
+  $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
+  $handler->display->display_options['relationships']['term_node_tid']['label'] = 'faculty';
+  $handler->display->display_options['relationships']['term_node_tid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
+    'faculties' => 'faculties',
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -538,6 +547,11 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['field_faculty']['label'] = '';
   $handler->display->display_options['fields']['field_faculty']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_faculty']['type'] = 'taxonomy_term_reference_plain';
+  /* Sort criterion: Taxonomy term: Weight */
+  $handler->display->display_options['sorts']['weight']['id'] = 'weight';
+  $handler->display->display_options['sorts']['weight']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['sorts']['weight']['field'] = 'weight';
+  $handler->display->display_options['sorts']['weight']['relationship'] = 'term_node_tid';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -578,6 +592,7 @@ function arava_registration_wizard_views_default_views() {
     t('Asc'),
     t('Desc'),
     t('semester'),
+    t('faculty'),
     t('מידע נוסף'),
     t('מרצה'),
     t('<span class="hidden">nid:[nid]</span>'),
