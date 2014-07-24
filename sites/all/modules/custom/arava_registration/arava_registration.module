@@ -122,6 +122,43 @@ function _arava_registration_get_separated_view($view, $display) {
 }
 
 /**
+ * get a view and separate its html into "above", sections of "rows" and "below"
+ * @param $view
+ * @param $display
+ */
+function _arava_registration_get_separated_sectioned_view($view, $display) {
+  $view = _arava_registration_generate_view($view, $display);
+
+  $view_parts = explode('<!--section starts-->', $view, 2);
+  $above = $view_parts[0];
+  $view_parts = explode('<!--rows end-->', $view_parts[1]);
+  $below = array_pop($view_parts);
+
+  $separated_sections = array();
+  foreach ($view_parts as $section) {
+    $section = str_replace('<!--section starts-->', '', $section);
+
+    $section_parts = explode('<!--rows start-->', $section);
+    $section_above = $section_parts[0];
+
+    $section_rows = explode('<!--new row-->', $section_parts[1]);
+    unset($section_rows[0]);
+    $separated_sections[] = array(
+      'above' => $section_above,
+      'rows' => $section_rows,
+    );
+  }
+  $rows = $separated_sections;
+
+
+  return array(
+    'above' => $above,
+    'below' => $below,
+    'rows' => $rows,
+  );
+}
+
+/**
  * @param $view_name
  * @param $display_name
  * @return mixed

@@ -5,7 +5,7 @@
  */
 function arava_registration_course($form, &$form_state) {
 
-  $parts = _arava_registration_get_separated_view('course_selection', 'block_1');
+  $parts = _arava_registration_get_separated_sectioned_view('course_selection', 'block_1');
 
   // get the courses that are already selected
 	module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
@@ -20,24 +20,38 @@ function arava_registration_course($form, &$form_state) {
 		'#markup' => $parts['above'],
 	);
 
-	$form['courses'] = array(
-		'#type' => 'fieldset',
-		'#collapsible' => false,
+	$form['courses_groups'] = array(
+		'#type' => 'horizontal_tabs',
+    '#attached' => array('library' => array(array('field_group', 'horizontal-tabs'))), // Converts fieldsets into tabs
 	);
-	foreach ($parts['rows'] as $row) {
-		preg_match('/nid:[0-9]+/', $row, $matches);
-		$nid = str_replace('nid:', '', $matches[0]);
-		$form['courses'][$nid] = array(
-			'#type' => 'fieldset',
-			'#collapsible' => false,
-			'checkbox' => array(
-				'#type' => 'checkbox',
-				'#default_value' => in_array($nid, $selected) ? 1 : 0,
-			),
-			'info' => array(
-				'#markup' => $row,
-			)
-		);
+
+  $i = 0;
+	foreach ($parts['rows'] as $section) {
+    $i++;
+    $section_name = $section['above'];
+    $form['courses'][$i] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => false,
+      '#group' => 'courses_groups',
+      '#title' => $section_name,
+    );
+
+    foreach ($section['rows'] as $row) {
+      preg_match('/nid:[0-9]+/', $row, $matches);
+      $nid = str_replace('nid:', '', $matches[0]);
+      $form['courses'][$i][$nid] = array(
+        '#type' => 'fieldset',
+        '#collapsible' => false,
+        '#group' => $i,
+        'checkbox' => array(
+          '#type' => 'checkbox',
+          '#default_value' => in_array($nid, $selected) ? 1 : 0,
+        ),
+        'info' => array(
+          '#markup' => $row,
+        )
+      );
+    }
 	}
 
 	$form['below'] = array(
@@ -74,11 +88,14 @@ function arava_registration_course_submit($form, &$form_state) {
 
 	// get the information from the form
 	$selected = array();
-	foreach ($form_state['values']['courses'] as $course_id => $course) {
-		if ($course['checkbox'] == 1) {
-			$selected[] = $course_id;
-		}
-	}
+  foreach ($form_state['values']['courses'] as $section) {
+    foreach ($section as $course_id => $course) {
+      if ($course['checkbox'] == 1) {
+        $selected[] = $course_id;
+      }
+    }
+  }
+
 
 	module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
 	$mySemesterAPI = new MySemesterAPI();

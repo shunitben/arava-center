@@ -485,6 +485,13 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'field_faculty',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_semester_target_id']['id'] = 'field_semester_target_id';
@@ -524,6 +531,13 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_type'] = '0';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
+  /* Field: Content: Faculty */
+  $handler->display->display_options['fields']['field_faculty']['id'] = 'field_faculty';
+  $handler->display->display_options['fields']['field_faculty']['table'] = 'field_data_field_faculty';
+  $handler->display->display_options['fields']['field_faculty']['field'] = 'field_faculty';
+  $handler->display->display_options['fields']['field_faculty']['label'] = '';
+  $handler->display->display_options['fields']['field_faculty']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_faculty']['type'] = 'taxonomy_term_reference_plain';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
