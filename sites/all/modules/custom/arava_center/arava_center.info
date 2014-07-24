@@ -1,3 +1,5 @@
 name = Arava Center
 description = General functionality for the arava center website.
 core = 7.x
+
+files[] = mailsystem/MimeMailSystem__SmtpMailSystem.mail.inc
