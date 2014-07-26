@@ -7,8 +7,9 @@
  * @ingroup views_templates
  */
 ?>
+<!--section starts-->
 <?php if (!empty($title)): ?>
-	<h3><?php print $title; ?></h3>
+	<?php print $title; ?>
 <?php endif; ?>
 <!--rows start-->
 <?php foreach ($rows as $id => $row): ?>

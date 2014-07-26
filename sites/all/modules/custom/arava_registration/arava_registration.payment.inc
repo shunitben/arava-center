@@ -5,5 +5,5 @@ function arava_registration_payment_page() {
   $mySemesterAPI = new MySemesterAPI();
   $toPay = $mySemesterAPI->getPaymentDue();
 
-  return t('The total is @toPay.', array('@toPay' => $toPay));
+  return t('The total is @toPay.', array('@toPay' => $toPay)) . "<br><br>" . l('Pretend I just payed', 'registration/thanks');
 }

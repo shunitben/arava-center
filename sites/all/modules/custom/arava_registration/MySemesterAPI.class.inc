@@ -353,4 +353,8 @@ class MySemesterAPI {
     return $due;
   }
 
+  public function getSemesterId() {
+    return $this->semester_id;
+  }
+
 }

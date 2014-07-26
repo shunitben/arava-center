@@ -104,8 +104,8 @@ function arava_registration_wizard_field_group_info() {
     'label' => 'Extra Meals',
     'weight' => '8',
     'children' => array(
-      0 => 'field_extra_guests_num',
-      1 => 'field_extra_days_present',
+      0 => 'field_extra_days_present',
+      1 => 'field_extra_guests_num',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -130,12 +130,12 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'מזון',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
-      0 => 'field_gluten',
-      1 => 'field_dairy',
-      2 => 'field_peanuts',
-      3 => 'field_other_allergies',
+      0 => 'field_dairy',
+      1 => 'field_gluten',
+      2 => 'field_other_allergies',
+      3 => 'field_peanuts',
       4 => 'field_vegan',
     ),
     'format_type' => 'tab',
@@ -282,11 +282,12 @@ function arava_registration_wizard_field_group_info() {
     'label' => 'מידע נוסף',
     'weight' => '6',
     'children' => array(
-      0 => 'field_takanon_moa',
-      1 => 'field_takanon_school',
-      2 => 'field_takanon_amuta',
-      3 => 'field_health_declaration',
+      0 => 'field_health_declaration',
+      1 => 'field_takanon_amuta',
+      2 => 'field_takanon_moa',
+      3 => 'field_takanon_school',
       4 => 'field_waver',
+      5 => 'field_comments',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -341,9 +342,9 @@ function arava_registration_wizard_field_group_info() {
     'label' => 'פרטים אישיים',
     'weight' => '0',
     'children' => array(
-      0 => 'field_user_name',
-      1 => 'field_user_phone',
-      2 => 'field_user_address',
+      0 => 'field_user_address',
+      1 => 'field_user_name',
+      2 => 'field_user_phone',
       3 => 'account',
     ),
     'format_type' => 'tab',

@@ -1,5 +1,26 @@
 <?php
 
+function arava_registration_config() {
+  return theme('links', array('links' => array(
+
+    'general' => array(
+      'title' => t('General Settings'),
+      'href' => 'admin/arava-center/general',
+    ),
+
+    'takanon' => array(
+      'title' => t('Takanon Links'),
+      'href' => 'admin/arava-center/takanon-links',
+    ),
+
+    'emails' => array(
+      'title' => t('Emails'),
+      'href' => 'admin/arava-center/emails',
+    ),
+
+  )));
+}
+
 function arava_registration_general_settings($form, &$form_state) {
   $form['arava_center_pay_for_accomodation_on_registration'] = array(
     '#type' => 'checkbox',
@@ -40,6 +61,25 @@ function arava_registration_takanon_links($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Moa terms link'),
     '#default_value' => variable_get('arava_center_waver_link', ''),
+  );
+
+  return system_settings_form($form);
+}
+
+
+function arava_registration_emails($form, &$form_state) {
+  $form['arava_center_registration_confirmation_email_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Registration confirmation email subject'),
+    '#default_value' => variable_get('arava_center_registration_confirmation_email_subject', ''),
+  );
+
+  $val = variable_get('arava_center_registration_confirmation_email', '');
+  $form['arava_center_registration_confirmation_email'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Registration confirmation email'),
+    '#default_value' => $val['value'],
+    '#format' => isset($val['format']) ? $val['format'] : 'html',
   );
 
   return system_settings_form($form);

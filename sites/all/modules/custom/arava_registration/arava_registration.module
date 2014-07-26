@@ -51,11 +51,25 @@ function arava_registration_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.payment.inc'
   );
+  $items['registration/thanks'] = array(
+    'title' => t('Thanks'),
+    'page callback' => 'arava_registration_thanks_page',
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.thanks.inc'
+  );
 
   /**
    * Configurations
    */
-  $items['admin/config/arava-center/general'] = array(
+  $items['admin/arava-center'] = array(
+    'title' => t('Arava Config'),
+    'page callback' => 'arava_registration_config',
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.admin.inc'
+  );
+  $items['admin/arava-center/general'] = array(
     'title' => t('Arava General'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_general_settings'),
@@ -64,10 +78,19 @@ function arava_registration_menu() {
     'file' => 'arava_registration.admin.inc'
   );
 
-  $items['admin/config/arava-center/takanon-links'] = array(
+  $items['admin/arava-center/takanon-links'] = array(
     'title' => t('Arava Takanon links'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_takanon_links'),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.admin.inc'
+  );
+
+  $items['admin/arava-center/emails'] = array(
+    'title' => t('Arava Emails'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_emails'),
     'access arguments' => array('administer menu'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.admin.inc'
@@ -122,14 +145,51 @@ function _arava_registration_get_separated_view($view, $display) {
 }
 
 /**
+ * get a view and separate its html into "above", sections of "rows" and "below"
+ * @param $view
+ * @param $display
+ */
+function _arava_registration_get_separated_sectioned_view($view, $display) {
+  $view = _arava_registration_generate_view($view, $display);
+
+  $view_parts = explode('<!--section starts-->', $view, 2);
+  $above = $view_parts[0];
+  $view_parts = explode('<!--rows end-->', $view_parts[1]);
+  $below = array_pop($view_parts);
+
+  $separated_sections = array();
+  foreach ($view_parts as $section) {
+    $section = str_replace('<!--section starts-->', '', $section);
+
+    $section_parts = explode('<!--rows start-->', $section);
+    $section_above = $section_parts[0];
+
+    $section_rows = explode('<!--new row-->', $section_parts[1]);
+    unset($section_rows[0]);
+    $separated_sections[] = array(
+      'above' => $section_above,
+      'rows' => $section_rows,
+    );
+  }
+  $rows = $separated_sections;
+
+
+  return array(
+    'above' => $above,
+    'below' => $below,
+    'rows' => $rows,
+  );
+}
+
+/**
  * @param $view_name
  * @param $display_name
  * @return mixed
  */
-function _arava_registration_generate_view($view_name, $display_name) {
+function _arava_registration_generate_view($view_name, $display_name, $args = array()) {
 	$view = views_get_view($view_name);
 	$view->set_display($display_name);
-	$view->pre_execute();
+	$view->pre_execute($args);
 	return $view->render();
 }
 
@@ -148,3 +208,13 @@ function _arava_registration_days_of_week_options() {
   );
 }
 
+
+
+function arava_registration_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'confirmation':
+      $message['subject'] = variable_get('arava_center_registration_confirmation_email_subject', '');
+      $message['body'][] = _arava_registration_confirmation_email();
+      break;
+  }
+}
