@@ -1,7 +1,7 @@
 
 name = Arava Center
 core = 7.x
-base theme = bartik
+base theme = scholarly
 
 stylesheets[all][] = css/arava_center.css
 
