@@ -51,6 +51,13 @@ function arava_registration_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.payment.inc'
   );
+  $items['registration/remaining_payment'] = array(
+    'title' => t('Remaining Payment'),
+    'page callback' => 'arava_registration_remaining_payment_page',
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.remaining_payment.inc'
+  );
   $items['registration/thanks'] = array(
     'title' => t('Thanks'),
     'page callback' => 'arava_registration_thanks_page',
