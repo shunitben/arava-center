@@ -352,6 +352,14 @@ class MySemesterAPI {
 
     return $due;
   }
+  public function getRemainingPayment() {
+
+    $due = $this->user_semester->field_payment_total->value();
+    $paid = $this->user_semester->field_payment_made->value();
+    
+
+    return $due - $paid;
+  }
 
   /**
    * After the user had made a payment and we saved the confirmation code from tranzilla,
