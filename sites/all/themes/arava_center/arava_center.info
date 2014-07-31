@@ -1,29 +1,55 @@
-
 name = Arava Center
 core = 7.x
 base theme = scholarly
 
+
 stylesheets[all][] = css/arava_center.css
 
+
+regions[header_top_left] = Header Top Left
+regions[header_top_right] = Header Top Right
 regions[header] = Header
+regions[navigation] = Navigation
+regions[banner] = Banner
+regions[highlighted] = Highlighted
+regions[promoted] = Promoted area
+regions[content] = Content
+regions[sidebar_first] = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[bottom_content] = Bottom Content
+regions[footer_top_left] = Footer Top Left
+regions[footer_top_right] = Footer Top Right
+regions[footer_first] = Footer First
+regions[footer_second] = Footer Second
+regions[footer_third] = Footer Third
+regions[footer_fourth] = Footer Fourth
+regions[sub_footer_left] = Subfooter Left
+regions[footer] = Subfooter Right
 regions[help] = Help
 regions[page_top] = Page top
 regions[page_bottom] = Page bottom
-regions[highlighted] = Highlighted
 
-regions[featured] = Featured
-regions[content] = Content
-regions[sidebar_first] = Sidebar first
-regions[sidebar_second] = Sidebar second
-
-regions[triptych_first] = Triptych first
-regions[triptych_middle] = Triptych middle
-regions[triptych_last] = Triptych last
-
-regions[footer_firstcolumn] = Footer first column
-regions[footer_secondcolumn] = Footer second column
-regions[footer_thirdcolumn] = Footer third column
-regions[footer_fourthcolumn] = Footer fourth column
-regions[footer] = Footer
 
 settings[shortcut_module_link] = 0
+settings[breadcrumb_display]= 1
+settings[scrolltop_display]= 1
+settings[frontpage_content_print]= 1
+settings[bootstrap_js_include]= 0
+settings[three_columns_grid_layout]= 'grid_3_6_3'
+settings[color_scheme]= 'gray-red'
+settings[fixed_header]= 1
+settings[form_style]= 'form-style-1'
+settings[headings_font_family]= 'hff-7'
+settings[paragraph_font_family]= 'pff-7'
+settings[sitename_font_family]= 'sff-7'
+settings[slogan_font_family]= 'slff-7'
+settings[slideshow_effect]='fade'
+settings[slideshow_effect_time]='10'
+settings[responsive_multilevelmenu_state]= 1
+settings[google_map_latitude]='40.726576'
+settings[google_map_longitude]='-74.046822'
+settings[google_map_zoom]= 13
+settings[google_map_canvas]= 'map-canvas'
+settings[google_map_js]= 1
+settings[google_map_event_js]= 0
+settings[google_map_event_zoom]= 11
