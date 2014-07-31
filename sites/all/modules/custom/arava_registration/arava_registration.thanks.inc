@@ -5,10 +5,10 @@
  */
 function arava_registration_thanks_page() {
   // receive confirmation code from Tranzilla, and save it
-  $confirmation_code = $_GET['ConfirmationCode'];
-  $num_payments = $_GET['xnpay'];
-  $sum = $_GET['sum'];
-  $my_semester_id = $_GET['token'];
+  $confirmation_code = $_REQUEST['ConfirmationCode'];
+  $num_payments = $_REQUEST['xnpay'];
+  $sum = $_REQUEST['sum'];
+  $my_semester_id = $_REQUEST['TranzilaToken'];
 
   $payment_id = db_insert('arava_payments')
     ->fields(array(
