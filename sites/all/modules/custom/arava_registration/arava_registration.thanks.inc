@@ -122,8 +122,9 @@ function _arava_registration_accomodation_confirmation_email() {
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $MySemesterApi = new MySemesterAPI();
   $accomodation = $MySemesterApi->getAccomodationForUser();
+  $accomodation = node_load($accomodation);
 
-  $output .= t('Your accomodation is: ') . $accomodation . "<br><br>";
+  $output .= t('Your accomodation is: ') . $accomodation->title . "<br><br>";
 
   $output .= t('Best regards,') . "<br>";
   $output .= t('The Moar team');
