@@ -18,6 +18,11 @@ function arava_registration_config() {
       'href' => 'admin/arava-center/emails',
     ),
 
+    'texts' => array(
+      'title' => t('Texts'),
+      'href' => 'admin/arava-center/texts',
+    ),
+
   )));
 }
 
@@ -78,6 +83,47 @@ function arava_registration_emails($form, &$form_state) {
   $form['arava_center_registration_confirmation_email'] = array(
     '#type' => 'text_format',
     '#title' => t('Registration confirmation email'),
+    '#default_value' => $val['value'],
+    '#format' => isset($val['format']) ? $val['format'] : 'html',
+  );
+
+  $form['arava_center_registration_accomodation_confirmation_email_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Registration - Accomodation confirmation email subject'),
+    '#default_value' => variable_get('arava_center_registration_accomodation_confirmation_email_subject', ''),
+  );
+
+  $val = variable_get('arava_center_registration_accomodation_confirmation_email', '');
+  $form['arava_center_registration_accomodation_confirmation_email'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Registration- Accomodation confirmation email'),
+    '#default_value' => $val['value'],
+    '#format' => isset($val['format']) ? $val['format'] : 'html',
+  );
+
+  $form['arava_center_registration_payment_received_email_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Payment received email subject'),
+    '#default_value' => variable_get('arava_center_registration_payment_received_email_subject', ''),
+  );
+
+  $val = variable_get('arava_center_registration_payment_received_email', '');
+  $form['arava_center_registration_payment_received_email'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Payment received email'),
+    '#default_value' => $val['value'],
+    '#format' => isset($val['format']) ? $val['format'] : 'html',
+  );
+
+  return system_settings_form($form);
+}
+
+function arava_registration_texts($form, &$form_state) {
+
+  $val = variable_get('arava_center_registration_payment_thanks', '');
+  $form['arava_center_registration_payment_thanks'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Registration payment thanks message'),
     '#default_value' => $val['value'],
     '#format' => isset($val['format']) ? $val['format'] : 'html',
   );

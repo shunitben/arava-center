@@ -96,6 +96,15 @@ function arava_registration_menu() {
     'file' => 'arava_registration.admin.inc'
   );
 
+  $items['admin/arava-center/texts'] = array(
+    'title' => t('Arava Texts'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_texts'),
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.admin.inc'
+  );
+
 	return $items;
 }
 
@@ -215,6 +224,16 @@ function arava_registration_mail($key, &$message, $params) {
     case 'confirmation':
       $message['subject'] = variable_get('arava_center_registration_confirmation_email_subject', '');
       $message['body'][] = _arava_registration_confirmation_email();
+      break;
+
+    case 'accomodation_confirmation':
+      $message['subject'] = variable_get('arava_center_registration_accomodation_confirmation_email_subject', '');
+      $message['body'][] = _arava_registration_accomodation_confirmation_email();
+      break;
+
+    case 'payment_received':
+      $message['subject'] = variable_get('arava_center_registration_payment_received_email_subject', '');
+      $message['body'][] = _arava_registration_payment_received_email($params['sum'], $params['confirmation_code'], $params['num_payments']);
       break;
   }
 }
