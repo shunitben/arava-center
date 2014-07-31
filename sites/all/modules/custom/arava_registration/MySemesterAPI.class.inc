@@ -356,5 +356,12 @@ class MySemesterAPI {
   public function getSemesterId() {
     return $this->semester_id;
   }
-
+  
+  public function getMySemesterId() {
+    return $this->user_semester->getIdentifier();
+  }
+  
+  public function getUser() {
+    return user_load($this->user->uid);
+  }
 }

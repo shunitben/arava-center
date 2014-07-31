@@ -5,3 +5,14 @@
 .hello{
     color: blue;
 }
+.main-menu{
+    display:none;
+}
+#site-name{
+    display:none;
+}
+#tranzila_frame{
+    width:300px;
+    height:300px;
+    border:none
+}
