@@ -5,9 +5,24 @@
  */
 function arava_registration_thanks_page() {
   // receive confirmation code from Tranzilla, and save it
+  $confirmation_code = $_REQUEST['ConfirmationCode'];
+  $num_payments = $_REQUEST['xnpay'];
+  $sum = $_REQUEST['sum'];
+  $my_semester_id = $_REQUEST['TranzilaToken'];
 
+  $payment_id = db_insert('arava_payments')
+    ->fields(array(
+        'my_semester_id' => $my_semester_id,
+        'sum' => $sum,
+        'num_payments' => $num_payments,
+        'confirmation_code' => $confirmation_code,
+      ))
+    ->execute();
 
-  // say thank you
+  // update the my_semester with the payment
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $MySemesterApi = new MySemesterAPI();
+  $MySemesterApi->addPayment($sum);
 
 
   // send confirmation email to student + timetable
@@ -16,6 +31,10 @@ function arava_registration_thanks_page() {
   $lang = $user->language;
   $params = array();
   drupal_mail('arava_registration', 'confirmation', $to, $lang, $params);
+
+  // say thank you
+  return t('Thank you!');
+
 }
 
 function _arava_registration_confirmation_email() {
