@@ -119,7 +119,7 @@ function arava_registration_node_presave($node) {
     // keep payment due up-to-date
     module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
     $mySemesterAPI = new MySemesterAPI($node->field_user[LANGUAGE_NONE][0]['target_id'], $node);
-    $payment_due = $mySemesterAPI->updatePaymentTotal($node);
+    $payment_due = $mySemesterAPI->updatePaymentDueTotal($node);
     $node->field_payment_total[LANGUAGE_NONE][0]['value'] = $payment_due;
   }
 }

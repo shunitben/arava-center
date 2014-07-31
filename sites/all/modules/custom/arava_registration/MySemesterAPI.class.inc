@@ -128,7 +128,7 @@ class MySemesterAPI {
 
 	  field_attach_update('node', $user_semester_node);
 
-    $this->updatePaymentTotal($user_semester_node);
+    $this->updatePaymentDueTotal($user_semester_node);
 	}
 
 
@@ -155,7 +155,7 @@ class MySemesterAPI {
 			}
 		}
 
-    $this->updatePaymentTotal($user_semester_node);
+    $this->updatePaymentDueTotal($user_semester_node);
 	}
 
   /**
@@ -180,7 +180,7 @@ class MySemesterAPI {
     $user_semester_node->field_my_accomodation[LANGUAGE_NONE][0]['target_id'] = $accomodation;
     field_attach_update('node', $user_semester_node);
 
-    $this->updatePaymentTotal($user_semester_node);
+    $this->updatePaymentDueTotal($user_semester_node);
   }
 
   /**
@@ -243,7 +243,7 @@ class MySemesterAPI {
 
     field_attach_update('node', $user_semester_node);
 
-    $this->updatePaymentTotal($user_semester_node);
+    $this->updatePaymentDueTotal($user_semester_node);
   }
 
   /**
@@ -288,7 +288,7 @@ class MySemesterAPI {
    * @param $user_semester // we need this fresh, with any new info, not cached
    * @return int
    */
-  public function updatePaymentTotal($user_semester) {
+  public function updatePaymentDueTotal($user_semester) {
     $user_semester_wrapper = entity_metadata_wrapper('node', $user_semester);
 
     // Payment total includes accommodation, courses, and extra meals.
@@ -351,6 +351,17 @@ class MySemesterAPI {
     }
 
     return $due;
+  }
+
+  /**
+   * After the user had made a payment and we saved the confirmation code from tranzilla,
+   * we add the amount they paid to the my_semester
+   * @param $amount
+   */
+  public function addPayment($amount) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+    $user_semester_node->field_payment_made[LANGUAGE_NONE][0]['value'] += $amount;
+    field_attach_update('node', $user_semester_node);
   }
 
   public function getSemesterId() {
