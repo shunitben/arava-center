@@ -27,6 +27,15 @@ function arava_registration_menu() {
 		'file' => 'arava_registration.accommodation.inc'
 	);
 
+  $items['registration/presence'] = array(
+    'title' => t('Presence Info'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_presence'),
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.presence.inc'
+  );
+
   $items['registration/meals'] = array(
     'title' => t('Meals Info'),
     'page callback' => 'drupal_get_form',

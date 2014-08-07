@@ -45,9 +45,11 @@ class MySemesterAPI {
 	 * @return mixed
 	 */
 	protected function getCurrentSemester() {
-		$query = db_query(" SELECT open.entity_id AS entity_id
-											FROM field_data_field_open_for_registration open
-											WHERE field_open_for_registration_value = 1");
+		$query = db_query(" SELECT open_reg.entity_id AS entity_id
+											FROM field_data_field_open_for_registration open_reg
+											INNER JOIN field_data_field_semester_dates dates ON open_reg.entity_id = dates.entity_id
+											WHERE field_open_for_registration_value = 1
+											ORDER BY dates.field_semester_dates_value ASC");
 		foreach ($query as $row) {
 			$result = $row->entity_id; // override to get the latest open semester, just in case.
 		}
@@ -184,6 +186,31 @@ class MySemesterAPI {
   }
 
   /**
+   * Get all the presence info for a user
+   * @return array
+   */
+  public function getPresenceInfoForUser() {
+    if ($this->user_semester == null) return null;
+    return $this->user_semester->field_days_present->value();
+  }
+
+  public function setPresenceInfo($presence_days) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $days = array();
+    foreach ($presence_days as $day) {
+      if (!empty($day)) {
+        $days[]['value'] = $day;
+      }
+    }
+    $user_semester_node->field_days_present[LANGUAGE_NONE] = $days;
+
+    field_attach_update('node', $user_semester_node);
+
+    $this->updatePaymentDueTotal($user_semester_node);
+  }
+
+  /**
    * Get all the meals info for a user
    * @return array
    */
@@ -220,16 +247,8 @@ class MySemesterAPI {
     field_attach_update('user', $user);
   }
 
-  public function setMealsPresenceInfo($presence_days, $num_guests, $guests_presence_days) {
+  public function setMealsPresenceInfo($num_guests, $guests_presence_days) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
-
-    $days = array();
-    foreach ($presence_days as $day) {
-      if (!empty($day)) {
-        $days[]['value'] = $day;
-      }
-    }
-    $user_semester_node->field_days_present[LANGUAGE_NONE] = $days;
 
     $user_semester_node->field_extra_guests_num[LANGUAGE_NONE][0]['value'] = !empty($num_guests) ? $num_guests : 0;
 
