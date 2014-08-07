@@ -141,6 +141,47 @@ function arava_registration_node_presave($node) {
 }
 
 /**
+ * Implements hook_user_login
+ * @param $edit
+ * @param $account
+ *
+ * If the user who just signed in has no courses for this semester yet, redirect them to sign up for some courses.
+ * Shamelessly adapted form login_destination module
+ */
+function arava_registration_user_login(&$edit, $account) {
+  if (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset') {
+    module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+    $mySemesterAPI = new MySemesterAPI();
+    $courses = $mySemesterAPI->getAllCoursesForUser();
+    if (empty($courses)) {
+      $GLOBALS['destination'] = 'registration/course';
+    }
+  }
+}
+
+/**
+ * Implements hook_drupal_goto_alter
+ * Shamelessly copied form login_destination module
+ */
+function arava_registration_drupal_goto_alter(&$path, &$options, &$http_response_code) {
+  if (isset($GLOBALS['destination'])) {
+    $destination = $GLOBALS['destination'];
+
+    // alter drupal_goto
+    if (is_array($destination)) {
+      $path = $destination[0];
+      $options = array();
+      if (count($destination) > 1) {
+        $options = $destination[1];
+      }
+    }
+    else {
+      $path = $destination;
+    }
+  }
+}
+
+/**
  * get a view and separate its html into "above", "rows" and "below"
  * @param $view
  * @param $display
