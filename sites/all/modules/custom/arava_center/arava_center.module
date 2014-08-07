@@ -9,7 +9,7 @@ function arava_center_node_presave($node) {
 		// update lesson_times form the information in lesson_days and lesson_hours, mixed up with the semester dates.
 		// only do this if:
 				// 1. times are empty and days+lessons are full
-		if ((empty($node->field_lesson_times) && !empty($node->field_lesson_days) && !empty($node->field_lesson_hours))
+		if (((empty($node->field_lesson_times) || empty($node->field_lesson_times[LANGUAGE_NONE])) && !empty($node->field_lesson_days) && !empty($node->field_lesson_hours))
 				// 2. days or lessons have changed
 				|| (isset($node->original) && ($node->original->field_lesson_days != $node->field_lesson_days ||
 						$node->original->field_lesson_hours[LANGUAGE_NONE][0]['value'] != $node->field_lesson_hours[LANGUAGE_NONE][0]['value'] ||
