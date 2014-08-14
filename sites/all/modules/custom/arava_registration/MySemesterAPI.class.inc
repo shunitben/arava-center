@@ -285,18 +285,65 @@ class MySemesterAPI {
   }
 
   /**
+   * Make sure all takanons were signed
+   * @return bool
+   */
+  public function validateExtraInfoForUser() {
+    $extra_info = $this->getExtraInfoForUser();
+    unset($extra_info['comments']);
+    foreach ($extra_info as $info) {
+      if (!$info) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+
+//  /**
+//   * Set the user's extra info to my_semester
+//   * @param $extra_info
+//   */
+//  public function setExtraInfo($extra_info) {
+//    $user_semester_node = node_load($this->user_semester->getIdentifier());
+//
+//    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $extra_info['comments'];
+//    $user_semester_node->field_takanon_moa[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_moa'];
+//    $user_semester_node->field_takanon_school[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_school'];
+//    $user_semester_node->field_takanon_amuta[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_amuta'];
+//    $user_semester_node->field_health_declaration[LANGUAGE_NONE][0]['value'] = $extra_info['health_declaration'];
+//    $user_semester_node->field_waver[LANGUAGE_NONE][0]['value'] = $extra_info['waver'];
+//
+//    field_attach_update('node', $user_semester_node);
+//  }
+
+  /**
    * Set the user's extra info to my_semester
    * @param $extra_info
    */
-  public function setExtraInfo($extra_info) {
+  public function setComment($comment) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
 
-    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $extra_info['comments'];
-    $user_semester_node->field_takanon_moa[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_moa'];
-    $user_semester_node->field_takanon_school[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_school'];
-    $user_semester_node->field_takanon_amuta[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_amuta'];
-    $user_semester_node->field_health_declaration[LANGUAGE_NONE][0]['value'] = $extra_info['health_declaration'];
-    $user_semester_node->field_waver[LANGUAGE_NONE][0]['value'] = $extra_info['waver'];
+    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $comment;
+
+    field_attach_update('node', $user_semester_node);
+  }
+
+  /**
+   * Save that the user has agreed to a takanon
+   * @param $field
+   */
+  public function setAgreement($field) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $user_semester_node->$field = array(
+      LANGUAGE_NONE => array(
+        0 => array(
+          'value' => '1'
+        )
+      )
+    );
 
     field_attach_update('node', $user_semester_node);
   }

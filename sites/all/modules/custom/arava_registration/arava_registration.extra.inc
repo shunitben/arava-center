@@ -5,6 +5,10 @@
  */
 function arava_registration_extra($form, &$form_state) {
 
+  drupal_add_library('system', 'ui.dialog');
+  $path = drupal_get_path('module', 'arava_registration');
+  drupal_add_js($path . '/js/arava_registration.js');
+
   // get the already selected extra information, if exist
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
@@ -20,40 +24,20 @@ function arava_registration_extra($form, &$form_state) {
     '#default_value' => $selected['comments'],
   );
 
-  $form['takanon_moa'] = array(
-    '#type' => 'textfield',
-    '#title' => t('I have read and agree to') . ' ' . l(t('Moa\'s terms'), variable_get('arava_center_takanon_moa_link'), array('attributes' => array('target' => '_blank'))),
-    '#description' => t('Please write your first name in hebrew if you agree'),
-    '#element_validate' => array('_arava_registration_agreed_validate'),
-  );
+  $form['takanon_moa_checkbox'] = _agreement_field_checkbox("Moa's terms", 'arava_center_takanon_moa_link', 'moa', $selected['takanon_moa']);
+  $form['takanon_moa'] = _agreement_field_textfield('moa');
 
-  $form['takanon_school'] = array(
-    '#type' => 'textfield',
-    '#title' => t('I have read and agree to') . ' ' . l(t('the school\'s terms'), variable_get('arava_center_takanon_school_link'), array('attributes' => array('target' => '_blank'))),
-    '#description' => t('Please write your first name in hebrew if you agree'),
-    '#element_validate' => array('_arava_registration_agreed_validate'),
-  );
+  $form['takanon_school_checkbox'] = _agreement_field_checkbox("the school's terms", 'arava_center_takanon_school_link', 'school', $selected['takanon_school']);
+  $form['takanon_school'] = _agreement_field_textfield('school');
 
-  $form['takanon_amuta'] = array(
-    '#type' => 'textfield',
-    '#title' => t('I have read and agree to') . ' ' . l(t('the amuta\'s terms'), variable_get('arava_center_takanon_amuta_link'), array('attributes' => array('target' => '_blank'))),
-    '#description' => t('Please write your first name in hebrew if you agree'),
-    '#element_validate' => array('_arava_registration_agreed_validate'),
-  );
+  $form['takanon_amuta_checkbox'] = _agreement_field_checkbox("the amuta's terms", 'arava_center_takanon_amuta_link', 'amuta', $selected['takanon_amuta']);
+  $form['takanon_amuta'] = _agreement_field_textfield('amuta');
 
-  $form['health_declaration'] = array(
-    '#type' => 'textfield',
-    '#title' => t('I have read and agree to') . ' ' . l(t('health declaration'), variable_get('arava_center_health_declaration_link'), array('attributes' => array('target' => '_blank'))),
-    '#description' => t('Please write your first name in hebrew if you agree'),
-    '#element_validate' => array('_arava_registration_agreed_validate'),
-  );
+  $form['health_declaration_checkbox'] = _agreement_field_checkbox("health declaration", 'arava_center_health_declaration_link', 'health', $selected['health_declaration']);
+  $form['health_declaration'] = _agreement_field_textfield('health');
 
-  $form['waver'] = array(
-    '#type' => 'textfield',
-    '#title' => t('I have read and agree to') . ' ' . l(t('the waver'), variable_get('arava_center_waver_link'), array('attributes' => array('target' => '_blank'))),
-    '#description' => t('Please write your first name in hebrew if you agree'),
-    '#element_validate' => array('_arava_registration_agreed_validate'),
-  );
+  $form['waver_checkbox'] = _agreement_field_checkbox("the waver", 'arava_center_waver_link', 'waver', $selected['waver']);
+  $form['waver'] = _agreement_field_textfield('waver');
 
 
   $form['submit'] = array(
@@ -65,12 +49,37 @@ function arava_registration_extra($form, &$form_state) {
 
 }
 
-function _arava_registration_agreed_validate($element, &$form_state, $form) {
-  $error = _arava_registration_agreed($element['#value']);
-  if ($error !== false) {
-    form_error($element, $error);
-  }
+function _agreement_field_checkbox($title, $link_variable, $id, $default) {
+  return array(
+    '#type' => 'checkbox',
+    '#title' => t('I have read and agree to') . ' ' . l(t($title), variable_get($link_variable), array('attributes' => array('class' => array('dialog-link')))),
+    '#description' => t('Please click the link to read and sign your name.'),
+//    '#element_validate' => array('_arava_registration_agreed_validate'),
+    '#default_value' => $default,
+    '#disabled' => $default,
+    '#prefix' => '<div class="checkbox-field-wrapper" takanon-id="' . $id . '">',
+    '#suffix' => '</div>',
+  );
 }
+
+function _agreement_field_textfield($id) {
+  return array(
+    '#type' => 'textfield',
+    '#title' => '',
+    '#description' => t('Please write your first name in hebrew if you agree'),
+//    '#element_validate' => array('_arava_registration_agreed_validate'),
+    '#prefix' => '<div class="takanon hidden" takanon-id="' . $id . '"><div class="takanon-text"></div><div class="text-field-wrapper">',
+    '#suffix' => '</div></div>',
+    '#field_suffix' => '<span class="agree">' . t('I agree') . '</span>',
+  );
+}
+
+//function _arava_registration_agreed_validate($element, &$form_state, $form) {
+//  $error = _arava_registration_agreed($element['#value']);
+//  if ($error !== false) {
+//    form_error($element, $error);
+//  }
+//}
 
 function _arava_registration_agreed($value) {
   global $user;
@@ -87,6 +96,16 @@ function _arava_registration_agreed($value) {
   return false;
 }
 
+function arava_registration_extra_validate($form, &$form_state) {
+  // validate all takanons were signed
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $mySemesterAPI = new MySemesterAPI();
+  $valid = $mySemesterAPI->validateExtraInfoForUser();
+  if (!$valid) {
+    form_set_error('submit', t('Please sign all the agreements.'));
+  }
+}
+
 /**
  * Extra submit function
  *
@@ -95,20 +114,41 @@ function _arava_registration_agreed($value) {
  */
 function arava_registration_extra_submit($form, &$form_state) {
 
-  $extra = array(
-    'comments' => $form_state['values']['comments'],
-    'takanon_moa' => _arava_registration_agreed($form_state['values']['takanon_moa']) === false ? '1' : '0',
-    'takanon_school' => _arava_registration_agreed($form_state['values']['takanon_school']) === false ? '1' : '0',
-    'takanon_amuta' => _arava_registration_agreed($form_state['values']['takanon_amuta']) === false ? '1' : '0',
-    'health_declaration' => _arava_registration_agreed($form_state['values']['health_declaration']) === false ? '1' : '0',
-    'waver' => _arava_registration_agreed($form_state['values']['waver']) === false ? '1' : '0',
-  );
+//  $extra = array(
+//    'comments' => $form_state['values']['comments'],
+//    'takanon_moa' => _arava_registration_agreed($form_state['values']['takanon_moa']) === false ? '1' : '0',
+//    'takanon_school' => _arava_registration_agreed($form_state['values']['takanon_school']) === false ? '1' : '0',
+//    'takanon_amuta' => _arava_registration_agreed($form_state['values']['takanon_amuta']) === false ? '1' : '0',
+//    'health_declaration' => _arava_registration_agreed($form_state['values']['health_declaration']) === false ? '1' : '0',
+//    'waver' => _arava_registration_agreed($form_state['values']['waver']) === false ? '1' : '0',
+//  );
+
+  $comments = $form_state['values']['comments'];
 
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
 
   // save the information
-  $mySemesterAPI->setExtraInfo($extra);
+  $mySemesterAPI->setComment($comments);
 
 	$form_state['redirect'] = array('registration/payment');
+}
+
+function arava_registration_save_agreement($name, $to_what) {
+  $error_name = _arava_registration_agreed($name);
+  if (!$error_name) {
+    $to_what = 'field_' . str_replace('-', '_', $to_what);
+    module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+    $mySemesterAPI = new MySemesterAPI();
+    $mySemesterAPI->setAgreement($to_what);
+    print json_encode(array(
+      'success' => true,
+    ));
+  }
+  else {
+    print json_encode(array(
+      'success' => false,
+      'error' => $error_name,
+    ));
+  }
 }

@@ -1,3 +1,19 @@
-body {
-    background: red;
+/****
+Takanon popups
+****/
+.takanon-text {
+    height: 300px;
+    overflow: scroll;
+}
+.text-field-wrapper {
+    position: absolute;
+    bottom: 0;
+}
+.text-field-wrapper .form-text {
+    width: 150px;
+}
+.agree-error {
+    color: red;
+    display: inline-block;
+    margin: 0 5px;
 }
