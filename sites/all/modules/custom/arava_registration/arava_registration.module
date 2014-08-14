@@ -253,7 +253,15 @@ function _arava_registration_steps_block() {
     ),
   );
 
-  return theme_links(array('links' => $links, 'attributes' => array()));
+  return theme_links(array(
+    'links' => $links,
+    'attributes' => array(),
+    'heading' => array(
+      'text' => t('Registration Steps'),
+      'level' => 'h3',
+      'class' => array('element-invisible'),
+    )
+  ));
 }
 
 /**
