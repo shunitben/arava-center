@@ -1,6 +1,40 @@
 <?php
 
 /**
+ * Implements hook_menu().
+ * @return mixed
+ */
+function arava_center_menu() {
+
+  // login/personal area link
+  $items['personal-area'] = array(
+    'title' => t('Personal Area'),
+    'title callback' => 'arava_center_personal_area_title',
+    'page callback' => 'arava_center_personal_area_callback',
+    'type' => MENU_NORMAL_ITEM,
+    'access callback' => true,
+    'menu_name' => 'main-menu',
+  );
+
+
+  return $items;
+}
+
+function arava_center_personal_area_title() {
+  if (user_is_logged_in()) {
+    return t('Personal Area');
+  }
+  else {
+    return t('Students Login');
+  }
+}
+
+function arava_center_personal_area_callback() {
+  drupal_goto('user');
+}
+
+
+/**
  * Implements hook_node_presave($node)
  * @param $node
  */
