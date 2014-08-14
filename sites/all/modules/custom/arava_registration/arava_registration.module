@@ -191,6 +191,72 @@ function arava_registration_drupal_goto_alter(&$path, &$options, &$http_response
 }
 
 /**
+ * Implements hook_block_info
+ * @return mixed
+ */
+function arava_registration_block_info() {
+  $blocks['registration_steps'] = array(
+    'info' => t('Registration steps'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view
+ * @param string $delta
+ * @return mixed
+ */
+function arava_registration_block_view($delta = '') {
+  switch ($delta) {
+    case 'registration_steps':
+      $block['subject'] = null;
+      $block['content'] = _arava_registration_steps_block();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Render the "registration steps" block
+ */
+function _arava_registration_steps_block() {
+  $links = array(
+    'user' => array(
+      'title' => t('Personal information'),
+      'href' => 'user',
+    ),
+    'courses' => array(
+      'title' => t('Curriculum'),
+      'href' => 'registration/course',
+    ),
+    'accommodation' => array(
+      'title' => t('Accommodation'),
+      'href' => 'registration/accommodation',
+    ),
+    'presence' => array(
+      'title' => t('Presence days'),
+      'href' => 'registration/presence',
+    ),
+    'meals' => array(
+      'title' => t('Meals'),
+      'href' => 'registration/meals',
+    ),
+    'extra' => array(
+      'title' => t('Extra info'),
+      'href' => 'registration/extra',
+    ),
+    'payment' => array(
+      'title' => t('Payment'),
+      'href' => 'registration/payment',
+    ),
+  );
+
+  return theme_links(array('links' => $links, 'attributes' => array()));
+}
+
+/**
  * get a view and separate its html into "above", "rows" and "below"
  * @param $view
  * @param $display
