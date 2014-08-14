@@ -3,7 +3,7 @@ Takanon popups
 ****/
 .takanon-text {
     height: 300px;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .text-field-wrapper {
     position: absolute;
