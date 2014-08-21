@@ -13,7 +13,7 @@ function arava_registration_thanks_page() {
 
   if (empty($confirmation_code) || empty($sum) || empty($my_semester_id)) {
     watchdog('payments tranzila', 'One or more of the following variables arrived empty: confirmation code: '.$confirmation_code.', sum: '.$sum.', my semester id: '.$my_semester_id);
-    drupal_set_message(t('An error has occurred. Please contact the site administrator.'), 'error');
+    return t('An error has occurred. Please contact the site administrator.');
   }
 
   $payment_id = db_insert('arava_payments')
