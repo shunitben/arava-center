@@ -5,10 +5,6 @@
  */
 function arava_registration_extra($form, &$form_state) {
 
-  drupal_add_library('system', 'ui.dialog');
-  $path = drupal_get_path('module', 'arava_registration');
-  drupal_add_js($path . '/js/arava_registration.js');
-
   // get the already selected extra information, if exist
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();

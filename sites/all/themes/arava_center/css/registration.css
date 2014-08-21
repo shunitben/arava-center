@@ -1,3 +1,11 @@
+
+/****
+Course selection
+****/
+.view-course-selection .lesson-times {
+    display: none;
+}
+
 /****
 Takanon popups
 ****/
@@ -17,4 +25,3 @@ Takanon popups
     display: inline-block;
     margin: 0 5px;
 }
-

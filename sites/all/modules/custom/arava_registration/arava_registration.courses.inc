@@ -67,14 +67,32 @@ function arava_registration_course($form, &$form_state) {
 }
 
 /**
- * Course selection validation function
+ * Course selection validation function:
+ * validate that hours don't collide
  *
  * @param $form
  * @param $form_state
  */
 function arava_registration_course_validate($form, &$form_state) {
-	// @todo: validate that hours don't collide
+  // get the information from the form
+  $selected = array();
+  foreach ($form_state['values']['courses'] as $section) {
+    foreach ($section as $course_id => $course) {
+      if ($course['checkbox'] == 1) {
+        $selected[] = $course_id;
+      }
+    }
+  }
 
+
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $mySemesterAPI = new MySemesterAPI();
+  $collisions = $mySemesterAPI->coursesCollision($selected);
+  if ($collisions) {
+    $error = t('You have collisions between the following courses:') . '<br>';
+    $error .= implode(', ', $collisions);
+    form_set_error('submit', $error);
+  }
 }
 
 /**

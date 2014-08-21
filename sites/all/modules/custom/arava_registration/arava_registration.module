@@ -145,7 +145,8 @@ function arava_registration_permission() {
 }
 
 function arava_registration_init() {
-  if (arg(0) == 'user') {
+  if (arg(0) == 'user' || arg(0) == 'registration') {
+    drupal_add_library('system', 'ui.dialog');
     $path = drupal_get_path('module', 'arava_registration');
     drupal_add_js($path . '/js/arava_registration.js');
   }
@@ -465,4 +466,24 @@ function arava_registration_mail($key, &$message, $params) {
       $message['body'][] = _arava_registration_payment_received_email($params['sum'], $params['confirmation_code'], $params['num_payments']);
       break;
   }
+}
+
+/**
+ * Used in the courses view to print the lesson times so that js validation can happen
+ * @param $data
+ */
+function _arava_registration_print_lesson_times($data) {
+  $lesson_times = $data->field_field_lesson_times;
+  $times = array();
+  if (!empty($lesson_times)) {
+    foreach ($lesson_times as $time) {
+      $times[] = array(
+        'course_id' => $data->nid,
+        'course_name' => $data->node_title,
+        'start' => $time['raw']['value'],
+        'end' => $time['raw']['value2'],
+      );
+    }
+  }
+  print json_encode($times);
 }

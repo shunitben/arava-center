@@ -99,6 +99,33 @@ class MySemesterAPI {
 		$this->user_semester = $ewrapper;
 	}
 
+  public function coursesCollision($course_ids) {
+    $times = array();
+    $collisions = array();
+    $courses = node_load_multiple($course_ids);
+    foreach ($courses as $course) {
+      foreach ($course->field_lesson_times[LANGUAGE_NONE] as $lesson_time) {
+        // check collision
+        foreach ($times as $time) {
+          if (($lesson_time['value'] >= $time['start'] && $lesson_time['value'] < $time['end'])
+          || ($lesson_time['value2'] > $time['start'] && $lesson_time['value2'] <= $time['end'])) {
+            $collisions[$time['course']] = $time['course_name'];
+            $collisions[$course->nid] = $course->title;
+          }
+        }
+        // add to found times
+        $times[] = array(
+          'course' => $course->nid,
+          'course_name' => $course->title,
+          'start' => $lesson_time['value'],
+          'end' => $lesson_time['value2'],
+        );
+      }
+    }
+
+    return !empty($collisions) ? $collisions : false;
+  }
+
 	/**
 	 * Get all courses ids for the user
 	 *
