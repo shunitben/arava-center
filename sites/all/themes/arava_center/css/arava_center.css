@@ -9,10 +9,69 @@
     display:none;
 }
 #site-name{
-    display:none;
+    xdisplay:none;
 }
 #tranzila_frame{
     width:400px;
     height:300px;
     border:none
+}
+/*accommodation*/
+.node-type-accomodation .field-slideshow-pager{
+    position:absolute;
+    top:468px;
+    right:10px;
+    
+        z-index: 9999;
+}
+    .node-type-accomodation .field-slideshow-pager a{
+        width:20px;
+        height:20px;
+        background-color: #2a68af;
+        border:2px solid #ffffff;
+        overflow: hidden;
+        text-indent: 50px;
+        display: inline-block;
+        margin-left: 5px;
+    }
+    .node-type-accomodation .field-slideshow-pager .activeSlide{
+        background-color: #ffffff;
+        border:2px solid #2a68af;
+    }
+    .node-type-accomodation .field-name-field-price{
+        margin-top:20px;
+        font-weight: bold;
+    }
+    
+/*breadcrunbs*/
+#breadcrumb{
+    padding:0px;
+}
+#breadcrumb a:nth-child(1){
+    position: relative!important;
+    left:auto!important;
+}
+#breadcrumb a, #breadcrumb .breadcrumb-separator,#breadcrumb-inside{
+    line-height: 50px!important;
+}
+.no-banner #page-intro-inside.no-internal-banner-image{
+    border-bottom: none;
+}
+#header-inside{
+    padding-bottom: 20px;
+    border-bottom: 1px solid #cfd0d2;
+}
+#page-intro{
+    margin-top: 7px;
+}
+
+/*header and logo and menu*/
+#header {
+    padding-bottom: 0px;
+}
+#site-name, #site-slogan{
+    text-align: left;
+}
+ul.menu li a{
+    text-align: right;
 }
