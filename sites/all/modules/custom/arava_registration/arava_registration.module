@@ -144,6 +144,13 @@ function arava_registration_permission() {
 	);
 }
 
+function arava_registration_init() {
+  if (arg(0) == 'user') {
+    $path = drupal_get_path('module', 'arava_registration');
+    drupal_add_js($path . '/js/arava_registration.js');
+  }
+}
+
 /**
  * Implements hook_node_presave($node)
  * @param $node
@@ -208,6 +215,22 @@ function arava_registration_block_info() {
     'info' => t('Registration steps'),
   );
 
+  $blocks['semester_timetable'] = array(
+    'info' => t('Semester timetable'),
+  );
+
+  $blocks['edit_my_semester'] = array(
+    'info' => t('Edit my semester'),
+  );
+
+  $blocks['remaining_payment'] = array(
+    'info' => t('Remaining payment'),
+  );
+
+  $blocks['my_messages'] = array(
+    'info' => t('My messages'),
+  );
+
   return $blocks;
 }
 
@@ -221,6 +244,26 @@ function arava_registration_block_view($delta = '') {
     case 'registration_steps':
       $block['subject'] = null;
       $block['content'] = _arava_registration_steps_block();
+      break;
+
+    case 'semester_timetable':
+      $block['subject'] = null;
+      $block['content'] = _arava_registration_generate_all_timetables();
+      break;
+
+    case 'edit_my_semester':
+      $block['subject'] = null;
+      $block['content'] = t('To edit your courses for this semester, ') . l(t('click here'), 'registration/course') . ".";
+      break;
+
+    case 'remaining_payment':
+      $block['subject'] = null;
+      $block['content'] = _arava_payment_remaining_block();
+      break;
+
+    case 'my_messages':
+      $block['subject'] = null;
+      $block['content'] = null;
       break;
   }
 
@@ -271,6 +314,16 @@ function _arava_registration_steps_block() {
       'class' => array('element-invisible'),
     )
   ));
+}
+
+function _arava_payment_remaining_block() {
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $MySemesterApi = new MySemesterAPI();
+  $remaining = $MySemesterApi->getRemainingPayment();
+
+  $output = '';
+  $output .= t('You have a sum of @sum shekels that needs to be payed. Please ', array('@sum' => $remaining)) . l(t('click here'), 'registration/remaining_payment') . t(' to pay it.');
+  return $output;
 }
 
 /**
@@ -340,6 +393,42 @@ function _arava_registration_generate_view($view_name, $display_name, $args = ar
 	$view->set_display($display_name);
 	$view->pre_execute($args);
 	return $view->render();
+}
+
+function _arava_registration_generate_all_timetables() {
+  global $user;
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $MySemesterApi = new MySemesterAPI();
+  $semester_id = $MySemesterApi->getSemesterId();
+  $semester = entity_metadata_wrapper('node', node_load($semester_id));
+
+  $semester_dates = $semester->field_semester_dates->value();
+  $start_year = date('Y', $semester_dates['value']);
+  $start_month = date('n', $semester_dates['value']);
+  $end_month = date('n', $semester_dates['value2']);
+  $months = array();
+  while ($start_month <= $end_month) {
+    $months[] = $start_month;
+    $start_month++;
+  }
+
+  $new_year = false;
+  $output = '';
+  foreach ($months as $key => $month) {
+    if ($month == '1' && $key > 0 && !$new_year) {
+      $start_year++;
+      $new_year = true;
+    }
+    $date = $start_year . '-' . $month;
+    $args = array(
+      $date,
+      $user->uid,
+    );
+    $calendar = _arava_registration_generate_view('calendar', 'page_1', $args);
+    $output .= $calendar;
+  }
+
+  return $output;
 }
 
 /**

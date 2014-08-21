@@ -13,3 +13,7 @@ function arava_center_preprocess_page(&$vars) {
     drupal_add_css(path_to_theme() . '/css/registration.css');
   }
 }
+
+function arava_center_preprocess_user_profile(&$vars) {
+  unset($vars['user_profile']['mimemail']);
+}

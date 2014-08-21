@@ -24,6 +24,8 @@
                     takanon = $(this).parent().siblings('input').attr('name');
                 Drupal.behaviors.arava_registration.saveAndCloseTakanon(name, takanon, $(this));
             });
+
+            Drupal.behaviors.arava_registration.timetableNavigation();
         },
 
         showTakanon: function (id, link) {
@@ -69,6 +71,36 @@
                         agreeButton.after('<span class="agree-error">' + error + '</span>');
                     }
                 });
+        },
+
+        timetableNavigation: function() {
+            var timetableBlock = $('.my-timetable-block'),
+                timetables = $('.view-calendar', timetableBlock),
+                prevLinks = $('.date-prev', timetables),
+                nextLinks = $('.date-next', timetables),
+                numMonths = timetables.length,
+                currentMonth = 1;
+
+            $('a', prevLinks).eq(0).attr('disabled', 'disabled');
+            $('a', nextLinks).eq(numMonths - 1).attr('disabled', 'disabled');
+
+            nextLinks.click(function(e){
+                e.preventDefault();
+                if (currentMonth < numMonths) {
+                    timetables.eq(currentMonth - 1).hide();
+                    timetables.eq(currentMonth).show();
+                    currentMonth = currentMonth + 1;
+                }
+            });
+
+            prevLinks.click(function(e){
+                e.preventDefault();
+                if (currentMonth > 1) {
+                    timetables.eq(currentMonth - 1).hide();
+                    timetables.eq(currentMonth - 2).show();
+                    currentMonth = currentMonth - 1;
+                }
+            });
         }
 
     }

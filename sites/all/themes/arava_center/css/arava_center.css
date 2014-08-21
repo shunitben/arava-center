@@ -16,3 +16,13 @@
     height:300px;
     border:none
 }
+
+/****
+Timetable
+****/
+.my-timetable-block .view-calendar {
+    display: none;
+}
+.my-timetable-block .view-calendar:first-child {
+    display: block;
+}
