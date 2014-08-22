@@ -33,6 +33,13 @@ function arava_registration_general_settings($form, &$form_state) {
     '#default_value' => variable_get('arava_center_pay_for_accomodation_on_registration', ''),
   );
 
+  $form['arava_center_num_allowed_payments'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of allowed payments (tranzilla)'),
+    '#default_value' => variable_get('arava_center_num_allowed_payments', ''),
+    '#size' => 5,
+  );
+
   return system_settings_form($form);
 }
 

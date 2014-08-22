@@ -52,18 +52,6 @@ function arava_registration_meals($form, &$form_state) {
     '#default_value' => $selected['vegan'],
   );
 
-  $form['presence'] = array(
-    '#type' => 'fieldset',
-    '#collapsible' => false,
-    '#title' => t('Presence in meals')
-  );
-  $form['presence']['days'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('I expect to be present for meals on these days:'),
-    '#description' => t('*At the moment, this does not affect the price of your stay. We just want to know how many people to cook for.'),
-    '#options' => _arava_registration_days_of_week_options(),
-    '#default_value' => $selected['days_present'],
-  );
   $form['guests'] = array(
     '#type' => 'fieldset',
     '#collapsible' => false,
@@ -101,7 +89,6 @@ function arava_registration_meals_submit($form, &$form_state) {
 
   // get the information from the form
   $food = $form_state['values']['food'];
-  $presence = $form_state['values']['presence'];
   $guests = $form_state['values']['guests'];
 
   // process the information a bit
@@ -113,7 +100,7 @@ function arava_registration_meals_submit($form, &$form_state) {
 
   // save the information
   $mySemesterAPI->setMealsFoodInfo($allergies, $other_allergies, $food['vegan']);
-  $mySemesterAPI->setMealsPresenceInfo($presence['days'], $guests['number'], $guests['days']);
+  $mySemesterAPI->setMealsPresenceInfo($guests['number'], $guests['days']);
 
 	$form_state['redirect'] = array('registration/extra');
 }

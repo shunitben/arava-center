@@ -45,9 +45,11 @@ class MySemesterAPI {
 	 * @return mixed
 	 */
 	protected function getCurrentSemester() {
-		$query = db_query(" SELECT open.entity_id AS entity_id
-											FROM field_data_field_open_for_registration open
-											WHERE field_open_for_registration_value = 1");
+		$query = db_query(" SELECT open_reg.entity_id AS entity_id
+											FROM field_data_field_open_for_registration open_reg
+											INNER JOIN field_data_field_semester_dates dates ON open_reg.entity_id = dates.entity_id
+											WHERE field_open_for_registration_value = 1
+											ORDER BY dates.field_semester_dates_value ASC");
 		foreach ($query as $row) {
 			$result = $row->entity_id; // override to get the latest open semester, just in case.
 		}
@@ -96,6 +98,33 @@ class MySemesterAPI {
 
 		$this->user_semester = $ewrapper;
 	}
+
+  public function coursesCollision($course_ids) {
+    $times = array();
+    $collisions = array();
+    $courses = node_load_multiple($course_ids);
+    foreach ($courses as $course) {
+      foreach ($course->field_lesson_times[LANGUAGE_NONE] as $lesson_time) {
+        // check collision
+        foreach ($times as $time) {
+          if (($lesson_time['value'] >= $time['start'] && $lesson_time['value'] < $time['end'])
+          || ($lesson_time['value2'] > $time['start'] && $lesson_time['value2'] <= $time['end'])) {
+            $collisions[$time['course']] = $time['course_name'];
+            $collisions[$course->nid] = $course->title;
+          }
+        }
+        // add to found times
+        $times[] = array(
+          'course' => $course->nid,
+          'course_name' => $course->title,
+          'start' => $lesson_time['value'],
+          'end' => $lesson_time['value2'],
+        );
+      }
+    }
+
+    return !empty($collisions) ? $collisions : false;
+  }
 
 	/**
 	 * Get all courses ids for the user
@@ -184,6 +213,31 @@ class MySemesterAPI {
   }
 
   /**
+   * Get all the presence info for a user
+   * @return array
+   */
+  public function getPresenceInfoForUser() {
+    if ($this->user_semester == null) return null;
+    return $this->user_semester->field_days_present->value();
+  }
+
+  public function setPresenceInfo($presence_days) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $days = array();
+    foreach ($presence_days as $day) {
+      if (!empty($day)) {
+        $days[]['value'] = $day;
+      }
+    }
+    $user_semester_node->field_days_present[LANGUAGE_NONE] = $days;
+
+    field_attach_update('node', $user_semester_node);
+
+    $this->updatePaymentDueTotal($user_semester_node);
+  }
+
+  /**
    * Get all the meals info for a user
    * @return array
    */
@@ -220,16 +274,8 @@ class MySemesterAPI {
     field_attach_update('user', $user);
   }
 
-  public function setMealsPresenceInfo($presence_days, $num_guests, $guests_presence_days) {
+  public function setMealsPresenceInfo($num_guests, $guests_presence_days) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
-
-    $days = array();
-    foreach ($presence_days as $day) {
-      if (!empty($day)) {
-        $days[]['value'] = $day;
-      }
-    }
-    $user_semester_node->field_days_present[LANGUAGE_NONE] = $days;
 
     $user_semester_node->field_extra_guests_num[LANGUAGE_NONE][0]['value'] = !empty($num_guests) ? $num_guests : 0;
 
@@ -266,18 +312,65 @@ class MySemesterAPI {
   }
 
   /**
+   * Make sure all takanons were signed
+   * @return bool
+   */
+  public function validateExtraInfoForUser() {
+    $extra_info = $this->getExtraInfoForUser();
+    unset($extra_info['comments']);
+    foreach ($extra_info as $info) {
+      if (!$info) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+
+//  /**
+//   * Set the user's extra info to my_semester
+//   * @param $extra_info
+//   */
+//  public function setExtraInfo($extra_info) {
+//    $user_semester_node = node_load($this->user_semester->getIdentifier());
+//
+//    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $extra_info['comments'];
+//    $user_semester_node->field_takanon_moa[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_moa'];
+//    $user_semester_node->field_takanon_school[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_school'];
+//    $user_semester_node->field_takanon_amuta[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_amuta'];
+//    $user_semester_node->field_health_declaration[LANGUAGE_NONE][0]['value'] = $extra_info['health_declaration'];
+//    $user_semester_node->field_waver[LANGUAGE_NONE][0]['value'] = $extra_info['waver'];
+//
+//    field_attach_update('node', $user_semester_node);
+//  }
+
+  /**
    * Set the user's extra info to my_semester
    * @param $extra_info
    */
-  public function setExtraInfo($extra_info) {
+  public function setComment($comment) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
 
-    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $extra_info['comments'];
-    $user_semester_node->field_takanon_moa[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_moa'];
-    $user_semester_node->field_takanon_school[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_school'];
-    $user_semester_node->field_takanon_amuta[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_amuta'];
-    $user_semester_node->field_health_declaration[LANGUAGE_NONE][0]['value'] = $extra_info['health_declaration'];
-    $user_semester_node->field_waver[LANGUAGE_NONE][0]['value'] = $extra_info['waver'];
+    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $comment;
+
+    field_attach_update('node', $user_semester_node);
+  }
+
+  /**
+   * Save that the user has agreed to a takanon
+   * @param $field
+   */
+  public function setAgreement($field) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $user_semester_node->$field = array(
+      LANGUAGE_NONE => array(
+        0 => array(
+          'value' => '1'
+        )
+      )
+    );
 
     field_attach_update('node', $user_semester_node);
   }
@@ -352,11 +445,11 @@ class MySemesterAPI {
 
     return $due;
   }
+
   public function getRemainingPayment() {
 
     $due = $this->user_semester->field_payment_total->value();
     $paid = $this->user_semester->field_payment_made->value();
-    
 
     return $due - $paid;
   }

@@ -1,3 +1,4 @@
+
 .hidden{
     display: none;
 }
@@ -74,4 +75,14 @@
 }
 ul.menu li a{
     text-align: right;
+}
+
+/****
+Timetable
+****/
+.my-timetable-block .view-calendar {
+    display: none;
+}
+.my-timetable-block .view-calendar:first-child {
+    display: block;
 }

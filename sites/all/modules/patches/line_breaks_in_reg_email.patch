@@ -1,0 +1,33 @@
+diff --git a/sites/all/modules/contrib/user_registrationpassword/user_registrationpassword.module b/sites/all/modules/contrib/user_registrationpassword/user_registrationpassword.module
+index ee3d513..75aff3a 100644
+--- a/sites/all/modules/contrib/user_registrationpassword/user_registrationpassword.module
++++ b/sites/all/modules/contrib/user_registrationpassword/user_registrationpassword.module
+@@ -177,17 +177,17 @@ function _user_registrationpassword_mail_text($key, $language = NULL, $variables
+         $text = t('Account details for [user:name] at [site:name]', array(), array('langcode' => $langcode));
+         break;
+       case 'register_body':
+-        $text = t("[user:name],
+-
+-Thank you for registering at [site:name]. You may now log in and verify your account by clicking this link or copying and pasting it to your browser:
+-
+-[user:registrationpassword-url]
+-
+-This link can only be used once. You will be able to log in at [site:login-url] in the future using:
+-
+-username: [user:name]
+-password: Your password
+-
++        $text = t("[user:name],<br>
++<br>
++Thank you for registering at [site:name]. You may now log in and verify your account by clicking this link or copying and pasting it to your browser:<br>
++<br>
++[user:registrationpassword-url]<br>
++<br>
++This link can only be used once. You will be able to log in at [site:login-url] in the future using:<br>
++<br>
++username: [user:name]<br>
++password: Your password<br>
++<br>
+ --  [site:name] team", array(), array('langcode' => $langcode));
+         break;
+       case 'status_activated_subject':

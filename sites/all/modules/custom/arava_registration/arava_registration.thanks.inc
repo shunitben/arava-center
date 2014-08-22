@@ -13,7 +13,7 @@ function arava_registration_thanks_page() {
 
   if (empty($confirmation_code) || empty($sum) || empty($my_semester_id)) {
     watchdog('payments tranzila', 'One or more of the following variables arrived empty: confirmation code: '.$confirmation_code.', sum: '.$sum.', my semester id: '.$my_semester_id);
-    drupal_set_message(t('An error has occurred. Please contact the site administrator.'), 'error');
+    return t('An error has occurred. Please contact the site administrator.');
   }
 
   $payment_id = db_insert('arava_payments')
@@ -50,8 +50,6 @@ function arava_registration_thanks_page() {
     drupal_mail('arava_registration', 'accomodation_confirmation', $to, $lang, $params);
   }
 
-
-
   // say thank you
   $output = variable_get('arava_center_registration_payment_thanks', array('value' => t('Thank you!')));
   return $output['value'];
@@ -74,35 +72,7 @@ function _arava_registration_confirmation_email() {
   $registration_summary = _arava_registration_generate_view('registration_summary', 'block');
   $output .= $registration_summary;
 
-  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
-  $MySemesterApi = new MySemesterAPI();
-  $semester_id = $MySemesterApi->getSemesterId();
-  $semester = entity_metadata_wrapper('node', node_load($semester_id));
-
-  $semester_dates = $semester->field_semester_dates->value();
-  $start_year = date('Y', $semester_dates['value']);
-  $start_month = date('n', $semester_dates['value']);
-  $end_month = date('n', $semester_dates['value2']);
-  $months = array();
-  while ($start_month <= $end_month) {
-    $months[] = $start_month;
-    $start_month++;
-  }
-
-  $new_year = false;
-  foreach ($months as $key => $month) {
-    if ($month == '1' && $key > 0 && !$new_year) {
-      $start_year++;
-      $new_year = true;
-    }
-    $date = $start_year . '-' . $month;
-    $args = array(
-      $date,
-      $user->uid,
-    );
-    $calendar = _arava_registration_generate_view('calendar', 'page_1', $args);
-    $output .= $calendar;
-  }
+  $output .= _arava_registration_generate_all_timetables();
 
   $output .= t('Best regards,') . "<br>";
   $output .= t('The Moar team');

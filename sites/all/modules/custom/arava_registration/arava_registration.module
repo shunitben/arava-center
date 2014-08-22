@@ -27,6 +27,15 @@ function arava_registration_menu() {
 		'file' => 'arava_registration.accommodation.inc'
 	);
 
+  $items['registration/presence'] = array(
+    'title' => t('Presence Info'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_presence'),
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.presence.inc'
+  );
+
   $items['registration/meals'] = array(
     'title' => t('Meals Info'),
     'page callback' => 'drupal_get_form',
@@ -44,6 +53,15 @@ function arava_registration_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.extra.inc'
   );
+  $items['registration/extra/agreed/%/%'] = array(
+    'title' => t('Agreed'),
+    'page callback' => 'arava_registration_save_agreement',
+    'page arguments' => array(3, 4),
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_CALLBACK,
+    'file' => 'arava_registration.extra.inc'
+  );
+
   $items['registration/payment'] = array(
     'title' => t('Payment'),
     'page callback' => 'arava_registration_payment_page',
@@ -126,6 +144,14 @@ function arava_registration_permission() {
 	);
 }
 
+function arava_registration_init() {
+  if (arg(0) == 'user' || arg(0) == 'registration') {
+    drupal_add_library('system', 'ui.dialog');
+    $path = drupal_get_path('module', 'arava_registration');
+    drupal_add_js($path . '/js/arava_registration.js');
+  }
+}
+
 /**
  * Implements hook_node_presave($node)
  * @param $node
@@ -138,6 +164,167 @@ function arava_registration_node_presave($node) {
     $payment_due = $mySemesterAPI->updatePaymentDueTotal($node);
     $node->field_payment_total[LANGUAGE_NONE][0]['value'] = $payment_due;
   }
+}
+
+/**
+ * Implements hook_user_login
+ * @param $edit
+ * @param $account
+ *
+ * If the user who just signed in has no courses for this semester yet, redirect them to sign up for some courses.
+ * Shamelessly adapted form login_destination module
+ */
+function arava_registration_user_login(&$edit, $account) {
+  if (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset') {
+    module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+    $mySemesterAPI = new MySemesterAPI();
+    $courses = $mySemesterAPI->getAllCoursesForUser();
+    if (empty($courses)) {
+      $GLOBALS['destination'] = 'registration/course';
+    }
+  }
+}
+
+/**
+ * Implements hook_drupal_goto_alter
+ * Shamelessly copied form login_destination module
+ */
+function arava_registration_drupal_goto_alter(&$path, &$options, &$http_response_code) {
+  if (isset($GLOBALS['destination'])) {
+    $destination = $GLOBALS['destination'];
+
+    // alter drupal_goto
+    if (is_array($destination)) {
+      $path = $destination[0];
+      $options = array();
+      if (count($destination) > 1) {
+        $options = $destination[1];
+      }
+    }
+    else {
+      $path = $destination;
+    }
+  }
+}
+
+/**
+ * Implements hook_block_info
+ * @return mixed
+ */
+function arava_registration_block_info() {
+  $blocks['registration_steps'] = array(
+    'info' => t('Registration steps'),
+  );
+
+  $blocks['semester_timetable'] = array(
+    'info' => t('Semester timetable'),
+  );
+
+  $blocks['edit_my_semester'] = array(
+    'info' => t('Edit my semester'),
+  );
+
+  $blocks['remaining_payment'] = array(
+    'info' => t('Remaining payment'),
+  );
+
+  $blocks['my_messages'] = array(
+    'info' => t('My messages'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view
+ * @param string $delta
+ * @return mixed
+ */
+function arava_registration_block_view($delta = '') {
+  switch ($delta) {
+    case 'registration_steps':
+      $block['subject'] = null;
+      $block['content'] = _arava_registration_steps_block();
+      break;
+
+    case 'semester_timetable':
+      $block['subject'] = null;
+      $block['content'] = _arava_registration_generate_all_timetables();
+      break;
+
+    case 'edit_my_semester':
+      $block['subject'] = null;
+      $block['content'] = t('To edit your courses for this semester, ') . l(t('click here'), 'registration/course') . ".";
+      break;
+
+    case 'remaining_payment':
+      $block['subject'] = null;
+      $block['content'] = _arava_payment_remaining_block();
+      break;
+
+    case 'my_messages':
+      $block['subject'] = null;
+      $block['content'] = null;
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Render the "registration steps" block
+ */
+function _arava_registration_steps_block() {
+  $links = array(
+    'user' => array(
+      'title' => t('Personal information'),
+      'href' => 'user',
+    ),
+    'courses' => array(
+      'title' => t('Curriculum'),
+      'href' => 'registration/course',
+    ),
+    'accommodation' => array(
+      'title' => t('Accommodation'),
+      'href' => 'registration/accommodation',
+    ),
+    'presence' => array(
+      'title' => t('Presence days'),
+      'href' => 'registration/presence',
+    ),
+    'meals' => array(
+      'title' => t('Meals'),
+      'href' => 'registration/meals',
+    ),
+    'extra' => array(
+      'title' => t('Extra info'),
+      'href' => 'registration/extra',
+    ),
+    'payment' => array(
+      'title' => t('Payment'),
+      'href' => 'registration/payment',
+    ),
+  );
+
+  return theme_links(array(
+    'links' => $links,
+    'attributes' => array(),
+    'heading' => array(
+      'text' => t('Registration Steps'),
+      'level' => 'h3',
+      'class' => array('element-invisible'),
+    )
+  ));
+}
+
+function _arava_payment_remaining_block() {
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $MySemesterApi = new MySemesterAPI();
+  $remaining = $MySemesterApi->getRemainingPayment();
+
+  $output = '';
+  $output .= t('You have a sum of @sum shekels that needs to be payed. Please ', array('@sum' => $remaining)) . l(t('click here'), 'registration/remaining_payment') . t(' to pay it.');
+  return $output;
 }
 
 /**
@@ -209,6 +396,42 @@ function _arava_registration_generate_view($view_name, $display_name, $args = ar
 	return $view->render();
 }
 
+function _arava_registration_generate_all_timetables() {
+  global $user;
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $MySemesterApi = new MySemesterAPI();
+  $semester_id = $MySemesterApi->getSemesterId();
+  $semester = entity_metadata_wrapper('node', node_load($semester_id));
+
+  $semester_dates = $semester->field_semester_dates->value();
+  $start_year = date('Y', $semester_dates['value']);
+  $start_month = date('n', $semester_dates['value']);
+  $end_month = date('n', $semester_dates['value2']);
+  $months = array();
+  while ($start_month <= $end_month) {
+    $months[] = $start_month;
+    $start_month++;
+  }
+
+  $new_year = false;
+  $output = '';
+  foreach ($months as $key => $month) {
+    if ($month == '1' && $key > 0 && !$new_year) {
+      $start_year++;
+      $new_year = true;
+    }
+    $date = $start_year . '-' . $month;
+    $args = array(
+      $date,
+      $user->uid,
+    );
+    $calendar = _arava_registration_generate_view('calendar', 'page_1', $args);
+    $output .= $calendar;
+  }
+
+  return $output;
+}
+
 /**
  *
  */
@@ -243,4 +466,24 @@ function arava_registration_mail($key, &$message, $params) {
       $message['body'][] = _arava_registration_payment_received_email($params['sum'], $params['confirmation_code'], $params['num_payments']);
       break;
   }
+}
+
+/**
+ * Used in the courses view to print the lesson times so that js validation can happen
+ * @param $data
+ */
+function _arava_registration_print_lesson_times($data) {
+  $lesson_times = $data->field_field_lesson_times;
+  $times = array();
+  if (!empty($lesson_times)) {
+    foreach ($lesson_times as $time) {
+      $times[] = array(
+        'course_id' => $data->nid,
+        'course_name' => $data->node_title,
+        'start' => $time['raw']['value'],
+        'end' => $time['raw']['value2'],
+      );
+    }
+  }
+  print json_encode($times);
 }
