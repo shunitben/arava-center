@@ -1,10 +1,5 @@
 
-/****
-Course selection
-****/
-.view-course-selection .lesson-times {
-    display: none;
-}
+
 
 /****
 Takanon popups
@@ -24,4 +19,98 @@ Takanon popups
     color: red;
     display: inline-block;
     margin: 0 5px;
+}
+
+/*wizard menu*/
+#block-arava-registration-registration-steps{
+    
+}
+    #block-arava-registration-registration-steps ul{
+        list-style-type: none;
+        padding:0;
+    }
+        #block-arava-registration-registration-steps ul li{
+            float:right;
+            background-color: #2a68af;
+            line-height: 50px;
+            height: 50px;
+            padding-left: 25px;
+            background-image: url(../Images/arrow_left.png);
+            background-repeat: no-repeat;
+        }
+        #block-arava-registration-registration-steps ul li[class*="active"]{
+            background-color: #7ab8ff;
+        }
+            #block-arava-registration-registration-steps ul li a{
+                color:#ffffff;
+                line-height: 50px;
+                font-size: 18px;
+                background-image: url("../Images/arrow_right.png");
+                background-position: right top;
+                background-repeat: no-repeat;
+                display: block;
+                height: 100%;
+                padding-right: 35px;
+                width: 100%;
+            }
+            #block-arava-registration-registration-steps ul li a[class*="active"]{
+                color:#2a68af;
+            }
+            #block-arava-registration-registration-steps ul li a:hover{
+                text-decoration: none;
+            }
+
+/****
+Course selection
+****/
+.view-course-selection .lesson-times {
+    display: none;
+}
+.view-course-selection .form-type-checkbox {
+    float: right;
+    margin-top:1px;
+}
+.view-course-selection .views-row{
+    float: right;
+    margin-right: 10px;
+}
+.view-course-selection .views-field-field-teacher .views-label-field-teacher{
+    float:right;
+}
+.view-course-selection .views-field-field-teacher .field-content{
+    float:right;
+    margin-right: 10px;
+}
+.view-course-selection .views-field-field-faculty{
+    display: none;
+}
+/*accommodation*/   
+.view-accomodation-selection{
+    width:100%;
+    float: right;
+    clear:both;
+}
+#edit-accomodations .form-item-accomodations{
+    float: right;
+    clear: both;
+    width:900px;
+    border:1px solid #2a68af;
+}
+#edit-accomodations .form-item-accomodations:hover{
+    background-color: #7ab8ff;
+}
+#edit-accomodations .form-radio{
+    float: right;
+    margin-top: 32px;
+    margin-right: 10px;
+}
+#edit-accomodations .option{
+    float: right;
+    margin-right: 10px;
+}
+.views-field-field-price span, .views-field-field-price div{
+    float:right;
+}
+.views-field-field-price div{
+    margin-right: 10px;
 }
