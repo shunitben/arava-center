@@ -63,7 +63,10 @@
     border-bottom: 1px solid #cfd0d2;
 }
 #page-intro{
-    margin-top: 7px;
+    margin-top: -50px!important;
+}
+#page-intro-inside{
+    background: none;
 }
 
 /*header and logo and menu*/
