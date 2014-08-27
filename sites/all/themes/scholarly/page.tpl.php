@@ -85,7 +85,7 @@
                 <div class="col-md-8">
                     <!-- #header-inside-right -->
                     <div id="header-inside-right" class="clearfix">
-                      <?php print $page_intro_markup; ?>
+                      <?php /*print $page_intro_markup;*/ ?>
                         <!-- #main-navigation -->
                         <div id="main-navigation" class="clearfix">
                             <nav role="navigation"> 
@@ -136,7 +136,7 @@
 <!-- EOF:#banner -->
 <?php endif; ?>
 
-<?php /*print $page_intro_markup;*/ ?>
+<?php print $page_intro_markup; ?>
 
 <!-- #page -->
 <div id="page" class="clearfix">
