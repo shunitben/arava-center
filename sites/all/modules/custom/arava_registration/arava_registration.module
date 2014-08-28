@@ -358,7 +358,8 @@ function _arava_payment_remaining_block() {
     $output = t('You have a sum of @sum shekels that needs to be payed. Please ', array('@sum' => $remaining)) . l(t('click here'), 'registration/remaining_payment') . t(' to pay it.');
     return $output;
   }
-  return '';
+  return t('You have paid all that is required at this point (if you have not yet been asked to pay for the room, you might see
+            a different message here in the future).');
 }
 
 /**

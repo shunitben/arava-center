@@ -131,6 +131,10 @@ Timetable
     float: left;
     position: relative;
 }
+#arava-registration-course .form-submit {
+    display: block;
+    clear: both;
+}
 .my-timetable-block .view .date-nav-wrapper .date-heading {
     text-align: left;
 }
@@ -182,4 +186,18 @@ Timetable
     background:  rgba(255, 255, 255, 0.85) url("../Images/loader.gif") no-repeat center 100px;
     width: 100%;
     height: 100%;
+}
+
+/**
+user page
+**/
+.edit-my-semester-block,
+.remaining-payment-block,
+.my-messages-block,
+.profile{
+    border: 1px solid #CFD0D2;
+    width: 610px;
+    padding: 20px;
+    margin-bottom: 10px;
+    clear: none;
 }

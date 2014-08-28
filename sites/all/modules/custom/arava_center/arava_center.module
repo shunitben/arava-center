@@ -112,4 +112,24 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
 		$form['#groups']['group_recurring']->format_settings['formatter'] = 'closed';
 		$form['#groups']['group_manual']->format_settings['formatter'] = 'open';
 	}
+
+  if ($form_id == 'user_profile_form') {
+    global $user;
+    $user = user_load($user->uid);
+    if (!in_array('Site Manager', $user->roles) && $user->uid != 1) {
+      $form['field_dairy']['#access'] = false;
+      $form['field_gluten']['#access'] = false;
+      $form['field_other_allergies']['#access'] = false;
+      $form['field_peanuts']['#access'] = false;
+      $form['field_vegan']['#access'] = false;
+      $form['ckeditor']['#access'] = false;
+      $form['timezone']['#access'] = false;
+      $form['locale']['#access'] = false;
+      $form['mimemail']['#access'] = false;
+
+      unset($form['#groups']);
+      unset($form['#fieldgroups']);
+      unset($form['#group_children']);
+    }
+  }
 }
