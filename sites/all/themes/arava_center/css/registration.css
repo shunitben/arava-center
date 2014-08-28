@@ -129,6 +129,7 @@ Timetable
 .my-timetable-block {
     width: 500px;
     float: left;
+    position: relative;
 }
 .my-timetable-block .view .date-nav-wrapper .date-heading {
     text-align: left;
@@ -171,4 +172,14 @@ Timetable
 .calendar-calendar .month-view .full td.single-day .inner .item:hover div.calendar-popup,
 .calendar-calendar .month-view .full td .inner .item:hover div.calendar.monthview div.calendar-popup{
     display: block;
+}
+
+.calendar-loader {
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background:  rgba(255, 255, 255, 0.85) url("../Images/loader.gif") no-repeat center 100px;
+    width: 100%;
+    height: 100%;
 }

@@ -59,6 +59,7 @@
 
                 // ajax timetable
                 var url = '/registration/course/' + course_id + '/' + action;
+                $('.my-timetable-block').append('<div class="calendar-loader"></div>');
                 $.ajax({url: url})
                     .done(function( data ) {
                         var response = JSON.parse(data);
