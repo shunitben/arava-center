@@ -22,7 +22,7 @@ function arava_registration_menu() {
 		'title' => t('Accomodation Selection'),
 		'page callback' => 'drupal_get_form',
 		'page arguments' => array('arava_registration_accommodation'),
-    'access callback' => 'arava_registration_access',
+    'access arguments' => array('signup to courses and accommodation'),
 		'type' => MENU_NORMAL_ITEM,
 		'file' => 'arava_registration.accommodation.inc'
 	);
@@ -31,7 +31,7 @@ function arava_registration_menu() {
     'title' => t('Presence Info'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_presence'),
-    'access callback' => 'arava_registration_access',
+    'access arguments' => array('signup to courses and accommodation'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.presence.inc'
   );
@@ -40,7 +40,7 @@ function arava_registration_menu() {
     'title' => t('Meals Info'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_meals'),
-    'access callback' => 'arava_registration_access',
+    'access arguments' => array('signup to courses and accommodation'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.meals.inc'
   );
@@ -49,7 +49,7 @@ function arava_registration_menu() {
     'title' => t('Extra Info'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_extra'),
-    'access callback' => 'arava_registration_access',
+    'access arguments' => array('signup to courses and accommodation'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.extra.inc'
   );
@@ -65,7 +65,7 @@ function arava_registration_menu() {
   $items['registration/payment'] = array(
     'title' => t('Payment'),
     'page callback' => 'arava_registration_payment_page',
-    'access callback' => 'arava_registration_access',
+    'access arguments' => array('signup to courses and accommodation'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.payment.inc'
   );
@@ -343,11 +343,13 @@ function _arava_registration_steps_block() {
 function _arava_payment_remaining_block() {
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $MySemesterApi = new MySemesterAPI();
-  $remaining = $MySemesterApi->getRemainingPayment();
+  $remaining = $MySemesterApi->getPaymentDue();
 
-  $output = '';
-  $output .= t('You have a sum of @sum shekels that needs to be payed. Please ', array('@sum' => $remaining)) . l(t('click here'), 'registration/remaining_payment') . t(' to pay it.');
-  return $output;
+  if ($remaining > 0) {
+    $output = t('You have a sum of @sum shekels that needs to be payed. Please ', array('@sum' => $remaining)) . l(t('click here'), 'registration/remaining_payment') . t(' to pay it.');
+    return $output;
+  }
+  return '';
 }
 
 /**

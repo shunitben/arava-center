@@ -430,31 +430,47 @@ class MySemesterAPI {
 
     $due = $this->user_semester->field_payment_total->value();
 
-    // For now, we don't pay for the room when first ordering, only after approval.
-    // We only pay for the no-accommodation plan (or in other words, don't pay the for the bed right now).
-    $pay_for_bed_later = !variable_get('arava_center_pay_for_accomodation_on_registration');
-    if ($pay_for_bed_later) {
-      $query = db_select('field_data_field_price', 'price');
-      $query->join('node', 'node', 'price.entity_id = node.nid');
-      $query->condition('node.type', 'accomodation');
-      $query->addExpression('MIN(field_price_value)', 'min_field_price_value');
+    $accommodation = $this->user_semester->field_my_accomodation->value();
+    if (!empty($accommodation)) {
 
-      $lowest_accomodation = $query->execute()->fetchField();
-      $my_accomodation = $this->user_semester->field_my_accomodation->field_price->value();
-      $diff = $my_accomodation - $lowest_accomodation;
-      $due = $due - $diff;
+      // For now, we don't pay for the room when first ordering, only after approval.
+      // We only pay for the no-accommodation plan (or in other words, don't pay the for the bed right now), unless the
+      // semester was approved for paying accommodation.
+
+      // so - is the "pay for accommodation on registration" flag off?
+      $pay_for_bed_later = !variable_get('arava_center_pay_for_accomodation_on_registration');
+
+      // and is the semester open for paying accommodation?
+      $semester = node_load($this->semester_id);
+      $semester = entity_metadata_wrapper('node', $semester);
+      $semester_pay_for_beds_approved = $semester->field_approved_pay_accomodation->value();
+
+      if ($pay_for_bed_later && !$semester_pay_for_beds_approved) {
+        $query = db_select('field_data_field_price', 'price');
+        $query->join('node', 'node', 'price.entity_id = node.nid');
+        $query->condition('node.type', 'accomodation');
+        $query->addExpression('MIN(field_price_value)', 'min_field_price_value');
+
+        $lowest_accomodation = $query->execute()->fetchField();
+        $my_accomodation = $this->user_semester->field_my_accomodation->field_price->value();
+        $diff = $my_accomodation - $lowest_accomodation;
+        $due = $due - $diff;
+      }
+
     }
 
-    return $due;
-  }
-
-  public function getRemainingPayment() {
-
-    $due = $this->user_semester->field_payment_total->value();
     $paid = $this->user_semester->field_payment_made->value();
 
     return $due - $paid;
   }
+
+//  public function getRemainingPayment() {
+//
+//    $due = $this->user_semester->field_payment_total->value();
+//    $paid = $this->user_semester->field_payment_made->value();
+//
+//    return $due - $paid;
+//  }
 
   public function getMadePayment() {
     return $this->user_semester->field_payment_made->value();

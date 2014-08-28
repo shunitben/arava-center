@@ -4,6 +4,14 @@
  * Page callback for accommodation
  */
 function arava_registration_accommodation($form, &$form_state) {
+
+  if (!arava_registration_access()) {
+    $form['denied'] = array(
+      '#markup' => t('You have already completed your registration. You may only change the courses you signed up to.<br>Please contact the site administrators to make any changes.')
+    );
+    return $form;
+  }
+
   $parts = _arava_registration_get_separated_view('accomodation_selection', 'block_1');
 
   // get the already selected accomodation, if exists

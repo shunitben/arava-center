@@ -1,6 +1,11 @@
 <?php
 
 function arava_registration_payment_page() {
+
+  if (!arava_registration_access()) {
+    return t('You have already completed your registration. You may only change the courses you signed up to.<br>Please contact the site administrators to make any changes.');
+  }
+
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
   $toPay = $mySemesterAPI->getPaymentDue();

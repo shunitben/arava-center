@@ -3,7 +3,7 @@
 function arava_registration_remaining_payment_page() {
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
-  $toPay = $mySemesterAPI->getRemainingPayment();
+  $toPay = $mySemesterAPI->getPaymentDue();
   
   $my_semester_id = $mySemesterAPI->getMySemesterId();
   $user = $mySemesterAPI->getUser();

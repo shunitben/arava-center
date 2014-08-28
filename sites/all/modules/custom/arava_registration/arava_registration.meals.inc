@@ -5,6 +5,13 @@
  */
 function arava_registration_meals($form, &$form_state) {
 
+  if (!arava_registration_access()) {
+    $form['denied'] = array(
+      '#markup' => t('You have already completed your registration. You may only change the courses you signed up to.<br>Please contact the site administrators to make any changes.')
+    );
+    return $form;
+  }
+
   // get the already selected meals information, if exist
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
