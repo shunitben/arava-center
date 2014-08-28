@@ -407,10 +407,12 @@ class MySemesterAPI {
       else {
         $target_id = $my_course['field_course'][LANGUAGE_NONE][0]['target_id'];
       }
-      $course = entity_metadata_wrapper('node', node_load($target_id));
-      $course_price = $course->field_price->value();
-      if ($course_price > 0) {
-        $price += $course_price;
+      if (!empty($target_id)) {
+        $course = entity_metadata_wrapper('node', node_load($target_id));
+        $course_price = $course->field_price->value();
+        if ($course_price > 0) {
+          $price += $course_price;
+        }
       }
     }
 
@@ -452,6 +454,10 @@ class MySemesterAPI {
     $paid = $this->user_semester->field_payment_made->value();
 
     return $due - $paid;
+  }
+
+  public function getMadePayment() {
+    return $this->user_semester->field_payment_made->value();
   }
 
   /**

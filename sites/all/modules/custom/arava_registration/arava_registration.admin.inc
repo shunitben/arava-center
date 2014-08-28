@@ -127,7 +127,15 @@ function arava_registration_emails($form, &$form_state) {
 
 function arava_registration_texts($form, &$form_state) {
 
-  $val = variable_get('arava_center_registration_payment_thanks', '');
+  $val = variable_get('arava_center_registration_before_payment', array('value' => '', 'format' => 'html'));
+  $form['arava_center_registration_before_payment'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Registration before payment message'),
+    '#default_value' => $val['value'],
+    '#format' => isset($val['format']) ? $val['format'] : 'html',
+  );
+
+  $val = variable_get('arava_center_registration_payment_thanks', array('value' => '', 'format' => 'html'));
   $form['arava_center_registration_payment_thanks'] = array(
     '#type' => 'text_format',
     '#title' => t('Registration payment thanks message'),

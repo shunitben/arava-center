@@ -22,7 +22,7 @@ function arava_registration_menu() {
 		'title' => t('Accomodation Selection'),
 		'page callback' => 'drupal_get_form',
 		'page arguments' => array('arava_registration_accommodation'),
-		'access arguments' => array('signup to courses and accommodation'),
+    'access callback' => 'arava_registration_access',
 		'type' => MENU_NORMAL_ITEM,
 		'file' => 'arava_registration.accommodation.inc'
 	);
@@ -31,7 +31,7 @@ function arava_registration_menu() {
     'title' => t('Presence Info'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_presence'),
-    'access arguments' => array('signup to courses and accommodation'),
+    'access callback' => 'arava_registration_access',
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.presence.inc'
   );
@@ -40,7 +40,7 @@ function arava_registration_menu() {
     'title' => t('Meals Info'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_meals'),
-    'access arguments' => array('signup to courses and accommodation'),
+    'access callback' => 'arava_registration_access',
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.meals.inc'
   );
@@ -49,7 +49,7 @@ function arava_registration_menu() {
     'title' => t('Extra Info'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('arava_registration_extra'),
-    'access arguments' => array('signup to courses and accommodation'),
+    'access callback' => 'arava_registration_access',
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.extra.inc'
   );
@@ -65,7 +65,7 @@ function arava_registration_menu() {
   $items['registration/payment'] = array(
     'title' => t('Payment'),
     'page callback' => 'arava_registration_payment_page',
-    'access arguments' => array('signup to courses and accommodation'),
+    'access callback' => 'arava_registration_access',
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.payment.inc'
   );
@@ -131,6 +131,20 @@ function arava_registration_menu() {
   );
 
 	return $items;
+}
+
+/**
+ * access callback function:
+ * allow access to pages if user has the permission and has not completed registration yet
+ */
+function arava_registration_access() {
+  $permission = user_access('signup to courses and accommodation');
+
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $mySemesterAPI = new MySemesterAPI();
+  $payed = $mySemesterAPI->getMadePayment();
+
+  return $permission && empty($payed);
 }
 
 /**
@@ -305,6 +319,15 @@ function _arava_registration_steps_block() {
       'href' => 'registration/payment',
     ),
   );
+
+  $disabled = !arava_registration_access();
+  if ($disabled) {
+    foreach ($links as $key => $link) {
+      if ($key != 'user' && $key != 'courses') {
+        unset ($links[$key]['href']);
+      }
+    }
+  }
 
   return theme_links(array(
     'links' => $links,

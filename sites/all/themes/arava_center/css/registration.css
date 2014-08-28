@@ -41,7 +41,8 @@ Takanon popups
         #block-arava-registration-registration-steps ul li[class*="active"]{
             background-color: #7ab8ff;
         }
-            #block-arava-registration-registration-steps ul li a{
+            #block-arava-registration-registration-steps ul li a,
+            #block-arava-registration-registration-steps ul li span {
                 color:#ffffff;
                 line-height: 50px;
                 font-size: 18px;
@@ -52,6 +53,9 @@ Takanon popups
                 height: 100%;
                 padding-right: 35px;
                 width: 100%;
+            }
+            #block-arava-registration-registration-steps ul li span {
+                color: #bbbbbb;
             }
             #block-arava-registration-registration-steps ul li a[class*="active"]{
                 color:#2a68af;
