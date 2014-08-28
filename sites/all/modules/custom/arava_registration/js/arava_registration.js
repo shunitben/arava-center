@@ -28,15 +28,22 @@
             // time tables
             Drupal.behaviors.arava_registration.timetableNavigation();
 
-            // course validation - collisions
+            // course validation - collisions and ajax timetable
             Drupal.behaviors.arava_registration.collectSelectedCourses();
             $('.view-course-selection input[type="checkbox"]').click(function(e) {
+                var action,
+                    course_id,
+                    times = $(this).parent().siblings('.views-row').find('.lesson-times').text();
+                times = JSON.parse(times);
+                course_id = times[0].course_id;
+
+                // collisions
                 if (!$(this).is(':checked')) {
-                    var times = $(this).parent().siblings('.views-row').find('.lesson-times').text();
+                    action = 'remove';
                     Drupal.behaviors.arava_registration.removeFromSelectedCourses(times);
                 }
                 else {
-                    var times = $(this).parent().siblings('.views-row').find('.lesson-times').text();
+                    action = 'add';
                     var valid = Drupal.behaviors.arava_registration.validateCoursesCollision(times);
                     if (valid !== false) {
                         e.preventDefault();
@@ -46,8 +53,21 @@
                            width: 300,
                            modal: true
                         });
+                        return;
                     }
                 }
+
+                // ajax timetable
+                var url = '/registration/course/' + course_id + '/' + action;
+                $.ajax({url: url})
+                    .done(function( data ) {
+                        var response = JSON.parse(data);
+                        if (response.timetable) {
+                            $('.my-timetable-block').html(response.timetable);
+                            // re-apply
+                            Drupal.behaviors.arava_registration.timetableNavigation();
+                        }
+                    });
             });
         },
 
@@ -138,7 +158,6 @@
 
         validateCoursesCollision: function(courseTimes) {
             var allTimes = Drupal.behaviors.arava_registration.selectedCoursesTimes;
-            courseTimes = JSON.parse(courseTimes);
 
             var i,j;
             for (i=0; i < courseTimes.length; i++) {
@@ -159,7 +178,6 @@
 
         removeFromSelectedCourses: function(courseTimes) {
             var allTimes = Drupal.behaviors.arava_registration.selectedCoursesTimes;
-            courseTimes = JSON.parse(courseTimes);
             var removeKey = courseTimes[0]['course_id'],
                 rebuildAllTimes = [];
 

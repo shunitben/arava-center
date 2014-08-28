@@ -20,6 +20,10 @@ function arava_registration_course($form, &$form_state) {
 		'#markup' => $parts['above'],
 	);
 
+  $form['timetable'] = array(
+    '#markup' => '<div class="my-timetable-block">' . _arava_registration_generate_all_timetables() . '</div>',
+  );
+
 	$form['courses_groups'] = array(
 		'#type' => 'horizontal_tabs',
     '#attached' => array('library' => array(array('field_group', 'horizontal-tabs'))), // Converts fieldsets into tabs
@@ -98,6 +102,8 @@ function arava_registration_course_validate($form, &$form_state) {
 /**
  * Course selection submit function
  *
+ * This actually shouldn't do much, since courses are saved in ajax
+ *
  * @param $form
  * @param $form_state
  */
@@ -136,4 +142,33 @@ function arava_registration_course_submit($form, &$form_state) {
 
 	// redirect to next page
 	$form_state['redirect'] = array('registration/accommodation');
+}
+
+/**
+ * @param $course_id
+ * @param $action - add | remove
+ */
+function arava_registration_course_ajax($course_id, $action) {
+
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $mySemesterAPI = new MySemesterAPI();
+
+  // get the courses this user is already signed up for
+  $curr_courses = $mySemesterAPI->getAllCoursesForUser();
+
+  if ($action == 'add') {
+    if (!in_array($course_id, $curr_courses)) {
+      $mySemesterAPI->addCourse($course_id);
+    }
+  }
+  elseif ($action == 'remove') {
+    if (in_array($course_id, $curr_courses)) {
+      $mySemesterAPI->removeCourse($course_id);
+    }
+  }
+
+  print json_encode(array(
+    'timetable' => _arava_registration_generate_all_timetables(),
+  ));
+
 }

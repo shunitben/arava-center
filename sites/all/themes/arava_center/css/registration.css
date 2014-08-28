@@ -118,3 +118,24 @@ Course selection
 .views-field-field-price div{
     margin-right: 10px;
 }
+
+/**
+Timetable
+**/
+.view-course-selection .horizontal-tabs {
+    float: right;
+    width: 760px;
+}
+.my-timetable-block {
+    width: 350px;
+    float: left;
+}
+.my-timetable-block .view .date-nav-wrapper .date-heading {
+    text-align: left;
+}
+.my-timetable-block .item-list ul.pager {
+    margin: 0;
+}
+.my-timetable-block .views-field-title a {
+    font-size: 10px;
+}
