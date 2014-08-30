@@ -113,7 +113,7 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
 		$form['#groups']['group_manual']->format_settings['formatter'] = 'open';
 	}
 
-  if ($form_id == 'user_profile_form') {
+  if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
     global $user;
     $user = user_load($user->uid);
     if (!in_array('Site Manager', $user->roles) && $user->uid != 1) {
