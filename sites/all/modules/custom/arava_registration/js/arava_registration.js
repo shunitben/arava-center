@@ -25,6 +25,14 @@
                 Drupal.behaviors.arava_registration.saveAndCloseTakanon(name, takanon, $(this));
             });
 
+            // Capture pressing of the "enter" button in this input, and "click" agree.
+            $('.ui-dialog-content.takanon input').live("keypress", function(e) {
+                if (e.keyCode == 13) {
+                    $(this).siblings('.field-suffix').find('.agree').trigger('click');
+                    return false;
+                }
+            });
+
             // time tables
             Drupal.behaviors.arava_registration.timetableNavigation();
 

@@ -6,6 +6,13 @@ function arava_registration_payment_page() {
     return t('You have already completed your registration. You may only change the courses you signed up to.<br>Please contact the site administrators to make any changes.');
   }
 
+  $validate = _arava_registration_validate_all_registration();
+  if (!empty($validate)) {
+    $output = t('Please finish the registration process before paying:') . '<br>';
+    $output .= implode('<br>', $validate) . '<br>';
+    return $output;
+  }
+
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
   $toPay = $mySemesterAPI->getPaymentDue();
@@ -19,4 +26,35 @@ function arava_registration_payment_page() {
   $output = variable_get('arava_center_registration_before_payment', array('value' => ''));
 
   return $output['value'] . '<br><iframe id="tranzila_frame" scrolling="no" src="https://direct.tranzila.com/dharma2/iframe.php?pdesc=basic_payment&currency=1&trBgColor=ffffff&trTextColor=000000&trButtonColor=2a68af&nologo=1&lang=il&cred_type=8&maxpay='.$num_payments.'&sum='.$toPay.'&email='.$email.'&phone='.$phone.'&TranzilaToken='.$my_semester_id.'" frameborder="0"></iframe>';
+}
+
+function _arava_registration_validate_all_registration() {
+  $missing = array();
+
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $mySemesterAPI = new MySemesterAPI();
+
+  // at least one course
+  $courses = $mySemesterAPI->getAllCoursesForUser();
+  if (empty($courses)) {
+    $missing[] = t('Courses - please choose at least one course.');
+  }
+
+  // accommodation
+  $accommodation = $mySemesterAPI->getAccomodationForUser();
+  if ($accommodation == null) {
+    $missing[] = t('Accommodation - please choose your accommodation.');
+  }
+
+  // extra info
+  $extra = $mySemesterAPI->getExtraInfoForUser();
+  unset($extra['comments']);
+  foreach ($extra as $takanon) {
+    if ($takanon == 0) {
+      $missing[] = t('Extra info - please sign all the takanons.');
+      break;
+    }
+  }
+
+  return $missing;
 }

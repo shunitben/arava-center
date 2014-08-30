@@ -4,6 +4,14 @@ function arava_registration_remaining_payment_page() {
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
   $toPay = $mySemesterAPI->getPaymentDue();
+
+  module_load_include('inc', 'arava_registration', 'arava_registration.payment');
+  $validate = _arava_registration_validate_all_registration();
+  if (!empty($validate)) {
+    $output = t('Please finish the registration process before paying:') . '<br>';
+    $output .= implode('<br>', $validate) . '<br>';
+    return $output;
+  }
   
   $my_semester_id = $mySemesterAPI->getMySemesterId();
   $user = $mySemesterAPI->getUser();
