@@ -80,12 +80,19 @@ ul.menu li a{
     text-align: right;
 }
 
-/****
-Timetable
-****/
-.my-timetable-block .view-calendar {
-    display: none;
-}
-.my-timetable-block .view-calendar:first-child {
-    display: block;
+@media print {
+    a,
+    a:visited {
+        text-decoration: none;
+    }
+    a[href]:after {
+        content: "";
+    }
+    abbr[title]:after {
+        content: "";
+    }
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
 }

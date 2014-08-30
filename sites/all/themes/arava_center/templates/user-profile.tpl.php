@@ -34,8 +34,11 @@
  * @ingroup themeable
  */
 ?>
-
+<div class="timetable-print">
+  <?php print l(t('Timetable print version'), 'my_timetable', array('attributes' => array('target' => '_blank'))); ?>
+</div>
 <div class="my-timetable-block">
+
   <?php
   $block = module_invoke('arava_registration','block_view','semester_timetable');
   print render($block['content']);

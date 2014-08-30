@@ -65,14 +65,14 @@ function _arava_registration_confirmation_email() {
   $body = variable_get('arava_center_registration_confirmation_email', '');
   $output .= $body['value'] . "<br><br>";
 
-  $output .= t('You can view and edit your semester here:') . '<br>';
+  $output .= t('You can view and edit your semester, and print your timetable, here:') . '<br>';
   $output .= url('user/' . $user->uid, array('absolute' => true)) . '<br><br>';
   $output .= t('Here\'s a summary of your semester:') . '<br><br>';
 
   $registration_summary = _arava_registration_generate_view('registration_summary', 'block');
   $output .= $registration_summary;
 
-  $output .= _arava_registration_generate_all_timetables();
+//  $output .= _arava_registration_generate_all_timetables();
 
   $output .= t('Best regards,') . "<br>";
   $output .= t('The Moar team');

@@ -141,7 +141,7 @@ function arava_registration_course_submit($form, &$form_state) {
 	}
 
 	// redirect to next page
-	$form_state['redirect'] = array('registration/accommodation');
+	$form_state['redirect'] = arava_registration_access() ? array('registration/accommodation') : array('user');
 }
 
 /**
