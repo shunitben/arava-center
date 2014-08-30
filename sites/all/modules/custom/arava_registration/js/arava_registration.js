@@ -103,6 +103,7 @@
                 return;
             }
             // do ajax
+            agreeButton.addClass('processing');
             var url = '/registration/extra/agreed/' + name + '/' + takanon;
             $.ajax({url: url})
                 .done(function( data ) {
@@ -111,6 +112,7 @@
                         // close the dialog and check the checkbox
                         $(Drupal.behaviors.arava_registration.dialog_selector).dialog("close");
                         $('input[name=' + takanon + '_checkbox]').attr('checked', 'checked').attr('disabled', 'disabled');
+                        agreeButton.removeClass('processing');
                     }
                     else {
                         // display error as relevant
@@ -120,6 +122,7 @@
                         else {
                             var error = Drupal.t('There\'s been an error saving your agreement. Please try clicking again.')
                         }
+                        agreeButton.removeClass('processing');
                         agreeButton.after('<span class="agree-error">' + error + '</span>');
                     }
                 });

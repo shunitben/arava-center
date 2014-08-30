@@ -20,6 +20,10 @@ Takanon popups
     display: inline-block;
     margin: 0 5px;
 }
+.agree.processing{
+    background:  url("../Images/loader-15.gif") no-repeat left center;
+    padding-left: 20px;
+}
 
 /*wizard menu*/
 #block-arava-registration-registration-steps{
