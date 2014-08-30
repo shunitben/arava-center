@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Configuration forms
+ */
 function arava_registration_config() {
   return theme('links', array('links' => array(
 
@@ -144,4 +147,28 @@ function arava_registration_texts($form, &$form_state) {
   );
 
   return system_settings_form($form);
+}
+
+/**
+ * Administration area
+ */
+function arava_registration_admin() {
+  return theme('links', array('links' => array(
+
+    'courses' => array(
+      'title' => t('Courses'),
+      'href' => 'admin/admin-courses',
+    ),
+
+    'accommodation-list' => array(
+      'title' => t('Accommodation - list'),
+      'href' => 'admin/arava-reports/accommodation/list',
+    ),
+
+    'accommodation-totals' => array(
+      'title' => t('Accommodation - totals'),
+      'href' => 'admin/arava-reports/accommodation/totals',
+    ),
+
+  )));
 }
