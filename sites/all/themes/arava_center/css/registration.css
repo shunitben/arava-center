@@ -13,7 +13,8 @@ Takanon popups
     bottom: 0;
 }
 .text-field-wrapper .form-text {
-    width: 150px;
+    width: 150px!important;
+    margin-left: 10px;
 }
 .agree-error {
     color: red;
@@ -25,6 +26,10 @@ Takanon popups
     padding-left: 20px;
 }
 
+.page-registration-course .ui-state-default .ui-icon, .page-registration-extra .ui-state-default .ui-icon{
+    
+    background-image: url(/sites/all/modules/jquery_update/replace/ui/themes/base/minified/images/ui-icons_888888_256x240.png)!important;
+}
 /*wizard menu*/
 #block-arava-registration-registration-steps{
     
@@ -199,7 +204,17 @@ Timetable
     width: 100%;
     height: 100%;
 }
-
+.view .date-nav-wrapper .date-next {
+    border-radius: 5px 0 0 5px;
+    left: auto;
+    right: 60px;
+    background: none;
+}
+.view .date-nav-wrapper .date-prev {
+    border-radius: 0 5px 5px 0;
+    right: 0;
+    background: none;
+}
 /* timetable print version */
 .page-my-timetable #main-content {
     padding: 0;
@@ -252,4 +267,15 @@ user page
     padding: 20px;
     margin-bottom: 10px;
     clear: none;
+}
+
+.profile .field-type-text{
+    clear:right;
+}
+.profile .field-label{
+    float: right;
+    width:50px;
+}
+.profile .field-items{
+    float: right;
 }
