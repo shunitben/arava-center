@@ -193,20 +193,24 @@ class MySemesterAPI {
    */
   public function getAccomodationForUser() {
     if ($this->user_semester == null) return null;
+    $return = array();
 
     $accomodation = $this->user_semester->field_my_accomodation->value();
+    $return['accomodation'] = !empty($accomodation) ? $accomodation->nid : null;
+    $return['roommates'] = $this->user_semester->field_roommates->value();
 
-    return !empty($accomodation) ? $accomodation->nid : null;
+    return $return;
   }
 
   /**
    * Set the user's selected accomodation to my_semester
    * @param $accomodation
    */
-  public function selectAccomodation($accomodation) {
+  public function selectAccomodation($values) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
 
-    $user_semester_node->field_my_accomodation[LANGUAGE_NONE][0]['target_id'] = $accomodation;
+    $user_semester_node->field_my_accomodation[LANGUAGE_NONE][0]['target_id'] = $values['accomodation'];
+    $user_semester_node->field_roommates[LANGUAGE_NONE][0]['value'] = $values['roommates'];
     field_attach_update('node', $user_semester_node);
 
     $this->updatePaymentDueTotal($user_semester_node);
