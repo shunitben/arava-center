@@ -132,4 +132,12 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
       unset($form['#group_children']);
     }
   }
+
+  if ($form_id == 'user_register_form') {
+    $form['#submit'][] = '_arava_center_user_register_submit';
+  }
+}
+
+function _arava_center_user_register_submit($form, &$form_state) {
+  $form_state['redirect'] = 'register-thanks';
 }
