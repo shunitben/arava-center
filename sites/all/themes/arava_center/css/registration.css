@@ -121,6 +121,11 @@ Course selection
     float: right;
     margin-right: 10px;
 }
+.form-item-roommates {
+    clear: both;
+    width: 900px;
+    padding-top: 30px
+}
 .views-field-field-price span, .views-field-field-price div{
     float:right;
 }

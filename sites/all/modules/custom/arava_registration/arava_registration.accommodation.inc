@@ -37,7 +37,13 @@ function arava_registration_accommodation($form, &$form_state) {
   $form['accomodations'] = array(
     '#type' => 'radios',
     '#options' => $options,
-    '#default_value' => $selected,
+    '#default_value' => $selected['accomodation'],
+  );
+
+  $form['roommates'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Is there anyone you would like to share the room with?'),
+    '#default_value' => $selected['roommates'],
   );
 
   $form['below'] = array(
@@ -73,12 +79,13 @@ function arava_registration_accommodation_submit($form, &$form_state) {
 
   // get the information from the form
   $accomodation = $form_state['values']['accomodations'];
+  $roommates = $form_state['values']['roommates'];
 
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
 
   // save the users requested accomodation
-  $mySemesterAPI->selectAccomodation($accomodation);
+  $mySemesterAPI->selectAccomodation(array('accomodation' => $accomodation, 'roommates' => $roommates));
 
 	$form_state['redirect'] = array('registration/presence');
 }
