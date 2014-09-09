@@ -1,11 +1,12 @@
-
+/*General site */
 .hidden{
     display: none;
 }
-
-.hello{
-    color: blue;
+.field .field-label{
+    float: right;
+    padding-left: 10px;
 }
+
 .main-menu{
     display:none;
 }
@@ -95,4 +96,22 @@ ul.menu li a{
     a[href^="#"]:after {
         content: "";
     }
+}
+
+/*teacher*/
+.node-teacher .field-name-field-mt-photo{
+    margin-right: 10px; 
+    margin-bottom:10px
+}
+
+/*Course*/
+.node-type-course .field-name-field-teacher{
+    margin-top:20px;
+    border-top:1px solid #acacac;
+}
+.node-type-course .field-name-field-teacher .field-label{
+    float: none;
+}
+.node-type-course .field-name-field-teacher h2{
+    margin-top:0px;
 }
