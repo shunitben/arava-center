@@ -84,6 +84,11 @@
                 $(".form-item-takanon-moa").addClass("form-group").parent().addClass("form-inline");
                 $("#edit-takanon-moa").addClass("form-control");
             }
+
+            // disable and show spinner when submitting registration pages
+            $("#edit-submit").click(function() {
+                $(this).addClass('processing');
+            });
         },
 
         showTakanon: function (id, link) {
