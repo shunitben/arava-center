@@ -142,7 +142,10 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
     global $language;
     if ($language->language != 'he') {
       $form['#access'] = false;
-      drupal_set_message(t('You may only add and edit semesters in hebrew (because of the emails sent when approving accommodation payment).'), 'error');
+      $languages = language_list();
+      $hebrew = $languages['he'];
+      drupal_set_message(t('You may only add and edit semesters in hebrew (because of the emails sent when approving accommodation payment).
+                            Go here for hebrew: @link', array('@link' => url($_GET['q'], array('absolute' => true, 'language' => $hebrew)))), 'warning');
     }
   }
 }
