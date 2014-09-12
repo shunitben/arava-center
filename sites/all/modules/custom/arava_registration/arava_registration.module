@@ -222,7 +222,7 @@ function arava_registration_node_presave($node) {
         // get all users who are signed up and have a remaining payment
         $emails = _arava_registration_get_users_with_remaining_payment($node->nid);
         foreach ($emails as $email) {
-          drupal_mail('arava_registration', 'approved_pay_accomodation', $email['email'], 'he', $params = array('name' => $email['name']));
+          drupal_mail('arava_registration', 'approved_pay_accomodation', $email['email'], $email['lang'], $params = array('name' => $email['name']));
         }
       }
     }
@@ -230,7 +230,7 @@ function arava_registration_node_presave($node) {
 }
 
 function _arava_registration_get_users_with_remaining_payment($semester_id) {
-  $result = db_query("SELECT user.mail, name.field_user_name_value
+  $result = db_query("SELECT user.mail, user.language, name.field_user_name_value
  											FROM field_data_field_user user_ref
  											INNER JOIN field_data_field_semester semester ON user_ref.entity_id = semester.entity_id
  											INNER JOIN users user ON user_ref.field_user_target_id = user.uid
@@ -244,6 +244,7 @@ function _arava_registration_get_users_with_remaining_payment($semester_id) {
     $emails[] = array(
       'email' => $row->mail,
       'name' => $row->field_user_name_value,
+      'lang' => $row->language,
     );
   }
   return $emails;

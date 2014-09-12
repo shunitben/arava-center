@@ -136,6 +136,15 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'user_register_form') {
     $form['#submit'][] = '_arava_center_user_register_submit';
   }
+
+  // only allow editing of semester in hebrew - for the "approved for accomodation" emails' sake
+  if ($form_id == 'semester_node_form') {
+    global $language;
+    if ($language->language != 'he') {
+      $form['#access'] = false;
+      drupal_set_message(t('You may only add and edit semesters in hebrew (because of the emails sent when approving accommodation payment).'), 'error');
+    }
+  }
 }
 
 function _arava_center_user_register_submit($form, &$form_state) {
