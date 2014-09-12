@@ -185,7 +185,7 @@ function arava_center_block_view($delta = '') {
 function _arava_center_hello_user_block() {
   global $user;
   $user = user_load($user->uid);
-  $username = 'Guest';
+  $username = t('Guest');
   if ($user->uid != 0) {
     $username = $user->field_user_name[LANGUAGE_NONE][0]['value'];
   }
