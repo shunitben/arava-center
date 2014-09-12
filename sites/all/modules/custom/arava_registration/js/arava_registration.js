@@ -78,6 +78,12 @@
                         }
                     });
             });
+            
+            if($(".page-registration-extra")!= null){
+                $(".agree").addClass("btn").addClass("btn-primary");
+                $(".form-item-takanon-moa").addClass("form-group").parent().addClass("form-inline");
+                $("#edit-takanon-moa").addClass("form-control");
+            }
         },
 
         showTakanon: function (id, link) {
