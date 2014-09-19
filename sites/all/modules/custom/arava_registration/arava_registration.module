@@ -207,6 +207,47 @@ function arava_registration_node_presave($node) {
     $payment_due = $mySemesterAPI->updatePaymentDueTotal($node);
     $node->field_payment_total[LANGUAGE_NONE][0]['value'] = $payment_due;
   }
+
+  if ($node->type == 'semester') {
+    // send email when semester is approved for paying accomodation
+    $new_approved_value = $node->field_approved_pay_accomodation[LANGUAGE_NONE][0]['value'];
+    $original = $node->original;
+    $old_approved_value = $original->field_approved_pay_accomodation[LANGUAGE_NONE][0]['value'];
+    if ($new_approved_value == '1' && $old_approved_value == '0') {
+      // make sure this is the current semester
+      module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+      $mySemesterAPI = new MySemesterAPI();
+      $current_semester_id = $mySemesterAPI->getSemesterId();
+      if ($current_semester_id == $node->nid) {
+        // get all users who are signed up and have a remaining payment
+        $emails = _arava_registration_get_users_with_remaining_payment($node->nid);
+        foreach ($emails as $email) {
+          drupal_mail('arava_registration', 'approved_pay_accomodation', $email['email'], $email['lang'], $params = array('name' => $email['name']));
+        }
+      }
+    }
+  }
+}
+
+function _arava_registration_get_users_with_remaining_payment($semester_id) {
+  $result = db_query("SELECT user.mail, user.language, name.field_user_name_value
+ 											FROM field_data_field_user user_ref
+ 											INNER JOIN field_data_field_semester semester ON user_ref.entity_id = semester.entity_id
+ 											INNER JOIN users user ON user_ref.field_user_target_id = user.uid
+ 											INNER JOIN field_data_field_payment_total due ON user_ref.entity_id = due.entity_id
+ 											INNER JOIN field_data_field_payment_made payed ON user_ref.entity_id = payed.entity_id
+ 											INNER JOIN field_data_field_user_name name ON user.uid = name.entity_id
+											WHERE field_semester_target_id = " . $semester_id . "
+											AND due.field_payment_total_value > payed.field_payment_made_value");
+  $emails = array();
+  foreach ($result as $row) {
+    $emails[] = array(
+      'email' => $row->mail,
+      'name' => $row->field_user_name_value,
+      'lang' => $row->language,
+    );
+  }
+  return $emails;
 }
 
 /**
@@ -376,6 +417,7 @@ function _arava_payment_remaining_block() {
 
   if ($remaining > 0) {
     $output = t('You have a sum of @sum shekels that needs to be payed. Please ', array('@sum' => $remaining)) . l(t('click here'), 'registration/remaining_payment') . t(' to pay it.');
+    $output = '<span class="pay-up">' . $output . '</span>';
     return $output;
   }
   return t('You have paid all that is required at this point (if you have not yet been asked to pay for the room, you might see
@@ -520,7 +562,28 @@ function arava_registration_mail($key, &$message, $params) {
       $message['subject'] = variable_get('arava_center_registration_payment_received_email_subject', '');
       $message['body'][] = _arava_registration_payment_received_email($params['sum'], $params['confirmation_code'], $params['num_payments']);
       break;
+
+    case 'approved_pay_accomodation':
+      $message['subject'] = variable_get('arava_center_registration_approved_pay_accomodation_email_subject', '');
+      $message['body'][] = _arava_registration_approved_pay_accomodation_email($params['name']);
+      break;
   }
+}
+
+function _arava_registration_approved_pay_accomodation_email($name) {
+  $output = '<div style="direction:rtl; text-align: right">';
+
+  $output .= t('Hello @you,', array('@you' => _get_user_first_name($name))) . "<br><br>";
+
+  $body = variable_get('arava_center_registration_approved_pay_accomodation_email', '');
+  $output .= $body['value'] . "<br><br>";
+
+  $output .= t('Best regards,') . "<br>";
+  $output .= t('The Moar team');
+
+  $output .= '</div>';
+
+  return $output;
 }
 
 /**
@@ -541,4 +604,10 @@ function _arava_registration_print_lesson_times($data) {
     }
   }
   print json_encode($times);
+}
+
+function _get_user_first_name($fullname) {
+  $fullname = trim($fullname);
+  $parts = explode(' ', $fullname);
+  return $parts[0];
 }

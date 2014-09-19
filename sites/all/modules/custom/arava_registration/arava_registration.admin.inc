@@ -125,6 +125,20 @@ function arava_registration_emails($form, &$form_state) {
     '#format' => isset($val['format']) ? $val['format'] : 'html',
   );
 
+  $form['arava_center_registration_approved_pay_accomodation_email_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Semester approved to pay accomodation - email subject'),
+    '#default_value' => variable_get('arava_center_registration_approved_pay_accomodation_email_subject', ''),
+  );
+
+  $val = variable_get('arava_center_registration_approved_pay_accomodation_email', '');
+  $form['arava_center_registration_approved_pay_accomodation_email'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Semester approved to pay accomodation - email'),
+    '#default_value' => $val['value'],
+    '#format' => isset($val['format']) ? $val['format'] : 'html',
+  );
+
   return system_settings_form($form);
 }
 

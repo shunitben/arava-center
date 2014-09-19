@@ -136,8 +136,58 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'user_register_form') {
     $form['#submit'][] = '_arava_center_user_register_submit';
   }
+
+  // only allow editing of semester in hebrew - for the "approved for accomodation" emails' sake
+  if ($form_id == 'semester_node_form') {
+    global $language;
+    if ($language->language != 'he') {
+      $form['#access'] = false;
+      $languages = language_list();
+      $hebrew = $languages['he'];
+      drupal_set_message(t('You may only add and edit semesters in hebrew (because of the emails sent when approving accommodation payment).
+                            Go here for hebrew: @link', array('@link' => url($_GET['q'], array('absolute' => true, 'language' => $hebrew)))), 'warning');
+    }
+  }
 }
 
 function _arava_center_user_register_submit($form, &$form_state) {
   $form_state['redirect'] = 'register-thanks';
+}
+
+/**
+ * Implements hook_block_info
+ * @return mixed
+ */
+function arava_center_block_info() {
+  $blocks['hello_user'] = array(
+    'info' => t('Hello User'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view
+ * @param string $delta
+ * @return mixed
+ */
+function arava_center_block_view($delta = '') {
+  switch ($delta) {
+    case 'hello_user':
+      $block['subject'] = null;
+      $block['content'] = _arava_center_hello_user_block();
+      break;
+  }
+
+  return $block;
+}
+
+function _arava_center_hello_user_block() {
+  global $user;
+  $user = user_load($user->uid);
+  $username = t('Guest');
+  if ($user->uid != 0) {
+    $username = $user->field_user_name[LANGUAGE_NONE][0]['value'];
+  }
+  return t('Hello, @you', array('@you' => $username));
 }

@@ -58,9 +58,12 @@ function arava_registration_thanks_page() {
 
 function _arava_registration_confirmation_email() {
   global $user;
+  $user = user_load($user->uid);
+  $user_name = _get_user_first_name($user->field_user_name[LANGUAGE_NONE][0]['value']);
+
   $output = '<div style="direction:rtl; text-align: right">';
 
-  $output .= t('Hello @you,', array('@you' => $user->name)) . "<br><br>";
+  $output .= t('Hello @you,', array('@you' => $user_name)) . "<br><br>";
 
   $body = variable_get('arava_center_registration_confirmation_email', '');
   $output .= $body['value'] . "<br><br>";
@@ -84,9 +87,12 @@ function _arava_registration_confirmation_email() {
 
 function _arava_registration_accomodation_confirmation_email() {
   global $user;
+  $user = user_load($user->uid);
+  $user_name = _get_user_first_name($user->field_user_name[LANGUAGE_NONE][0]['value']);
+
   $output = '<div style="direction:rtl; text-align: right">';
 
-  $output .= t('Hello @you,', array('@you' => $user->name)) . "<br><br>";
+  $output .= t('Hello @you,', array('@you' => $user_name)) . "<br><br>";
 
   $body = variable_get('arava_center_registration_accomodation_confirmation_email', '');
   $output .= $body['value'] . "<br><br>";
@@ -108,9 +114,12 @@ function _arava_registration_accomodation_confirmation_email() {
 
 function _arava_registration_payment_received_email($sum, $confirmation_code, $num_payments = 1) {
   global $user;
+  $user = user_load($user->uid);
+  $user_name = _get_user_first_name($user->field_user_name[LANGUAGE_NONE][0]['value']);
+
   $output = '<div style="direction:rtl; text-align: right">';
 
-  $output .= t('Hello @you,', array('@you' => $user->name)) . "<br><br>";
+  $output .= t('Hello @you,', array('@you' => $user_name)) . "<br><br>";
 
   $body = variable_get('arava_center_registration_payment_received_email', '');
   $output .= $body['value'] . "<br><br>";

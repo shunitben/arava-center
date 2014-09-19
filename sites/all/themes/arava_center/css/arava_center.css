@@ -81,6 +81,17 @@ ul.menu li a{
     text-align: right;
 }
 
+/* hello user */
+.hello-user {
+    display: inline-block;
+    padding-top: 14px;
+    padding-right: 20px;
+}
+.between-headers + #header {
+    padding-top: 10px;
+}
+
+/* print */
 @media print {
     a,
     a:visited {

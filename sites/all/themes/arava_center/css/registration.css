@@ -1,4 +1,17 @@
-
+#edit-submit.processing{
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+    background-image:  url("../Images/loader-15-dark.gif");
+    background-repeat: no-repeat;
+    background-position: 13px center;
+    padding-left: 20px;
+}
+#edit-submit.processing:hover{
+    background-image:  url("../Images/loader-15-light.gif");
+}
 
 
 /****
@@ -22,8 +35,13 @@ Takanon popups
     margin: 0 5px;
 }
 .agree.processing{
-    background:  url("../Images/loader-15.gif") no-repeat left center;
+    background-image:  url("../Images/loader-15-light.gif");
+    background-repeat: no-repeat;
+    background-position: 1px center;
     padding-left: 20px;
+}
+.agree.processing:hover {
+    background-image:  url("../Images/loader-15-dark.gif");
 }
 
 .page-registration-course .ui-state-default .ui-icon, .page-registration-extra .ui-state-default .ui-icon{
@@ -283,4 +301,7 @@ user page
 }
 .profile .field-items{
     float: right;
+}
+.pay-up {
+    color: red;
 }
