@@ -126,3 +126,18 @@ ul.menu li a{
 .node-type-course .field-name-field-teacher h2{
     margin-top:0px;
 }
+/*catalog*/
+.page-catalog .field-content a{
+    border-bottom:1px dashed;
+}
+.page-catalog li{
+    list-style-type: none;
+}
+.page-catalog .views-label-field-lesson-days{
+    float: right;
+margin-left: 10px;
+font-weight: bold;
+}
+.page-catalog .views-field-field-lesson-days{
+    margin-bottom: 20px;
+}
