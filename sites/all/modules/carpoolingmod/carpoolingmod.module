@@ -5,11 +5,9 @@ function carpoolingmod_permission() {
   return array(
     'setup carpooling pref' => array(
       'title' => t('setup carpooling pref'),
-      'restrict access' => TRUE,
     ),
     'join ride' => array(
       'title' => t('join ride'),
-      'restrict access' => TRUE,
     ),
   );
 }
@@ -148,10 +146,24 @@ function carpoolingmod_menu() {
     'file' => 'carpoolingmod.admin.php',
     'type' => MENU_CALLBACK,
   );
-
-
   
   return $items;
+}
+
+function carpoolingmod_user_view($account, $view_mode, $langcode){
+	global $user;
+	if($view_mode == 'full' && $user->uid == $account->uid && (user_access('setup carpooling pref') || user_access('join ride'))){
+		$data = carpoolingmod_load_pref($account);
+		
+		if($data && ($data['type'] == 'offer' || $data['type'] == 'lookfor')){
+			$account->content['transportation'] = array(
+				'#type' => 'markup',
+				'#markup' => '<ul class="item-list"><li>'.l(t('Car Pooling Preference Setting'), 'MyRides').'</li>
+					<li>'.l(t('Users of Offering Ride'), 'rides-carpooling/offer-ride').'</li>
+					<li>'.l(t('Users of Looking for Ride'), 'rides-carpooling/look-for-ride').'</li></ul>',
+			);
+		}
+	}
 }
 
 function carpoolingmod_join_ride_form_access($account){
@@ -160,7 +172,7 @@ function carpoolingmod_join_ride_form_access($account){
 	
 	$data = carpoolingmod_load_pref($account);
 	
-	if(!$joined && user_access('join ride') && $data && $data['type'] == 'offer' && $data['remaining_seats'] > 0 && $data['departure'] > time()){
+	if(!$joined && user_access('join ride') && $data && $data['type'] == 'offer' && $data['remaining_seats'] > 0){
 		return true;
 	}else{
 		return false;
@@ -173,7 +185,7 @@ function carpoolingmod_addmycar_ride_form_access($account){
 	
 	$joined = db_query("select created from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid))->fetchField();
 	
-	if(!$joined && user_access('join ride', $account) && $data && $data['type'] == 'offer' && $data['remaining_seats'] > 0 &&  $data['departure'] > time()){
+	if(!$joined && user_access('join ride', $account) && $data && $data['type'] == 'offer' && $data['remaining_seats'] > 0){
 		return true;
 	}else{
 		return false;
@@ -186,7 +198,7 @@ function carpoolingmod_removemycar_ride_form_access($account){
 	
 	$joined = db_query("select created from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid))->fetchField();
 	
-	if($joined && user_access('join ride', $account) && $data && $data['type'] == 'offer' && $data['departure'] > time()){
+	if($joined && user_access('join ride', $account) && $data && $data['type'] == 'offer'){
 		return true;
 	}else{
 		return false;
@@ -198,11 +210,54 @@ function carpoolingmod_leave_ride_form_access($account){
 	$joined = db_query("select created from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid))->fetchField();
 	$data = carpoolingmod_load_pref($account);
 	
-	if($joined && user_access('join ride') && $data['departure'] > time()){
+	if($joined && user_access('join ride')){
 		return true;
 	}else{
 		return false;
 	}
+}
+
+function carpoolingmod_date_options(){
+	return array(
+		7 => t('Sunday'),
+		1 => t('Monday'),
+		2 => t('Tuesday'),
+		3 => t('Wednesday'),
+		4 => t('Thursday'),
+		5 => t('Friday'),
+		6 => t('Saturday'),
+	);
+}
+
+function carpoolingmod_time_options(){
+	return array(
+		'morning' => t('Morning'),
+		'noon' => t('Noon'),
+		'evening' => t('Evening'),
+		'night' => t('Night'),
+	);
+}
+
+
+function carpoolingmod_format_datetime($dates, $time){
+	$dateopts = carpoolingmod_date_options();
+	$timeopts = carpoolingmod_time_options();
+
+	$html = '';
+	if($dates){
+		$datestrs = array();
+		if(!is_array($dates)){
+			$dates = explode(',', $dates);
+		}
+		
+		foreach($dates as $d){
+			$datestrs[] = $dateopts[$d];
+		}
+		
+		$html = '<b>'.t('Date').':</b> '.implode(', ', $datestrs).'<br/><b>'.t('Time').':</b> '.$timeopts[$time];
+	}
+	
+	return $html;
 }
 
 function carpoolingmod_load_pref($account = null){
@@ -212,6 +267,11 @@ function carpoolingmod_load_pref($account = null){
 	}
 	
 	$data = db_query("select * from {carpooling_pref} where uid=:uid", array(':uid' => $account->uid))->fetchAssoc();
+	
+	if($data){
+		$data['departureday'] = $data['departureday'] ? explode(',', $data['departureday']) : array();
+		$data['returnday'] = $data['returnday'] ? explode(',', $data['returnday']) : array();
+	}
 	
 	return $data;
 }

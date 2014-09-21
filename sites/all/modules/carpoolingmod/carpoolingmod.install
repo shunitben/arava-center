@@ -41,17 +41,29 @@ function carpoolingmod_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
-      'departure' => array(
-        'type' => 'int',
-        'length' => 11,
+      'departureday' => array(
+        'type' => 'varchar',
+        'length' => 20,
         'not null' => TRUE,
-        'default' => 0,
+        'default' => '',
       ),
-      'returndate' => array(
-        'type' => 'int',
-        'length' => 11,
+      'departuretime' => array(
+        'type' => 'varchar',
+        'length' => 20,
         'not null' => TRUE,
-        'default' => 0,
+        'default' => '',
+      ),
+      'returnday' => array(
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'returntime' => array(
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+        'default' => '',
       ),
     ),
     'primary key' => array('uid'),

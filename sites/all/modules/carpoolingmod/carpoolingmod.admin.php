@@ -3,14 +3,16 @@
 function carpoolingmod_pref_setup_page(){
 	global $user;
 
-	return drupal_get_form('carpoolingmod_pref_setup_form', $user);
+	return drupal_get_form('carpoolingmod_pref_setup_form', $user, 'registration/meals');
 }
 
-function carpoolingmod_pref_setup_form($form, &$form_status, $account){
+function carpoolingmod_pref_setup_form($form, &$form_status, $account, $redirect = ''){
 	
 	$form_status['storage']['account'] = $account;
+	$form_status['storage']['redirect'] = $redirect;
 	
 	$data = carpoolingmod_load_pref($account);
+	$newpref = $data ? false : true;
 	$data = $data ? $data : array();
 	
 	$opts = array(
@@ -81,22 +83,78 @@ function carpoolingmod_pref_setup_form($form, &$form_status, $account){
 		'#default_value' => isset($data['location']) ? $data['location'] : '',
 	);
 	
+	if($newpref){
+		module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+		$mySemesterAPI = new MySemesterAPI();
+		$selected = $mySemesterAPI->getPresenceInfoForUser();
+		$mapping = array(
+			'sunday' => 7,
+			'monday' => 1,
+			'tuesday' => 2,
+			'wednesday' => 3,
+			'thursday' => 4,
+			'friday' => 5,
+			'saturday' => 6,
+		);
+		
+		$data['departureday'] = array();
+		$data['returnday'] = array();
+		
+		if($selected){
+			foreach($selected as $k => $v){
+				$data['departureday'][] = $mapping[$v];
+				$data['returnday'][] = $mapping[$v];
+			}
+		}
+		
+	}
+	
+	$dayopts = carpoolingmod_date_options();
+	
+	$timeopts = carpoolingmod_time_options();
+	
 	$form['departure'] = array(
-		'#type' => 'date_select',
-		'#date_format' => 'Y-m-d H:i',
-		'#title' => t('Your departure date'),
+		'#type' => 'container',
+		'#prefix' => '<div class="form-item"><label>'.t('Your departure date').' <span title="This field is required." class="form-required">*</span></label><div class="container-inline-date"><div class="form-item">',
+		'#suffix' => '</div></div></div>',
+	);
+	
+	$form['departure']['departureday'] = array(
+		'#type' => 'select',
 		'#required' => true,
-		'#default_value' => isset($data['departure']) ? $data['departure'] : '',
-		'#default_value' => date('Y-m-d H:i'),
+		'#multiple' => true,
+		'#size' => 5,
+		'#options' => $dayopts,
+		'#default_value' => isset($data['departureday']) ? $data['departureday'] : '',
+	);
+	
+	$form['departure']['departuretime'] = array(
+		'#type' => 'select',
+		'#required' => true,
+		'#options' => $timeopts,
+		'#default_value' => isset($data['departuretime']) ? $data['departuretime'] : '',
 	);
 	
 	$form['returndate'] = array(
-		'#type' => 'date_select',
-		'#date_format' => 'Y-m-d H:i',
-		'#title' => t('Your return date'),
+		'#type' => 'container',
+		'#prefix' => '<div class="form-item"><label>'.t('Your return date').' <span title="This field is required." class="form-required">*</span></label><div class="container-inline-date"><div class="form-item">',
+		'#suffix' => '</div></div></div>',
+	);
+	
+	$form['returndate']['returnday'] = array(
+		'#type' => 'select',
 		'#required' => true,
-		'#default_value' => isset($data['returndate']) ? $data['returndate'] : '',
-		'#default_value' => date('Y-m-d H:i'),
+		'#multiple' => true,
+		'#size' => 5,
+		'#options' => $dayopts,
+		'#default_value' => isset($data['returnday']) ? $data['returnday'] : '',
+	);
+	
+	$form['returndate']['returntime'] = array(
+		'#type' => 'select',
+		'#required' => true,
+		'#options' => $timeopts,
+		'#default_value' => isset($data['returntime']) ? $data['returntime'] : '',
 	);
 	
 	$form['submit'] = array(
@@ -109,12 +167,6 @@ function carpoolingmod_pref_setup_form($form, &$form_status, $account){
 
 function carpoolingmod_pref_setup_form_validate($form, &$form_status){
 	$values = $form_status['values'];
-	$departure = strtotime($values['departure']);
-	$returndate = strtotime($values['returndate']);
-	
-	if($departure > $returndate){
-		form_set_error('returndate', t('Departure date can not be later than return date'));
-	}
 }
 
 function carpoolingmod_pref_setup_form_submit($form, &$form_status){
@@ -122,21 +174,27 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 	$data = carpoolingmod_load_pref($account);
 	$values = $form_status['values'];
 	
-	$departure = strtotime($values['departure']);
-	$returndate = strtotime($values['returndate']);
-	
 	if($data){
+		if($data['type'] != $values['type']){
+			db_query("delete from {carpooling_ride} where offer_uid=:offer_uid", array(':offer_uid' => $account->uid));
+			
+			db_query("update {carpooling_pref} set available_seats=available_seats+1 where uid in (select offer_uid from {carpooling_ride} where join_uid=:join_uid)", array(':join_uid' => $account->uid));
+			db_query("delete from {carpooling_ride} where join_uid=:join_uid", array(':join_uid' => $account->uid));
+		}
+	
 		$data = array(
 			'uid' => $account->uid,
 			'type' => $values['type'],
 			'available_seats' => isset($values['available_seats']) ? $values['available_seats'] : 0,
 			'location' => $values['location'],
-			'departure' => $departure,
-			'returndate' => $returndate,
+			'departureday' => $values['departureday'] ? implode(',', $values['departureday']) : '',
+			'departuretime' => $values['departuretime'],
+			'returnday' => $values['returnday'] ? implode(',', $values['returnday']) : '',
+			'returntime' => $values['returntime'],
 		);
 		
 		drupal_write_record('carpooling_pref', $data, 'uid');
-		drupal_set_message(t('Your car pooling preference has been updated.'));
+		drupal_set_message(t('Your car pooling preference setting has been updated.'));
 	}else{
 		$data = array(
 			'uid' => $account->uid,
@@ -144,12 +202,18 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 			'available_seats' => isset($values['available_seats']) ? $values['available_seats'] : 0,
 			'remaining_seats' => isset($values['available_seats']) ? $values['available_seats'] : 0,
 			'location' => $values['location'],
-			'departure' => $departure,
-			'returndate' => $returndate,
+			'departureday' => $values['departureday'] ? implode(',', $values['departureday']) : '',
+			'departuretime' => $values['departuretime'],
+			'returnday' => $values['returnday'] ? implode(',', $values['returnday']) : '',
+			'returntime' => $values['returntime'],
 		);
 		
 		drupal_write_record('carpooling_pref', $data);
-		drupal_set_message(t('Your car pooling preference has been saved.'));
+		drupal_set_message(t('Your car pooling preference setting has been saved.'));
+	}
+	
+	if(isset($form_status['storage']['redirect']) && $form_status['storage']['redirect']){
+		$form_status['redirect'] = $form_status['storage']['redirect'];
 	}
 	
 	unset($form_status['storage']);
@@ -212,7 +276,7 @@ function carpoolingmod_removemycar_ride_form($form, &$form_status, $account){
 	
 	return confirm_form($form, t("Do you want to remove !user from your car?", 
 									array('!user' => l($account->name, 'user/'.$account->uid))), 
-			'MyRides');
+			'MyRides', '');
 }
 
 function carpoolingmod_removemycar_ride_form_submit($form, &$form_status){
@@ -232,7 +296,7 @@ function carpoolingmod_leave_ride_form($form, &$form_status, $account){
 	
 	return confirm_form($form, t("Do you want to leave !user's ride?", 
 									array('!user' => l($account->name, 'user/'.$account->uid))), 
-			'MyRides');
+			'MyRides', '');
 }
 
 function carpoolingmod_leave_ride_form_submit($form, &$form_status){

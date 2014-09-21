@@ -40,14 +40,14 @@ function carpoolingmod_offer_ride_page(){
 		$account = user_load($r->uid);
 		
 		$link = '';
-		if(!$r->join_uid && $r->remaining_seats>0 && $user->uid != $r->uid && user_access('join ride') && $r->departure > time()){
+		if(!$r->join_uid && $r->remaining_seats>0 && $user->uid != $r->uid && user_access('join ride')){
 			$link = l(t('Join this ride'), 'carpool/join/'.$r->uid);
 		}
 		
 		$row = array(
 			$link,
-			date($format, $r->departure),
-			date($format, $r->returndate),
+			carpoolingmod_format_datetime($r->departureday, $r->departuretime),
+			carpoolingmod_format_datetime($r->returnday, $r->returntime),
 			$city->name,
 			$r->remaining_seats,
 			$account->mail,
@@ -97,14 +97,14 @@ function carpoolingmod_look_for_ride_page(){
 		$account = user_load($r->uid);
 		
 		$link = '';
-		if(!$r->offer_uid && $user->uid != $r->uid && $r->departure > time()){
+		if(!$r->offer_uid && $user->uid != $r->uid){
 			$link = l(t('Add to my car'), 'carpool/addmycar/'.$r->uid);
 		}
 		
 		$row = array(
 			$link,
-			date($format, $r->departure),
-			date($format, $r->returndate),
+			carpoolingmod_format_datetime($r->departureday, $r->departuretime),
+			carpoolingmod_format_datetime($r->returnday, $r->returntime),
 			$city->name,
 			$account->mail,
 			isset($account->field_user_phone['und'][0]['value']) ? $account->field_user_phone['und'][0]['value'] : '',
@@ -124,7 +124,7 @@ function carpoolingmod_join_ride_form($form, &$form_status, $account){
 	
 	return confirm_form($form, t("Do you want to join !user's ride?", 
 									array('!user' => l($account->name, 'user/'.$account->uid))), 
-			'rides-carpooling/offer-ride');
+			'rides-carpooling/offer-ride', '');
 }
 
 function carpoolingmod_join_ride_form_submit($form, &$form_status){
@@ -149,7 +149,7 @@ function carpoolingmod_addmycar_ride_form($form, &$form_status, $account){
 	
 	return confirm_form($form, t("Do you want to add !user to your car?", 
 									array('!user' => l($account->name, 'user/'.$account->uid))), 
-			'rides-carpooling/look-for-ride');
+			'rides-carpooling/look-for-ride', '');
 }
 
 function carpoolingmod_addmycar_ride_form_submit($form, &$form_status){
