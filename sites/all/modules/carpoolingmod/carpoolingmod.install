@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the FullCalendar module.
+ */
+
+function carpoolingmod_schema() {
+  $schema = array();
+
+  $schema['carpooling_pref'] = array(
+    'description' => 'carpooling_pref',
+    'fields' => array(
+      'uid' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 10,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'available_seats' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'remaining_seats' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'location' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'departure' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'returndate' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('uid'),
+  );
+
+  $schema['carpooling_ride'] = array(
+    'description' => 'carpooling_ride',
+    'fields' => array(
+      'join_uid' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'offer_uid' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('join_uid', 'offer_uid'),
+  );
+
+  return $schema;
+}
+
+function carpoolingmod_install() {
+	$vid = db_query("select vid from {taxonomy_vocabulary} where machine_name=:machine_name", array(':machine_name' => 'location'))->fetchField();
+	
+	variable_set('carpoolingmod_location_vid', $vid);
+}
+
+function carpoolingmod_uninstall() {
+
+}
+ 

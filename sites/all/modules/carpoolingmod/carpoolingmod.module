@@ -1,0 +1,217 @@
+<?php
+
+
+function carpoolingmod_permission() {
+  return array(
+    'setup carpooling pref' => array(
+      'title' => t('setup carpooling pref'),
+      'restrict access' => TRUE,
+    ),
+    'join ride' => array(
+      'title' => t('join ride'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+function carpoolingmod_pref_setup_page_title(){
+	return t('Carpooling Preference');
+}
+
+function carpoolingmod_myrides_page_title(){
+	return t('My Rides');
+}
+
+function carpoolingmod_rides_carpooling_page_title(){
+	return t('Rides and car pooling');
+}
+
+function carpoolingmod_rides_carpooling_look_for_page_title(){
+	return t('Looking for a ride');
+}
+
+function carpoolingmod_rides_carpooling_offer_page_title(){
+	return t('Offering a ride');
+}
+
+function carpoolingmod_join_ride_form_title($account){
+	return t('Join !user\'s ride', array('!user' => $account->name));
+}
+
+function carpoolingmod_addmycar_ride_form_title($account){
+	return t('Add !user to my car', array('!user' => $account->name));
+}
+
+function carpoolingmod_removemycar_ride_form_title($account){
+	return t('Remove !user from my car', array('!user' => $account->name));
+}
+
+function carpoolingmod_leave_ride_form_title($account){
+	return t('Remove myself from !user\'s ride', array('!user' => $account->name));
+}
+
+/**
+ * @file
+ * Provides a views style plugin for FullCalendar
+ */
+
+function carpoolingmod_menu() {
+  $items = array();
+
+  $items['registration/carpooling-pref'] = array(
+    'title callback' => 'carpoolingmod_pref_setup_page_title',
+    'page callback' => 'carpoolingmod_pref_setup_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('setup carpooling pref'),
+    'file' => 'carpoolingmod.admin.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['MyRides'] = array(
+    'title callback' => 'carpoolingmod_myrides_page_title',
+    'page callback' => 'carpoolingmod_myrides_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('setup carpooling pref'),
+    'file' => 'carpoolingmod.admin.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['rides-carpooling'] = array(
+    'title callback' => 'carpoolingmod_rides_carpooling_page_title',
+    'page callback' => 'carpoolingmod_offer_ride_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('setup carpooling pref'),
+    'file' => 'carpoolingmod.pages.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['rides-carpooling/offer-ride'] = array(
+    'title callback' => 'carpoolingmod_rides_carpooling_offer_page_title',
+    'page callback' => 'carpoolingmod_offer_ride_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('setup carpooling pref'),
+    'file' => 'carpoolingmod.pages.php',
+    'type' => MENU_LOCAL_TASK,
+	'#weight' => 1,
+  );
+
+  $items['rides-carpooling/look-for-ride'] = array(
+    'title callback' => 'carpoolingmod_rides_carpooling_look_for_page_title',
+    'page callback' => 'carpoolingmod_look_for_ride_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('join ride'),
+    'file' => 'carpoolingmod.pages.php',
+    'type' => MENU_LOCAL_TASK,
+	'#weight' => 0,
+  );
+
+  $items['carpool/join/%user'] = array(
+    'title callback' => 'carpoolingmod_join_ride_form_title',
+    'title arguments' => array(2),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('carpoolingmod_join_ride_form', 2),
+    'access callback' => 'carpoolingmod_join_ride_form_access',
+    'access arguments' => array(2),
+    'file' => 'carpoolingmod.pages.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['carpool/addmycar/%user'] = array(
+    'title callback' => 'carpoolingmod_addmycar_ride_form_title',
+    'title arguments' => array(2),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('carpoolingmod_addmycar_ride_form', 2),
+    'access callback' => 'carpoolingmod_addmycar_ride_form_access',
+    'access arguments' => array(2),
+    'file' => 'carpoolingmod.pages.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['carpool/removemycar/%user'] = array(
+    'title callback' => 'carpoolingmod_removemycar_ride_form_title',
+    'title arguments' => array(2),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('carpoolingmod_removemycar_ride_form', 2),
+    'access callback' => 'carpoolingmod_removemycar_ride_form_access',
+    'access arguments' => array(2),
+    'file' => 'carpoolingmod.admin.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['carpool/leave/%user'] = array(
+    'title callback' => 'carpoolingmod_leave_ride_form_title',
+    'title arguments' => array(2),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('carpoolingmod_leave_ride_form', 2),
+    'access callback' => 'carpoolingmod_leave_ride_form_access',
+    'access arguments' => array(2),
+    'file' => 'carpoolingmod.admin.php',
+    'type' => MENU_CALLBACK,
+  );
+
+
+  
+  return $items;
+}
+
+function carpoolingmod_join_ride_form_access($account){
+	global $user;
+	$joined = db_query("select created from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid))->fetchField();
+	
+	$data = carpoolingmod_load_pref($account);
+	
+	if(!$joined && user_access('join ride') && $data && $data['type'] == 'offer' && $data['remaining_seats'] > 0 && $data['departure'] > time()){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function carpoolingmod_addmycar_ride_form_access($account){
+	global $user;
+	$data = carpoolingmod_load_pref($user);
+	
+	$joined = db_query("select created from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid))->fetchField();
+	
+	if(!$joined && user_access('join ride', $account) && $data && $data['type'] == 'offer' && $data['remaining_seats'] > 0 &&  $data['departure'] > time()){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function carpoolingmod_removemycar_ride_form_access($account){
+	global $user;
+	$data = carpoolingmod_load_pref($user);
+	
+	$joined = db_query("select created from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid))->fetchField();
+	
+	if($joined && user_access('join ride', $account) && $data && $data['type'] == 'offer' && $data['departure'] > time()){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function carpoolingmod_leave_ride_form_access($account){
+	global $user;
+	$joined = db_query("select created from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid))->fetchField();
+	$data = carpoolingmod_load_pref($account);
+	
+	if($joined && user_access('join ride') && $data['departure'] > time()){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function carpoolingmod_load_pref($account = null){
+	if(!$account){
+		global $user;
+		$account = $user;
+	}
+	
+	$data = db_query("select * from {carpooling_pref} where uid=:uid", array(':uid' => $account->uid))->fetchAssoc();
+	
+	return $data;
+}
