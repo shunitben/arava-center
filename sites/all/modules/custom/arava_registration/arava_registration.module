@@ -372,13 +372,13 @@ function _arava_registration_steps_block() {
       'title' => t('Accommodation'),
       'href' => 'registration/accommodation',
     ),
-    'carpoolingpref' => array(
-      'title' => t('Car Pooling'),
-      'href' => 'registration/carpooling-pref',
-    ),
     'presence' => array(
       'title' => t('Presence days'),
       'href' => 'registration/presence',
+    ),
+    'carpoolingpref' => array(
+      'title' => t('Car Pooling'),
+      'href' => 'registration/carpooling-pref',
     ),
     'meals' => array(
       'title' => t('Meals'),
