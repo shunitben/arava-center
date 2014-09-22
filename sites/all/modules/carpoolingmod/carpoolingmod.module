@@ -1,6 +1,10 @@
 <?php
 
 
+function carpoolingmod_init() {
+	drupal_add_css(drupal_get_path('module', 'carpoolingmod').'/carpoolingmod.css');
+}
+
 function carpoolingmod_permission() {
   return array(
     'setup carpooling pref' => array(
@@ -106,8 +110,8 @@ function carpoolingmod_menu() {
   $items['carpool/join/%user'] = array(
     'title callback' => 'carpoolingmod_join_ride_form_title',
     'title arguments' => array(2),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('carpoolingmod_join_ride_form', 2),
+    'page callback' => 'carpoolingmod_join_ride_form_page',
+    'page arguments' => array(2),
     'access callback' => 'carpoolingmod_join_ride_form_access',
     'access arguments' => array(2),
     'file' => 'carpoolingmod.pages.php',
@@ -117,8 +121,8 @@ function carpoolingmod_menu() {
   $items['carpool/addmycar/%user'] = array(
     'title callback' => 'carpoolingmod_addmycar_ride_form_title',
     'title arguments' => array(2),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('carpoolingmod_addmycar_ride_form', 2),
+    'page callback' => 'carpoolingmod_addmycar_ride_form_page',
+    'page arguments' => array(2),
     'access callback' => 'carpoolingmod_addmycar_ride_form_access',
     'access arguments' => array(2),
     'file' => 'carpoolingmod.pages.php',
@@ -128,8 +132,8 @@ function carpoolingmod_menu() {
   $items['carpool/removemycar/%user'] = array(
     'title callback' => 'carpoolingmod_removemycar_ride_form_title',
     'title arguments' => array(2),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('carpoolingmod_removemycar_ride_form', 2),
+    'page callback' => 'carpoolingmod_removemycar_ride_form_page',
+    'page arguments' => array(2),
     'access callback' => 'carpoolingmod_removemycar_ride_form_access',
     'access arguments' => array(2),
     'file' => 'carpoolingmod.admin.php',
@@ -139,8 +143,8 @@ function carpoolingmod_menu() {
   $items['carpool/leave/%user'] = array(
     'title callback' => 'carpoolingmod_leave_ride_form_title',
     'title arguments' => array(2),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('carpoolingmod_leave_ride_form', 2),
+    'page callback' => 'carpoolingmod_leave_ride_form_page',
+    'page arguments' => array(2),
     'access callback' => 'carpoolingmod_leave_ride_form_access',
     'access arguments' => array(2),
     'file' => 'carpoolingmod.admin.php',

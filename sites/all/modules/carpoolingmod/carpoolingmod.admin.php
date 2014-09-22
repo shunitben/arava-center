@@ -39,7 +39,7 @@ function carpoolingmod_pref_setup_form($form, &$form_status, $account, $redirect
     // The prefix/suffix provide the div that we're replacing, named by
     // #ajax['wrapper'] above.
     '#prefix' => '<div id="type-div">',
-    '#suffix' => '</div>',
+    '#suffix' => '</div><div class="clear-div"></div>',
     '#type' => 'container',
   );
   
@@ -122,10 +122,8 @@ function carpoolingmod_pref_setup_form($form, &$form_status, $account, $redirect
 	$form['departure']['departureday'] = array(
 		'#type' => 'select',
 		'#required' => true,
-		'#multiple' => true,
-		'#size' => 5,
 		'#options' => $dayopts,
-		'#default_value' => isset($data['departureday']) ? $data['departureday'] : '',
+		'#default_value' => (isset($data['departureday']) && $data['departureday']) ? $data['departureday'][0] : '',
 	);
 	
 	$form['departure']['departuretime'] = array(
@@ -144,10 +142,8 @@ function carpoolingmod_pref_setup_form($form, &$form_status, $account, $redirect
 	$form['returndate']['returnday'] = array(
 		'#type' => 'select',
 		'#required' => true,
-		'#multiple' => true,
-		'#size' => 5,
 		'#options' => $dayopts,
-		'#default_value' => isset($data['returnday']) ? $data['returnday'] : '',
+		'#default_value' => (isset($data['returnday']) && $data['returnday']) ? $data['returnday'][0] : '',
 	);
 	
 	$form['returndate']['returntime'] = array(
@@ -187,9 +183,11 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 			'type' => $values['type'],
 			'available_seats' => isset($values['available_seats']) ? $values['available_seats'] : 0,
 			'location' => $values['location'],
-			'departureday' => $values['departureday'] ? implode(',', $values['departureday']) : '',
+			//'departureday' => $values['departureday'] ? implode(',', $values['departureday']) : '',
+			'departureday' => $values['departureday'] ? $values['departureday'] : '',
 			'departuretime' => $values['departuretime'],
-			'returnday' => $values['returnday'] ? implode(',', $values['returnday']) : '',
+			//'returnday' => $values['returnday'] ? implode(',', $values['returnday']) : '',
+			'returnday' => $values['returnday'] ? $values['returnday'] : '',
 			'returntime' => $values['returntime'],
 		);
 		
@@ -264,7 +262,7 @@ function carpoolingmod_myrides_page(){
 			);
 		}
 
-		$html .= theme('table', array('header' => $header, 'rows' => $rows));
+		$html .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('fix-direction-ltr'))));
 		$html .= '</div></div>';
 	}
 	
@@ -277,6 +275,17 @@ function carpoolingmod_removemycar_ride_form($form, &$form_status, $account){
 	return confirm_form($form, t("Do you want to remove !user from your car?", 
 									array('!user' => l($account->name, 'user/'.$account->uid))), 
 			'MyRides', '');
+}
+
+function carpoolingmod_removemycar_ride_form_page($account){
+	global $user;
+	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid));
+	
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid", array(':uid' => $user->uid));
+	
+	drupal_set_message(t('You have removed !user from your car.', array('!user' => l($account->name, 'user/'.$account->uid))));
+	
+	drupal_goto('MyRides');
 }
 
 function carpoolingmod_removemycar_ride_form_submit($form, &$form_status){
@@ -309,4 +318,15 @@ function carpoolingmod_leave_ride_form_submit($form, &$form_status){
 	drupal_set_message(t("You have leave !user's ride.", array('!user' => l($account->name, 'user/'.$account->uid))));
 	unset($form_status['storage']);
 	$form_status['redirect'] = 'MyRides';
+}
+
+function carpoolingmod_leave_ride_form_page($account){
+	global $user;
+	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid));
+	
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid", array(':uid' => $account->uid));
+	
+	drupal_set_message(t("You have leave !user's ride.", array('!user' => l($account->name, 'user/'.$account->uid))));
+	
+	drupal_goto('MyRides');
 }

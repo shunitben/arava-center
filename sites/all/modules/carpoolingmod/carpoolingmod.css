@@ -1,0 +1,40 @@
+#carpoolingmod-pref-setup-form .form-item-type{
+float:left;
+}
+
+#carpoolingmod-pref-setup-form .form-item-type .form-item-type,
+body.rtl #carpoolingmod-pref-setup-form .form-item-type .form-item-type{
+float:none;
+}
+
+#type-div{
+float:left;
+}
+
+.clear-div{
+clear:both;
+}
+
+body.rtl #carpoolingmod-pref-setup-form .form-item-type{
+float:right;
+}
+
+body.rtl #type-div{
+float:right;
+}
+
+#type-div{
+padding: 20px 20px 0px 20px;
+}
+
+#type-div label{
+display:inline;
+}
+
+#type-div select{
+width:auto;
+}
+
+.fix-direction-ltr{
+direction: ltr;
+}

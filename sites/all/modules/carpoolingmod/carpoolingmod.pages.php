@@ -58,7 +58,7 @@ function carpoolingmod_offer_ride_page(){
 		$rows[] = $row;
 	}
 	
-	$html = theme('table', array('header' => $header, 'rows' => $rows)).theme('pager');
+	$html = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('fix-direction-ltr')))).theme('pager');
 	
 	return $html;
 }
@@ -114,7 +114,7 @@ function carpoolingmod_look_for_ride_page(){
 		$rows[] = $row;
 	}
 	
-	$html = theme('table', array('header' => $header, 'rows' => $rows)).theme('pager');
+	$html = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('fix-direction-ltr')))).theme('pager');
 	
 	return $html;	
 }
@@ -144,6 +144,22 @@ function carpoolingmod_join_ride_form_submit($form, &$form_status){
 	$form_status['redirect'] = 'rides-carpooling/offer-ride';
 }
 
+function carpoolingmod_join_ride_form_page($account){
+	global $user;
+	$data = array(
+		'join_uid' => $user->uid,
+		'offer_uid' => $account->uid,
+		'created' => time(),
+	);
+	drupal_write_record('carpooling_ride', $data);
+	
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid", array(':uid' => $account->uid));
+	
+	drupal_set_message(t('You have joined !user\'s ride?.', array('!user' => l($account->name, 'user/'.$account->uid))));
+	
+	drupal_goto('rides-carpooling/offer-ride');
+}
+
 function carpoolingmod_addmycar_ride_form($form, &$form_status, $account){
 	$form_status['storage'] = array('account' => $account);
 	
@@ -167,4 +183,20 @@ function carpoolingmod_addmycar_ride_form_submit($form, &$form_status){
 	drupal_set_message(t('You have added !user to your car.', array('!user' => l($account->name, 'user/'.$account->uid))));
 	unset($form_status['storage']);
 	$form_status['redirect'] = 'rides-carpooling/look-for-ride';
+}
+
+function carpoolingmod_addmycar_ride_form_page($account){
+	global $user;
+	$data = array(
+		'join_uid' => $account->uid,
+		'offer_uid' => $user->uid,
+		'created' => time(),
+	);
+	drupal_write_record('carpooling_ride', $data);
+	
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid", array(':uid' => $user->uid));
+	
+	drupal_set_message(t('You have added !user to your car.', array('!user' => l($account->name, 'user/'.$account->uid))));
+	
+	drupal_goto('rides-carpooling/look-for-ride');
 }
