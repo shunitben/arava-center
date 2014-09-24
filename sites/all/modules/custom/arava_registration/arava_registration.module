@@ -117,6 +117,14 @@ function arava_registration_menu() {
     'file' => 'arava_registration.my_timetable.inc'
   );
 
+  $items['semester-timetable'] = array(
+    'title' => t('Catalog Calendar'),
+    'page callback' => 'arava_registration_semester_timetable_page',
+    'access callback' => true,
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.semester_timetable.inc'
+  );
+
   /**
    * Configurations
    */
@@ -204,7 +212,7 @@ function arava_registration_permission() {
 }
 
 function arava_registration_init() {
-  if (arg(0) == 'user' || arg(0) == 'registration') {
+  if (arg(0) == 'user' || arg(0) == 'registration' || arg(0) == 'semester-timetable') {
     drupal_add_library('system', 'ui.dialog');
     $path = drupal_get_path('module', 'arava_registration');
     drupal_add_js($path . '/js/arava_registration.js');
@@ -349,7 +357,7 @@ function arava_registration_block_view($delta = '') {
 
     case 'semester_timetable':
       $block['subject'] = null;
-      $block['content'] = _arava_registration_generate_all_timetables();
+      $block['content'] = _arava_registration_generate_all_timetables('page_1');
       break;
 
     case 'edit_my_semester':
@@ -517,7 +525,7 @@ function _arava_registration_generate_view($view_name, $display_name, $args = ar
 	return $view->render();
 }
 
-function _arava_registration_generate_all_timetables() {
+function _arava_registration_generate_all_timetables($display) {
   global $user;
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $MySemesterApi = new MySemesterAPI();
@@ -546,7 +554,7 @@ function _arava_registration_generate_all_timetables() {
       $date,
       $user->uid,
     );
-    $calendar = _arava_registration_generate_view('calendar', 'page_1', $args);
+    $calendar = _arava_registration_generate_view('calendar', $display, $args);
     $output .= $calendar;
   }
 

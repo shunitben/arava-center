@@ -140,7 +140,7 @@
         },
 
         timetableNavigation: function() {
-            var timetableBlock = $('.my-timetable-block'),
+            var timetableBlock = $('.my-timetable-block, .page-semester-timetable #block-system-main'),
                 timetables = $('.view-calendar', timetableBlock),
                 prevLinks = $('.date-prev', timetables),
                 nextLinks = $('.date-next', timetables),
@@ -171,10 +171,14 @@
             // color the lessons
             var colors = ['#B6E9FA', '#FAE0B6', '#B6D0FA','#BCB6FA','#FAE0B6','#DFB6FA','#F1FAB6','#FAB6F1','#C8FAB6','#FAB6BF','#B6FADB','#FACBB6', '#B6FAEE'],
                 color_index = 0,
+                num_colors = colors.length,
                 map = [];
             $('.colored-item').each(function(){
                 var course_id = $(this).attr('course');
                 if (!map[course_id]) {
+                    if (color_index == num_colors) {
+                        color_index = 0;
+                    }
                     map[course_id] = colors[color_index];
                     color_index++;
                 }

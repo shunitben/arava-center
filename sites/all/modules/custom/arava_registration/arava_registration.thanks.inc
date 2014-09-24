@@ -94,8 +94,6 @@ function _arava_registration_confirmation_email() {
   $registration_summary = _arava_registration_generate_view('registration_summary', 'block');
   $output .= $registration_summary;
 
-//  $output .= _arava_registration_generate_all_timetables();
-
   $output .= t('Best regards,') . "<br>";
   $output .= t('The Moar team');
 
