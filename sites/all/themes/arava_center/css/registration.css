@@ -85,12 +85,26 @@ Takanon popups
                 color: #bbbbbb;
             }
             #block-arava-registration-registration-steps ul li a[class*="active"]{
-                color:#2a68af;
+                color:#1E1E1E;
             }
             #block-arava-registration-registration-steps ul li a:hover{
                 text-decoration: none;
             }
-
+            
+        .block-arava-registration .courses{ background-color: #7ab8ff!important}
+        .block-arava-registration .accommodation{ background-color: #4DE4B7!important}
+        .block-arava-registration .presence{ background-color: #E0E014!important}
+        .block-arava-registration .meals{ background-color: #FC9300!important}
+        .block-arava-registration .extra{ background-color: #F56767!important}
+        .block-arava-registration .payment{ background-color: #B48DF7!important}
+        .block-arava-registration .carpoolingpref{ background-color: #B48DF7!important}
+        
+        .block-arava-registration .active{
+            font-weight: bold;
+            text-decoration: underline;
+            color:#1e1e1e;
+        }
+        
 /****
 Course selection
 ****/

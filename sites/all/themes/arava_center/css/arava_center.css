@@ -141,3 +141,7 @@ font-weight: bold;
 .page-catalog .views-field-field-lesson-days{
     margin-bottom: 20px;
 }
+/*carpooling*/
+.page-myrides table td, .page-rides-carpooling table td, .page-rides-carpooling table th{
+    text-align: right;
+}
