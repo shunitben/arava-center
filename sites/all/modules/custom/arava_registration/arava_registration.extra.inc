@@ -134,7 +134,7 @@ function arava_registration_extra_submit($form, &$form_state) {
   // save the information
   $mySemesterAPI->setComment($comments);
 
-	$form_state['redirect'] = array('registration/payment');
+	$form_state['redirect'] = array('registration/confirm');
 }
 
 function arava_registration_save_agreement($name, $to_what) {

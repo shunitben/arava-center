@@ -494,10 +494,25 @@ class MySemesterAPI {
     field_attach_update('node', $user_semester_node);
   }
 
+  /**
+   * @param $extra_info
+   */
+  public function setComplete() {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $user_semester_node->field_registration_complete[LANGUAGE_NONE][0]['value'] = "1";
+
+    field_attach_update('node', $user_semester_node);
+  }
+
+  public function getComplete() {
+    return $this->user_semester->field_registration_complete->value();
+  }
+
   public function getSemesterId() {
     return $this->semester_id;
   }
-  
+
   public function getMySemesterId() {
     return $this->user_semester->getIdentifier();
   }
