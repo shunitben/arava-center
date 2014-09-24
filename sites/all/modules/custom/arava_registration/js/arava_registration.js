@@ -4,6 +4,16 @@
     Drupal.behaviors.arava_registration = {
         attach: function (context) {
 
+            // only attach behaviors once on page load
+            if (context == document) {
+                // Show more info about the course in a dialog
+                $('.view-course-selection .views-field-view-node a, .view-course-selection .views-field-title a').click(function(e) {
+                    e.preventDefault();
+                    var link = $(this).attr('href');
+                    Drupal.behaviors.arava_registration.showCourseInfo(link);
+                });
+            }
+
             $('.dialog-link').click(function(e){
                 e.preventDefault();
                 var id = $(this).parents('.checkbox-field-wrapper').attr('takanon-id'),
@@ -90,6 +100,17 @@
                 $(this).hide();
                 $('.hold-on').remove();
                 $(this).before('<span class="hold-on">' + Drupal.t('Going to next phase...') + '</span>')
+            });
+        },
+
+        showCourseInfo: function (link) {
+            $('body').append('<div class="course-loaded-info"></div>')
+            $('.course-loaded-info').load(link + ' #main');
+            $('.course-loaded-info').dialog({
+                height: 450,
+                width: 600,
+                modal: true,
+                close: function() {$(this).dialog('destroy').remove()}
             });
         },
 
