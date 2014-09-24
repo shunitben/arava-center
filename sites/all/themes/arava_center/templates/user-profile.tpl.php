@@ -52,12 +52,12 @@
   ?>
 </div>
 
-<div class="remaining-payment-block">
+<!--<div class="remaining-payment-block">
   <?php
-  $block = module_invoke('arava_registration','block_view','remaining_payment');
-  print render($block['content']);
+  //$block = module_invoke('arava_registration','block_view','remaining_payment');
+  //print render($block['content']);
   ?>
-</div>
+</div>-->
 
 <div class="my-messages-block">
   <?php

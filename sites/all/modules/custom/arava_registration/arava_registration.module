@@ -71,6 +71,15 @@ function arava_registration_menu() {
     'file' => 'arava_registration.extra.inc'
   );
 
+  $items['registration/confirm'] = array(
+    'title' => t('Confirm Registration'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_registration_confirmation'),
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.confirm.inc'
+  );
+
   $items['registration/payment'] = array(
     'title' => t('Payment'),
     'page callback' => 'arava_registration_payment_page',
@@ -92,6 +101,13 @@ function arava_registration_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.thanks.inc'
   );
+  $items['registration/thanks-confirmed'] = array(
+    'title' => t('Thanks'),
+    'page callback' => 'arava_registration_thanks_confirmed_page',
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.thanks.inc'
+  );
 
   $items['my_timetable'] = array(
     'title' => t('My Timetable'),
@@ -99,6 +115,14 @@ function arava_registration_menu() {
     'access arguments' => array('signup to courses and accommodation'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'arava_registration.my_timetable.inc'
+  );
+
+  $items['semester-timetable'] = array(
+    'title' => t('Catalog Calendar'),
+    'page callback' => 'arava_registration_semester_timetable_page',
+    'access callback' => true,
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_registration.semester_timetable.inc'
   );
 
   /**
@@ -171,9 +195,9 @@ function arava_registration_access() {
 
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
-  $payed = $mySemesterAPI->getMadePayment();
+  $registration_complete = $mySemesterAPI->getComplete();
 
-  return $permission && empty($payed);
+  return $permission && !$registration_complete;
 }
 
 /**
@@ -188,7 +212,7 @@ function arava_registration_permission() {
 }
 
 function arava_registration_init() {
-  if (arg(0) == 'user' || arg(0) == 'registration') {
+  if (arg(0) == 'user' || arg(0) == 'registration' || arg(0) == 'semester-timetable') {
     drupal_add_library('system', 'ui.dialog');
     $path = drupal_get_path('module', 'arava_registration');
     drupal_add_js($path . '/js/arava_registration.js');
@@ -333,7 +357,7 @@ function arava_registration_block_view($delta = '') {
 
     case 'semester_timetable':
       $block['subject'] = null;
-      $block['content'] = _arava_registration_generate_all_timetables();
+      $block['content'] = _arava_registration_generate_all_timetables('page_1');
       break;
 
     case 'edit_my_semester':
@@ -388,10 +412,14 @@ function _arava_registration_steps_block() {
       'title' => t('Extra info'),
       'href' => 'registration/extra',
     ),
-    'payment' => array(
-      'title' => t('Payment'),
-      'href' => 'registration/payment',
+    'confirm' => array(
+      'title' => t('Confirm registration'),
+      'href' => 'registration/confirm',
     ),
+//    'payment' => array(
+//      'title' => t('Payment'),
+//      'href' => 'registration/payment',
+//    ),
   );
 
   $disabled = !arava_registration_access();
@@ -497,7 +525,7 @@ function _arava_registration_generate_view($view_name, $display_name, $args = ar
 	return $view->render();
 }
 
-function _arava_registration_generate_all_timetables() {
+function _arava_registration_generate_all_timetables($display) {
   global $user;
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $MySemesterApi = new MySemesterAPI();
@@ -526,7 +554,7 @@ function _arava_registration_generate_all_timetables() {
       $date,
       $user->uid,
     );
-    $calendar = _arava_registration_generate_view('calendar', 'page_1', $args);
+    $calendar = _arava_registration_generate_view('calendar', $display, $args);
     $output .= $calendar;
   }
 
@@ -614,4 +642,35 @@ function _get_user_first_name($fullname) {
   $fullname = trim($fullname);
   $parts = explode(' ', $fullname);
   return $parts[0];
+}
+
+function _arava_registration_validate_all_registration() {
+  $missing = array();
+
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $mySemesterAPI = new MySemesterAPI();
+
+  // at least one course
+  $courses = $mySemesterAPI->getAllCoursesForUser();
+  if (empty($courses)) {
+    $missing[] = t('Courses - please choose at least one course.');
+  }
+
+  // accommodation
+  $accommodation = $mySemesterAPI->getAccomodationForUser();
+  if ($accommodation == null) {
+    $missing[] = t('Accommodation - please choose your accommodation.');
+  }
+
+  // extra info
+  $extra = $mySemesterAPI->getExtraInfoForUser();
+  unset($extra['comments']);
+  foreach ($extra as $takanon) {
+    if ($takanon == 0) {
+      $missing[] = t('Extra info - please sign all the takanons.');
+      break;
+    }
+  }
+
+  return $missing;
 }

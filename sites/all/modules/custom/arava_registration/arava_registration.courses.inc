@@ -21,7 +21,7 @@ function arava_registration_course($form, &$form_state) {
 	);
 
   $form['timetable'] = array(
-    '#markup' => '<div class="my-timetable-block">' . _arava_registration_generate_all_timetables() . '</div>',
+    '#markup' => '<div class="my-timetable-block">' . _arava_registration_generate_all_timetables('page_1') . '</div>',
   );
 
 	$form['courses_groups'] = array(
@@ -168,7 +168,7 @@ function arava_registration_course_ajax($course_id, $action) {
   }
 
   print json_encode(array(
-    'timetable' => _arava_registration_generate_all_timetables(),
+    'timetable' => _arava_registration_generate_all_timetables('page_1'),
   ));
 
 }

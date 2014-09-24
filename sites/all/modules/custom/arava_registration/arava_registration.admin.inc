@@ -160,6 +160,15 @@ function arava_registration_texts($form, &$form_state) {
     '#format' => isset($val['format']) ? $val['format'] : 'html',
   );
 
+  $val = variable_get('arava_center_registration_complete_thanks', array('value' => '', 'format' => 'html'));
+  $form['arava_center_registration_complete_thanks'] = array(
+    '#type' => 'text_format',
+    '#title' => t('Registration complete (no payment) thanks message'),
+    '#default_value' => $val['value'],
+    '#format' => isset($val['format']) ? $val['format'] : 'html',
+  );
+
+
   return system_settings_form($form);
 }
 

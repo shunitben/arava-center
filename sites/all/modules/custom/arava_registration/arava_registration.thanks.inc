@@ -56,6 +56,25 @@ function arava_registration_thanks_page() {
 
 }
 
+/**
+ * This page is for when we don't have online payments. We get here after confirming that our registration is complete.
+ * It sends the thank you email.
+ * @return mixed
+ */
+function arava_registration_thanks_confirmed_page() {
+  global $user;
+  $to = $user->mail;
+  $lang = $user->language;
+  $params = array();
+
+  // send confirmation email to student + timetable
+  drupal_mail('arava_registration', 'confirmation', $to, $lang, $params);
+
+  // say thank you
+  $output = variable_get('arava_center_registration_complete_thanks', array('value' => t('Thank you!')));
+  return $output['value'];
+}
+
 function _arava_registration_confirmation_email() {
   global $user;
   $user = user_load($user->uid);
@@ -74,8 +93,6 @@ function _arava_registration_confirmation_email() {
 
   $registration_summary = _arava_registration_generate_view('registration_summary', 'block');
   $output .= $registration_summary;
-
-//  $output .= _arava_registration_generate_all_timetables();
 
   $output .= t('Best regards,') . "<br>";
   $output .= t('The Moar team');

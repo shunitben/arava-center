@@ -21,12 +21,6 @@ function arava_registration_extra($form, &$form_state) {
 
   $form['#tree'] = true;
 
-  $form['comments'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Comments'),
-    '#default_value' => $selected['comments'],
-  );
-
   $form['takanon_moa_checkbox'] = _agreement_field_checkbox("Moa's terms", 'arava_center_takanon_moa_link', 'moa', $selected['takanon_moa']);
   $form['takanon_moa'] = _agreement_field_textfield('moa');
 
@@ -42,6 +36,12 @@ function arava_registration_extra($form, &$form_state) {
   $form['waver_checkbox'] = _agreement_field_checkbox("the waver", 'arava_center_waver_link', 'waver', $selected['waver']);
   $form['waver'] = _agreement_field_textfield('waver');
 
+  $form['comments'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Comments / Remarks / Extra requests'),
+    '#description' => t('You can write any kind of feedback here.'),
+    '#default_value' => $selected['comments'],
+  );
 
   $form['submit'] = array(
     '#type' => 'submit',
@@ -134,7 +134,7 @@ function arava_registration_extra_submit($form, &$form_state) {
   // save the information
   $mySemesterAPI->setComment($comments);
 
-	$form_state['redirect'] = array('registration/payment');
+	$form_state['redirect'] = array('registration/confirm');
 }
 
 function arava_registration_save_agreement($name, $to_what) {

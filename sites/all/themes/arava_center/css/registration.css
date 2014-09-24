@@ -168,10 +168,12 @@ Course selection
 /**
 Timetable
 **/
-.my-timetable-block .view-calendar {
+.my-timetable-block .view-calendar ,
+.page-semester-timetable .view-calendar {
     display: none;
 }
-.my-timetable-block .view-calendar:first-child {
+.my-timetable-block .view-calendar:first-child ,
+.page-semester-timetable .view-calendar:first-child {
     display: block;
 }
 
@@ -185,33 +187,42 @@ Timetable
     clear: left;
     position: relative;
 }
-#arava-registration-course .form-submit {
+#arava-registration-course .form-submit,
+#arava-registration-course .hold-on{
     display: block;
     clear: both;
 }
-.my-timetable-block .view .date-nav-wrapper .date-heading {
+.my-timetable-block .view .date-nav-wrapper .date-heading ,
+.page-semester-timetable .view .date-nav-wrapper .date-heading {
     text-align: left;
 }
-.my-timetable-block .item-list ul.pager {
+.my-timetable-block .item-list ul.pager ,
+.page-semester-timetable .item-list ul.pager {
     margin: 0;
 }
-.my-timetable-block .calendar-calendar div.title {
+.my-timetable-block .calendar-calendar div.title ,
+.page-semester-timetable .calendar-calendar div.title {
     font-size: 10px;
 }
-.my-timetable-block .hours {
+.my-timetable-block .hours ,
+.page-semester-timetable .hours {
     font-size: 9px;
 }
-.my-timetable-block .month.day {
+.my-timetable-block .month.day,
+.page-semester-timetable .month.day {
     font-size: 10px;
 }
-.my-timetable-block .calendar-calendar .month-view .full td.single-day div.monthview {
+.my-timetable-block .calendar-calendar .month-view .full td.single-day div.monthview ,
+.page-semester-timetable .calendar-calendar .month-view .full td.single-day div.monthview {
     overflow: visible;
 }
 .colored-item{
     position: relative;
 }
 .my-timetable-block .calendar-calendar .month-view .full td.single-day .inner .colored-item div.calendar-popup,
-.my-timetable-block .calendar-calendar .month-view .full td .inner div.calendar.monthview .colored-item div.calendar-popup{
+.my-timetable-block .calendar-calendar .month-view .full td .inner div.calendar.monthview .colored-item div.calendar-popup,
+.page-semester-timetable .calendar-calendar .month-view .full td.single-day .inner .colored-item div.calendar-popup,
+.page-semester-timetable .calendar-calendar .month-view .full td .inner div.calendar.monthview .colored-item div.calendar-popup{
     display: none;
     position: absolute;
     top: 0;
@@ -223,12 +234,16 @@ Timetable
     padding: 20px;
 }
 .my-timetable-block .colored-item .calendar-popup .title a,
-.my-timetable-block .colored-item .calendar-popup .hours {
+.my-timetable-block .colored-item .calendar-popup .hours,
+.page-semester-timetable .colored-item .calendar-popup .title a,
+.page-semester-timetable .colored-item .calendar-popup .hours {
     font-size: 16px;
     text-align: center;
 }
 .my-timetable-block .calendar-calendar .month-view .full td.single-day .inner .item:hover div.calendar-popup,
-.my-timetable-block .calendar-calendar .month-view .full td .inner .item:hover div.calendar.monthview div.calendar-popup{
+.my-timetable-block .calendar-calendar .month-view .full td .inner .item:hover div.calendar.monthview div.calendar-popup,
+.page-semester-timetable .calendar-calendar .month-view .full td.single-day .inner .item:hover div.calendar-popup,
+.page-semester-timetable .calendar-calendar .month-view .full td .inner .item:hover div.calendar.monthview div.calendar-popup {
     display: block;
 }
 
@@ -307,6 +322,7 @@ user page
 }
 
 .profile .field-type-text{
+    overflow: hidden;
     clear:right;
 }
 .profile .field-label{

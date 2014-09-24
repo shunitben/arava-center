@@ -9,8 +9,11 @@ function arava_center_preprocess_page(&$vars) {
   if ((arg(0) == 'registration' && arg(1) == 'thanks') || arg(0) == 'my_timetable' ) {
     $vars['theme_hook_suggestions'][] = 'page__blank';
   }
-  if (arg(0) == 'registration' || arg(0) == 'user' || arg(0) == 'my_timetable') {
+  if (arg(0) == 'registration' || arg(0) == 'user' || arg(0) == 'my_timetable' || arg(0) == 'semester-timetable') {
     drupal_add_css(path_to_theme() . '/css/registration.css');
+  }
+  if (arg(0) == 'registration') {
+    $vars['classes_array'][] = 'page-registration';
   }
 }
 
