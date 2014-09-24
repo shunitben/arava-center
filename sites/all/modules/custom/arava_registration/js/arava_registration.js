@@ -95,11 +95,9 @@
                 $("#edit-takanon-moa").addClass("form-control");
             }
 
-            // display message when submitting registration pages
-            $(".page-registration #edit-submit").click(function() {
-                $(this).hide();
-                $('.hold-on').remove();
-                $(this).before('<span class="hold-on">' + Drupal.t('Going to next phase...') + '</span>')
+            // disable and show spinner when submitting registration pages
+            $("#edit-submit").click(function() {
+                $(this).addClass('processing');
             });
         },
 

@@ -187,8 +187,7 @@ Timetable
     clear: left;
     position: relative;
 }
-#arava-registration-course .form-submit,
-#arava-registration-course .hold-on{
+#arava-registration-course .form-submit {
     display: block;
     clear: both;
 }
