@@ -149,3 +149,6 @@ font-weight: bold;
 .page-myrides table td, .page-rides-carpooling table td, .page-rides-carpooling table th{
     text-align: right;
 }
+.form-item-location {
+            width:200px;
+        }
