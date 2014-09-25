@@ -5,6 +5,8 @@
  */
 function arava_registration_course($form, &$form_state) {
 
+  drupal_add_library('system', 'ui.accordion');
+
   $parts = _arava_registration_get_separated_sectioned_view('course_selection', 'block_1');
 
   // get the courses that are already selected
@@ -24,20 +26,20 @@ function arava_registration_course($form, &$form_state) {
     '#markup' => '<div class="my-timetable-block">' . _arava_registration_generate_all_timetables('page_1') . '</div>',
   );
 
-	$form['courses_groups'] = array(
-		'#type' => 'horizontal_tabs',
-    '#attached' => array('library' => array(array('field_group', 'horizontal-tabs'))), // Converts fieldsets into tabs
-	);
+  $form['courses_start'] = array(
+    '#markup' => '<div class="all-courses">',
+  );
 
   $i = 0;
 	foreach ($parts['rows'] as $section) {
     $i++;
     $section_name = $section['above'];
+    $form['courses']['title' . $i] = array(
+      '#markup' => '<h3>' . $section_name . '</h3>',
+    );
     $form['courses'][$i] = array(
       '#type' => 'fieldset',
       '#collapsible' => false,
-      '#group' => 'courses_groups',
-      '#title' => $section_name,
     );
 
     foreach ($section['rows'] as $row) {
@@ -57,6 +59,10 @@ function arava_registration_course($form, &$form_state) {
       );
     }
 	}
+
+  $form['courses_end'] = array(
+    '#markup' => '</div>',
+  );
 
 	$form['below'] = array(
 		'#markup' => $parts['below'],

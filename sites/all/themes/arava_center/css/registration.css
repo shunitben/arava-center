@@ -48,7 +48,7 @@ Takanon popups
     background-image:  url("../Images/loader-15-dark.gif");
 }
 
-.page-registration-course .ui-state-default .ui-icon, .page-registration-extra .ui-state-default .ui-icon{
+.page-registration-course .ui-dialog-titlebar .ui-state-default .ui-icon, .page-registration-extra .ui-dialog-titlebar .ui-state-default .ui-icon{
     
     background-image: url(/sites/all/modules/jquery_update/replace/ui/themes/base/minified/images/ui-icons_888888_256x240.png)!important;
 }
@@ -133,6 +133,23 @@ Course selection
 .view-course-selection .views-field-field-faculty{
     display: none;
 }
+
+.ui-accordion fieldset.ui-accordion-content {
+    padding: 5px 0;
+}
+.all-courses .fieldset-wrapper > .form-wrapper {
+    margin: 5px 0;
+}
+.ui-accordion.all-courses .ui-accordion-header {
+    font-size: 16px;
+    background: #2a68af;
+    padding: 7px;
+    color: #fff;
+}
+.all-courses .ui-state-default .ui-icon:after {
+    line-height: 39px;
+}
+
 /*accommodation*/   
 .view-accomodation-selection{
     width:100%;
@@ -192,7 +209,8 @@ Timetable
     display: block;
 }
 
-.view-course-selection .horizontal-tabs {
+.view-course-selection .horizontal-tabs,
+.view-course-selection .all-courses{
     float: right;
     width: 610px;
 }

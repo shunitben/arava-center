@@ -12,6 +12,14 @@
                     var link = $(this).attr('href');
                     Drupal.behaviors.arava_registration.showCourseInfo(link);
                 });
+
+                // courses accordion
+                if ($('.all-courses').length > 0) {
+                    $('.all-courses').accordion({
+                        collapsible: true,
+                        heightStyle: "content"
+                    });
+                }
             }
 
             $('.dialog-link').click(function(e){
