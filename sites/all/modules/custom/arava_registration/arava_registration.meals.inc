@@ -24,18 +24,37 @@ function arava_registration_meals($form, &$form_state) {
   $form['food'] = array(
     '#type' => 'fieldset',
     '#collapsible' => false,
-    '#title' => t('Special food requests')
+  );
+
+  $form['food']['i_eat_dairy'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I eat dairy.'),
+    '#default_value' => $selected['i_eat_dairy'],
+  );
+
+  $form['food']['i_eat_eggs'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I eat eggs.'),
+    '#default_value' => $selected['i_eat_eggs'],
   );
 
   $form['food']['allergies'] = array(
     '#type' => 'fieldset',
     '#collapsible' => false,
-    '#title' => t('Allergies'),
+  );
+  $form['food']['allergies']['explanation'] = array(
+    '#markup' => '<div><b>' . t('Allergies: ') . '</b>' . t('Are you allergic to any foods? Please mark what\'s relevant.<br> (Please note, this isn\'t about naturopathic
+    or ayurvedic preferences, but about allergies.)') . '</div>',
   );
   $form['food']['allergies']['gluten'] = array(
     '#type' => 'checkbox',
     '#title' => t('I am allergic to gluten.'),
     '#default_value' => $selected['gluten'],
+  );
+  $form['food']['allergies']['soy'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I am allergic to soy.'),
+    '#default_value' => $selected['soy'],
   );
   $form['food']['allergies']['dairy'] = array(
     '#type' => 'checkbox',
@@ -53,11 +72,7 @@ function arava_registration_meals($form, &$form_state) {
     '#default_value' => $selected['other_allergies'],
   );
 
-  $form['food']['vegan'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('I would like a vegan diet.'),
-    '#default_value' => $selected['vegan'],
-  );
+
 
   $form['guests'] = array(
     '#type' => 'fieldset',
@@ -106,7 +121,7 @@ function arava_registration_meals_submit($form, &$form_state) {
   $mySemesterAPI = new MySemesterAPI();
 
   // save the information
-  $mySemesterAPI->setMealsFoodInfo($allergies, $other_allergies, $food['vegan']);
+  $mySemesterAPI->setMealsFoodInfo($allergies, $other_allergies, $food['i_eat_dairy'], $food['i_eat_eggs']);
   $mySemesterAPI->setMealsPresenceInfo($guests['number'], $guests['days']);
 
 	$form_state['redirect'] = array('registration/extra');

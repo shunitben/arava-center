@@ -164,6 +164,15 @@ Course selection
 .views-field-field-price div{
     margin-right: 10px;
 }
+/**
+Meals
+*/
+
+#edit-food,
+#edit-food-allergies {
+    border: none;
+    margin-bottom: 0;
+}
 
 /**
 Timetable

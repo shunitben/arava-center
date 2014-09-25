@@ -119,9 +119,11 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
     if (!in_array('Site Manager', $user->roles) && $user->uid != 1) {
       $form['field_dairy']['#access'] = false;
       $form['field_gluten']['#access'] = false;
+      $form['field_soy']['#access'] = false;
       $form['field_other_allergies']['#access'] = false;
       $form['field_peanuts']['#access'] = false;
-      $form['field_vegan']['#access'] = false;
+      $form['field_i_eat_dairy']['#access'] = false;
+      $form['field_i_eat_eggs']['#access'] = false;
       $form['ckeditor']['#access'] = false;
       $form['timezone']['#access'] = false;
       $form['locale']['#access'] = false;

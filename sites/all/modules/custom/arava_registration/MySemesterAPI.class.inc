@@ -252,10 +252,12 @@ class MySemesterAPI {
     $user_wrapper = entity_metadata_wrapper('user', $user);
     $meals_info = array(
       'gluten' => $user_wrapper->field_gluten->value(),
+      'soy' => $user_wrapper->field_soy->value(),
       'dairy' => $user_wrapper->field_dairy->value(),
       'peanuts' => $user_wrapper->field_peanuts->value(),
       'other_allergies' => $user_wrapper->field_other_allergies->value(),
-      'vegan' => $user_wrapper->field_vegan->value(),
+      'i_eat_dairy' => $user_wrapper->field_i_eat_dairy->value(),
+      'i_eat_eggs' => $user_wrapper->field_i_eat_eggs->value(),
     );
     if ($this->user_semester != null) {
       $meals_info['days_present'] = $this->user_semester->field_days_present->value();
@@ -267,13 +269,15 @@ class MySemesterAPI {
     return $meals_info;
   }
 
-  public function setMealsFoodInfo($allergies, $other_allergies, $vegan) {
+  public function setMealsFoodInfo($allergies, $other_allergies, $i_eat_dairy, $i_eat_eggs) {
     $user = user_load($this->user->uid);
     $user->field_gluten[LANGUAGE_NONE][0]['value'] = $allergies['gluten'];
+    $user->field_soy[LANGUAGE_NONE][0]['value'] = $allergies['soy'];
     $user->field_dairy[LANGUAGE_NONE][0]['value'] = $allergies['dairy'];
     $user->field_peanuts[LANGUAGE_NONE][0]['value'] = $allergies['peanuts'];
     $user->field_other_allergies[LANGUAGE_NONE][0]['value'] = $other_allergies;
-    $user->field_vegan[LANGUAGE_NONE][0]['value'] = $vegan;
+    $user->field_i_eat_dairy[LANGUAGE_NONE][0]['value'] = $i_eat_dairy;
+    $user->field_i_eat_eggs[LANGUAGE_NONE][0]['value'] = $i_eat_eggs;
 
     field_attach_update('user', $user);
   }
