@@ -1,0 +1,3 @@
+name = Arava Admin
+description = Administration functionality, such as reports.
+core = 7.x

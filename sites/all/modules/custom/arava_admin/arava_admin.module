@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ * @return mixed
+ */
+function arava_admin_menu() {
+
+  $items['admin/arava-admin'] = array(
+    'title' => t('Arava Admin'),
+    'page callback' => 'arava_admin_page',
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_admin.admin.inc'
+  );
+
+  $items['admin/admin-presence'] = array(
+    'title' => t('Administer Presence'),
+    'page callback' => 'arava_admin_presence_page',
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_admin.presence.inc'
+  );
+
+  $items['admin/admin-meals'] = array(
+    'title' => t('Administer Meals'),
+    'page callback' => 'arava_admin_meals_page',
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_admin.meals.inc'
+  );
+
+  $items['admin/admin-registration'] = array(
+    'title' => t('Administer Registration'),
+    'page callback' => 'arava_admin_registration_page',
+    'access arguments' => array('administer menu'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_admin.registration.inc'
+  );
+
+
+  return $items;
+}
