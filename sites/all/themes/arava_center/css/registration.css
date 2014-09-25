@@ -12,6 +12,10 @@
 #edit-submit.processing:hover{
     background-image:  url("../Images/loader-15-light.gif");
 }
+.ui-dialog .ui-dialog-content.loading,
+.takanon-text.loading{
+    background:  url("../Images/loader.gif") no-repeat center center;
+}
 
 
 /****

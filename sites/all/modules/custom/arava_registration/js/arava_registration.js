@@ -102,8 +102,10 @@
         },
 
         showCourseInfo: function (link) {
-            $('body').append('<div class="course-loaded-info"></div>')
-            $('.course-loaded-info').load(link + ' #main');
+            $('body').append('<div class="course-loaded-info loading"></div>')
+            $('.course-loaded-info').load(link + ' #main', function(){
+                $('.course-loaded-info').removeClass('loading');
+            });
             $('.course-loaded-info').dialog({
                 height: 450,
                 width: 600,
@@ -115,7 +117,10 @@
         showTakanon: function (id, link) {
             var selector = '.takanon[takanon-id=' + id + ']'
             $(selector).removeClass('hidden');
-            $('.takanon-text', selector).load(link + ' .field-name-body');
+            $('.takanon-text', selector).addClass('loading');
+            $('.takanon-text', selector).load(link + ' .field-name-body', function(){
+                $('.takanon-text', selector).removeClass('loading');
+            });
             $(selector).dialog({
                 height: 450,
                 width: 600,
