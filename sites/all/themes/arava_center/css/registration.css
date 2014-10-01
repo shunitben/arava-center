@@ -149,7 +149,9 @@ Course selection
 .all-courses .ui-state-default .ui-icon:after {
     line-height: 39px;
 }
-
+.view-course-selection .all-courses{
+    margin-bottom: 10px;
+}
 /*accommodation*/   
 .view-accomodation-selection{
     width:100%;

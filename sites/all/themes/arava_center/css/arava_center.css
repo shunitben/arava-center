@@ -15,7 +15,7 @@
     display:none;
 }
 #site-name{
-    xdisplay:none;
+    display:none;
 }
 #tranzila_frame{
     width:400px;
@@ -90,6 +90,7 @@ ul.menu li a{
     display: inline-block;
     padding-top: 14px;
     padding-right: 20px;
+    float: left;
 }
 .between-headers + #header {
     padding-top: 10px;
@@ -131,19 +132,59 @@ ul.menu li a{
     margin-top:0px;
 }
 /*catalog*/
-.page-catalog .field-content a{
-    border-bottom:1px dashed;
+.page-catalog .view-catalog .item-list{
+    border:1px solid #2a68af;
+    margin-bottom: 40px;
 }
-.page-catalog li{
+.page-catalog .view-catalog h3{
+    background-color: #2a68af;
+    color: #f0f0f0;
+    font-size: 40px;
+    height: 55px;
+    margin-top:0px;
+    padding-right: 20px;
+}
+.page-catalog .field-content{
+    clear:both;
+}
+.page-catalog .field-content a{
+    font-size: 25px;
+    float: right;
+    clear: both;
+}
+.page-catalog .views-field-body,.page-catalog .views-field-field-lesson-days, .page-catalog .views-field-field-teacher{
+    margin-right:  20px;
+}
+.page-catalog .views-row{
     list-style-type: none;
+    border-bottom: 1px solid #acacac;
+    margin-left: 20px!important;
+    margin-bottom: 10px;
+}
+.page-catalog .views-row-last{
+    border-bottom:none;
 }
 .page-catalog .views-label-field-lesson-days{
     float: right;
-margin-left: 10px;
-font-weight: bold;
+    margin-left: 10px;
+    font-weight: bold;
 }
-.page-catalog .views-field-field-lesson-days{
-    margin-bottom: 20px;
+.page-catalog .views-field-field-lesson-days .field-content{
+    display: inline-block;
+}
+.page-catalog .views-label-field-teacher{
+    float: right;
+    margin-left: 10px;
+    font-weight: bold;
+}
+.page-catalog .views-field-field-teacher .field-content{
+    display: inline-block;
+}
+.page-catalog .views-field-body table{
+    margin-bottom: 0px;
+}
+.page-catalog .views-field-body table div a{
+    font-size: 14px;
 }
 /*carpooling*/
 .page-myrides table td, .page-rides-carpooling table td, .page-rides-carpooling table th{

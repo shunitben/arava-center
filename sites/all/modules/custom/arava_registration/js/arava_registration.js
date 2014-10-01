@@ -17,7 +17,8 @@
                 if ($('.all-courses').length > 0) {
                     $('.all-courses').accordion({
                         collapsible: true,
-                        heightStyle: "content"
+                        heightStyle: "content",
+                        active:false
                     });
                 }
             }
