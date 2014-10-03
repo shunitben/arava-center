@@ -41,3 +41,20 @@ function arava_admin_menu() {
 
   return $items;
 }
+
+function arava_admin_preprocess_page(&$vars) {
+  if (arg(0) == 'user') {
+    if (user_access('administer nodes')) {
+      module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+      $mySemesterAPI = new MySemesterAPI(arg(1));
+      $mySemesterId = $mySemesterAPI->getMySemesterId();
+      drupal_set_message(l(t('Edit user\'s semester'), 'node/' . $mySemesterId . '/edit'), 'status');
+    }
+  }
+  if (!empty($vars['node']) && $vars['node']->type == 'my_semester') {
+    if (user_access('administer nodes')) {
+      $uid = $vars['node']->field_user[LANGUAGE_NONE][0]['target_id'];
+      drupal_set_message(l(t('Edit user\'s personal details'), 'user/' . $uid . '/edit'), 'status');
+    }
+  }
+}
