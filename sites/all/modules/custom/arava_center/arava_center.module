@@ -16,8 +16,19 @@ function arava_center_menu() {
     'menu_name' => 'main-menu',
   );
 
+  $items['arava-front'] = array(
+    'title' => '',
+    'page callback' => 'arava_center_front_page',
+    'type' => MENU_CALLBACK,
+    'access callback' => true,
+  );
 
   return $items;
+}
+
+function arava_center_front_page() {
+  drupal_set_title(t('Welcome to Arava Spiritual Center'));
+  return '';
 }
 
 function arava_center_personal_area_title() {
