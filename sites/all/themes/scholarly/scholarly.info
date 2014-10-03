@@ -8,6 +8,7 @@ stylesheets[all][] = js/flexslider/flexslider.css
 stylesheets[all][] = style.css
 
 scripts[] = js/flexslider/jquery.flexslider.js
+scripts[] = js/jquery.expander.js
 
 regions[header_top_left] = Header Top Left
 regions[header_top_right] = Header Top Right
