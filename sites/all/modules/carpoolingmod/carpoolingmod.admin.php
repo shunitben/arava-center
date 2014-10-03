@@ -1,5 +1,30 @@
 <?php
 
+function carpoolingmod_update_position_page(){
+	if(isset($_POST['catalog-weight']) && $_POST['catalog-weight']){
+		$term_index = 0;
+		foreach($_POST['catalog-weight'] as $tid => $terms_weight){
+			$term = taxonomy_term_load($tid);
+			$term->field_weight['und'][0]['value'] = $term_index;
+			taxonomy_term_save($term);
+			
+			$node_index = 0;
+			foreach($terms_weight as $nid){
+				$node = node_load($nid);
+				$node->field_weight['und'][0]['value'] = $node_index;
+				node_save($node);
+				
+				$node_index++;
+			}
+			
+			$term_index++;
+		}
+	}
+	
+	drupal_set_message(t('The position has been saved'));
+	drupal_goto('Catalog');
+}
+
 function carpoolingmod_pref_setup_page(){
 	global $user;
 
@@ -200,9 +225,9 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 			'available_seats' => isset($values['available_seats']) ? $values['available_seats'] : 0,
 			'remaining_seats' => isset($values['available_seats']) ? $values['available_seats'] : 0,
 			'location' => $values['location'],
-			'departureday' => $values['departureday'] ? implode(',', $values['departureday']) : '',
+			'departureday' => $values['departureday'],// ? implode(',', $values['departureday']) : '',
 			'departuretime' => $values['departuretime'],
-			'returnday' => $values['returnday'] ? implode(',', $values['returnday']) : '',
+			'returnday' => $values['returnday'],// ? implode(',', $values['returnday']) : '',
 			'returntime' => $values['returntime'],
 		);
 		
