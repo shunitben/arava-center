@@ -326,8 +326,11 @@ class MySemesterAPI {
   public function validateExtraInfoForUser() {
     $extra_info = $this->getExtraInfoForUser();
     unset($extra_info['comments']);
-    foreach ($extra_info as $info) {
-      if (!$info) {
+	
+	$required = array('comments' => true, 'takanon_moa' => true, 'takanon_school' => true,);
+	
+    foreach ($extra_info as $key => $info) {
+      if (isset($required[$key]) && $required[$key] && !$info) {
         return false;
       }
     }
