@@ -26,9 +26,14 @@ function arava_admin_page() {
       'href' => 'admin/admin-presence',
     ),
 
-    'registration' => array(
-      'title' => t('Registration'),
-      'href' => 'admin/admin-registration',
+    'registration-unfinished' => array(
+      'title' => t('Registration - unfinished'),
+      'href' => 'admin/admin-registration/unfinished',
+    ),
+
+    'registration-all' => array(
+      'title' => t('Registration - all'),
+      'href' => 'admin/admin-registration/all',
     ),
 
   )));

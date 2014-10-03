@@ -30,13 +30,13 @@ function arava_admin_menu() {
     'file' => 'arava_admin.meals.inc'
   );
 
-  $items['admin/admin-registration'] = array(
-    'title' => t('Administer Registration'),
-    'page callback' => 'arava_admin_registration_page',
-    'access arguments' => array('administer menu'),
-    'type' => MENU_NORMAL_ITEM,
-    'file' => 'arava_admin.registration.inc'
-  );
+//  $items['admin/admin-registration'] = array(
+//    'title' => t('Administer Registration'),
+//    'page callback' => 'arava_admin_registration_page',
+//    'access arguments' => array('administer menu'),
+//    'type' => MENU_NORMAL_ITEM,
+//    'file' => 'arava_admin.registration.inc'
+//  );
 
 
   return $items;

@@ -91,6 +91,8 @@ ul.menu li a{
     padding-top: 14px;
     padding-right: 20px;
     float: left;
+    margin-top: -56px;
+    color:#ffffff;
 }
 .between-headers + #header {
     padding-top: 10px;
@@ -124,12 +126,17 @@ ul.menu li a{
 .node-type-course .field-name-field-teacher{
     margin-top:20px;
     border-top:1px solid #acacac;
+    float:right;
 }
 .node-type-course .field-name-field-teacher .field-label{
     float: none;
 }
 .node-type-course .field-name-field-teacher h2{
     margin-top:0px;
+}
+.node-type-course .field-name-field-lesson-days .field-items div{
+    display: inline;
+    margin-left: 5px;
 }
 /*catalog*/
 .page-catalog .view-catalog .item-list{
@@ -183,7 +190,7 @@ ul.menu li a{
 .page-catalog .views-field-body table{
     margin-bottom: 0px;
 }
-.page-catalog .views-field-body table div a{
+.page-catalog .views-field-body .field-content div a{
     font-size: 14px;
 }
 /*carpooling*/
@@ -193,3 +200,21 @@ ul.menu li a{
 .form-item-location {
             width:200px;
         }
+
+/**
+admin
+**/
+.boolean-val {
+    display: block;
+    overflow: hidden;
+    width: 15px;
+    height: 15px;
+}
+.boolean-val-0{
+    background: red;
+    color: red;
+}
+.boolean-val-1 {
+    background: green;
+    color: green;
+}
