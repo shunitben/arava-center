@@ -27,6 +27,7 @@ function arava_registration_extra($form, &$form_state) {
   $form['takanon_school_checkbox'] = _agreement_field_checkbox("the school's terms", 'arava_center_takanon_school_link', 'school', $selected['takanon_school']);
   $form['takanon_school'] = _agreement_field_textfield('school');
 
+  /*
   $form['takanon_amuta_checkbox'] = _agreement_field_checkbox("the amuta's terms", 'arava_center_takanon_amuta_link', 'amuta', $selected['takanon_amuta']);
   $form['takanon_amuta'] = _agreement_field_textfield('amuta');
 
@@ -35,7 +36,7 @@ function arava_registration_extra($form, &$form_state) {
 
   $form['waver_checkbox'] = _agreement_field_checkbox("the waver", 'arava_center_waver_link', 'waver', $selected['waver']);
   $form['waver'] = _agreement_field_textfield('waver');
-
+*/
   $form['comments'] = array(
     '#type' => 'textarea',
     '#title' => t('Comments / Remarks / Extra requests'),

@@ -3,6 +3,10 @@
 
 function carpoolingmod_init() {
 	drupal_add_css(drupal_get_path('module', 'carpoolingmod').'/carpoolingmod.css');
+	
+	if(arg(0) == 'Catalog'){
+		drupal_add_library('system', 'ui.sortable');
+	}
 }
 
 function carpoolingmod_permission() {
@@ -150,8 +154,22 @@ function carpoolingmod_menu() {
     'file' => 'carpoolingmod.admin.php',
     'type' => MENU_CALLBACK,
   );
+
+  $items['catalog/update-position'] = array(
+    'page callback' => 'carpoolingmod_update_position_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer nodes'),
+    'file' => 'carpoolingmod.admin.php',
+    'type' => MENU_CALLBACK,
+  );
   
   return $items;
+}
+
+function carpoolingmod_form_alter(&$form, $form_state, $form_id){
+	if(isset($form['field_weight']) && $form['field_weight']){
+		$form['field_weight']['#access'] = false;
+	}
 }
 
 function carpoolingmod_user_view($account, $view_mode, $langcode){
