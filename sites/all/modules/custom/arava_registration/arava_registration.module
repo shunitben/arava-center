@@ -654,8 +654,10 @@ function _arava_registration_validate_all_registration() {
   // extra info
   $extra = $mySemesterAPI->getExtraInfoForUser();
   unset($extra['comments']);
-  foreach ($extra as $takanon) {
-    if ($takanon == 0) {
+  $required = array('takanon_moa' => true,);
+
+  foreach ($extra as $key => $info) {
+    if (isset($required[$key]) && $required[$key] && !$info) {
       $missing[] = t('Extra info - please sign all the takanons.');
       break;
     }

@@ -24,8 +24,8 @@ function arava_registration_extra($form, &$form_state) {
   $form['takanon_moa_checkbox'] = _agreement_field_checkbox("Moa's terms", 'arava_center_takanon_moa_link', 'moa', $selected['takanon_moa']);
   $form['takanon_moa'] = _agreement_field_textfield('moa');
 
-  $form['takanon_school_checkbox'] = _agreement_field_checkbox("the school's terms", 'arava_center_takanon_school_link', 'school', $selected['takanon_school']);
-  $form['takanon_school'] = _agreement_field_textfield('school');
+//  $form['takanon_school_checkbox'] = _agreement_field_checkbox("the school's terms", 'arava_center_takanon_school_link', 'school', $selected['takanon_school']);
+//  $form['takanon_school'] = _agreement_field_textfield('school');
 
   /*
   $form['takanon_amuta_checkbox'] = _agreement_field_checkbox("the amuta's terms", 'arava_center_takanon_amuta_link', 'amuta', $selected['takanon_amuta']);
