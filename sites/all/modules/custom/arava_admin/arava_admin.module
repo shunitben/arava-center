@@ -42,6 +42,17 @@ function arava_admin_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_permission().
+ */
+function arava_admin_permission() {
+  return array(
+    'view arava administration reports' => array(
+      'title' => t('View Arava administration reports'),
+    )
+  );
+}
+
 function arava_admin_preprocess_page(&$vars) {
   if (arg(0) == 'user') {
     if (user_access('administer nodes')) {
