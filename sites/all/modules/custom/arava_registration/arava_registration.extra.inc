@@ -138,7 +138,9 @@ function arava_registration_extra_submit($form, &$form_state) {
 	$form_state['redirect'] = array('registration/confirm');
 }
 
-function arava_registration_save_agreement($name, $to_what) {
+function arava_registration_save_agreement() {
+  $name = $_POST['name'];
+  $to_what = $_POST['takanon'];
   $error_name = _arava_registration_agreed($name);
   if (!$error_name) {
     $to_what = 'field_' . str_replace('-', '_', $to_what);

@@ -150,8 +150,13 @@
             }
             // do ajax
             agreeButton.addClass('processing');
-            var url = '/registration/extra/agreed/' + name + '/' + takanon;
-            $.ajax({url: url})
+            var url = '/registration/extra/agreed',
+                data = {name: name, takanon: takanon}
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'POST'
+            })
                 .done(function( data ) {
                     var response = JSON.parse(data);
                     if (response.success) {
