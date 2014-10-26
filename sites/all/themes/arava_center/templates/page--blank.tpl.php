@@ -7,7 +7,10 @@
                 <section>
                     <!-- #main -->
                     <div id="main" class="clearfix">
-                        <?php print render($page['content']); ?>
+                      <?php if ($messages):?>
+                        <?php print $messages; ?>
+                      <?php endif; ?>
+                      <?php print render($page['content']); ?>
                     </div>
                     <!-- EOF:#main -->
                 </section>

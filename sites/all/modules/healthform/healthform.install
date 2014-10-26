@@ -1,0 +1,190 @@
+<?php
+
+function healthform_install() {
+	
+}
+
+function healthform_uninstall() {
+}
+ 
+
+/**
+ * Implementation of hook_schema().
+ */
+function healthform_schema() {
+	$fields = array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Primary ID field for the table. Not used for anything except internal lookups.',
+      ),
+      'created' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => false
+      ),
+      'email' => array(
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => false
+      ),
+      'telephone' => array(
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => false
+      ),
+      'relation' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false
+      ),
+	);
+	
+	$ms = array('ms_hypertension', 'ms_asthma','ms_headaches','ms_balance','ms_neck','ms_back','ms_joint','ms_chronic','ms_surgeries','ms_surgery','ms_skin','ms_pain','ms_chemotherapy','ms_heart_disease','ms_epilepsy','ms_radioactive');
+	foreach($ms as $k){
+		$fields[$k] = array(
+			'type' => 'int',
+			'size' => 'small',
+			'default' => 0,
+			'not null' => false
+		);
+		$fields[$k.'_text'] = array(
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => false,
+		);
+	}
+
+	$fields['ms_hiv'] = array(
+		'type' => 'int',
+		'size' => 'small',
+		'default' => 0,
+		'not null' => false
+	);
+
+	$fields['ms_hiv_text'] = array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false
+	);
+
+	$fields['ms_other'] = array(
+		'type' => 'int',
+		'size' => 'small',
+		'default' => 0,
+		'not null' => false
+	);
+
+	$fields['ms_other_text'] = array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false
+	);
+
+	$fields['ms_pregnancy'] = array(
+		'type' => 'int',
+		'size' => 'small',
+		'default' => 0,
+		'not null' => false
+	);
+
+	$fields['ms_week_num'] = array(
+		'type' => 'int',
+		'size' => 'normal',
+		'default' => 0,
+		'not null' => false
+	);
+
+	$fields['md_medications'] = array(
+        'type' => 'varchar',
+        'length' => 1000,
+        'not null' => false
+	);
+	
+	$mh = array('mh_depression', 'mh_ongoing_anxieties', 'mh_panic_attacks', 'mh_manic_depressive', 'mh_schizophrenia', 'mh_suicide_attempts', 'mh_prescription');
+	foreach($mh as $k){
+		$fields[$k] = array(
+			'type' => 'int',
+			'size' => 'small',
+			'default' => 0,
+			'not null' => false
+		);
+		$fields[$k.'_text'] = array(
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => false,
+		);
+	};
+	
+	$mh2 = array('mh_therapy', 'mh_psychiatric');
+	foreach($mh2 as $k){
+		$fields[$k] = array(
+			'type' => 'int',
+			'size' => 'small',
+			'default' => 0,
+			'not null' => false
+		);
+	};
+	
+	$ad = array('ad_alcohol', 'ad_drugs');
+	foreach($ad as $k){
+		$fields[$k] = array(
+			'type' => 'int',
+			'size' => 'small',
+			'default' => 0,
+			'not null' => false
+		);
+		$fields[$k.'_text'] = array(
+			'type' => 'varchar',
+			'length' => 255,
+			'not null' => false,
+		);
+	};
+	
+	$ai = array('ai_smoking');
+	foreach($ai as $k){
+		$fields[$k] = array(
+			'type' => 'int',
+			'size' => 'small',
+			'default' => 0,
+			'not null' => false
+		);
+	};
+
+	$fields['ai_smoking_text'] = array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false
+	);
+
+	$fields['ai_diet'] = array(
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => false
+	);
+
+	$fields['ai_diet_text'] = array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false
+	);
+	
+  $schema['healthform_data'] = array(
+    'fields' => $fields,
+    'primary key' => array('id'),
+  );
+  
+
+  return $schema;
+}

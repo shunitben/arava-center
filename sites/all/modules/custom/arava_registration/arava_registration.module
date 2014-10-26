@@ -69,6 +69,13 @@ function arava_registration_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'arava_registration.extra.inc'
   );
+  $items['close-dialog'] = array(
+    'title' => t('Closing dialog'),
+    'page callback' => 'arava_registration_close_dialog',
+    'access arguments' => array('signup to courses and accommodation'),
+    'type' => MENU_CALLBACK,
+    'file' => 'arava_registration.extra.inc'
+  );
 
   $items['registration/confirm'] = array(
     'title' => t('Confirm Registration'),
@@ -200,7 +207,7 @@ function arava_registration_permission() {
 }
 
 function arava_registration_init() {
-  if (arg(0) == 'user' || arg(0) == 'registration' || arg(0) == 'semester-timetable') {
+  if (arg(0) == 'user' || arg(0) == 'registration' || arg(0) == 'semester-timetable' || arg(0) == 'close-dialog') {
     drupal_add_library('system', 'ui.dialog');
     $path = drupal_get_path('module', 'arava_registration');
     drupal_add_js($path . '/js/arava_registration.js');

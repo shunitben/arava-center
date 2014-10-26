@@ -21,6 +21,10 @@
 /****
 Takanon popups
 ****/
+.ui-dialog iframe{
+    width: 592px !important;
+    padding: 0 !important;
+}
 .takanon-text {
     height: 300px;
     overflow-y: scroll;
@@ -52,6 +56,10 @@ Takanon popups
     
     background-image: url(/sites/all/modules/jquery_update/replace/ui/themes/base/minified/images/ui-icons_888888_256x240.png)!important;
 }
+#healthform-mainform {
+    padding: 0 10px;
+}
+
 /*wizard menu*/
 #block-arava-registration-registration-steps{
     

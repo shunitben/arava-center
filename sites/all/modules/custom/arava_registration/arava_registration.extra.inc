@@ -24,19 +24,19 @@ function arava_registration_extra($form, &$form_state) {
   $form['takanon_moa_checkbox'] = _agreement_field_checkbox("Moa's terms", 'arava_center_takanon_moa_link', 'moa', $selected['takanon_moa']);
   $form['takanon_moa'] = _agreement_field_textfield('moa');
 
-//  $form['takanon_school_checkbox'] = _agreement_field_checkbox("the school's terms", 'arava_center_takanon_school_link', 'school', $selected['takanon_school']);
-//  $form['takanon_school'] = _agreement_field_textfield('school');
+  $form['takanon_school_checkbox'] = _agreement_field_checkbox("the school's terms", 'arava_center_takanon_school_link', 'school', $selected['takanon_school']);
+  $form['takanon_school'] = _agreement_field_textfield('school');
 
-  /*
-  $form['takanon_amuta_checkbox'] = _agreement_field_checkbox("the amuta's terms", 'arava_center_takanon_amuta_link', 'amuta', $selected['takanon_amuta']);
-  $form['takanon_amuta'] = _agreement_field_textfield('amuta');
+
+//  $form['takanon_amuta_checkbox'] = _agreement_field_checkbox("the amuta's terms", 'arava_center_takanon_amuta_link', 'amuta', $selected['takanon_amuta']);
+//  $form['takanon_amuta'] = _agreement_field_textfield('amuta');
 
   $form['health_declaration_checkbox'] = _agreement_field_checkbox("health declaration", 'arava_center_health_declaration_link', 'health', $selected['health_declaration']);
   $form['health_declaration'] = _agreement_field_textfield('health');
 
-  $form['waver_checkbox'] = _agreement_field_checkbox("the waver", 'arava_center_waver_link', 'waver', $selected['waver']);
-  $form['waver'] = _agreement_field_textfield('waver');
-*/
+//  $form['waver_checkbox'] = _agreement_field_checkbox("the waver", 'arava_center_waver_link', 'waver', $selected['waver']);
+//  $form['waver'] = _agreement_field_textfield('waver');
+
   $form['comments'] = array(
     '#type' => 'textarea',
     '#title' => t('Comments / Remarks / Extra requests'),
@@ -157,4 +157,8 @@ function arava_registration_save_agreement() {
       'error' => $error_name,
     ));
   }
+}
+
+function arava_registration_close_dialog() {
+  return '<div class="close_dialog">' . t('Closing window...') . '</div>';
 }

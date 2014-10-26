@@ -1,0 +1,11 @@
+name = healthform
+description = healthform
+core = 7.x
+package = healthform
+
+; Information added by drupal.org packaging script on 2012-10-22
+version = "7.x-2.0"
+core = "7.x"
+project = "healthform"
+datestamp = "1350932496"
+

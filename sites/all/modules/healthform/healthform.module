@@ -1,0 +1,248 @@
+<?php
+
+function healthform_init() {
+}
+
+/**
+ * @file
+ * Provides a views style plugin for FullCalendar
+ */
+
+function healthform_menu() {
+  $items = array();
+
+  $items['health-form'] = array(
+    'title' => t('Health Form to participate in the study in Arava Spiritual Center'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('healthform_mainform'),
+    'access callback' => 'user_access',
+    'access arguments' => array('take healthform data'),
+    'file' => 'healthform.form.php',
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['health-form/user/autocomplete'] = array(
+    'title' => 'User autocomplete',
+    'page callback' => 'healthform_user_autocomplete',
+    'access callback' => true,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/people/health-data'] = array(
+    'title' => t('Health Data'),
+    'page callback' => 'healthform_admin_page',
+    'access callback' => 'healthform_admin_page_access',
+  );
+
+  $items['admin/people/health-data/%user'] = array(
+    'title' => t('User Health Data'),
+    'page callback' => 'healthform_admin_userdata_page',
+    'page arguments' => array(3),
+    'access callback' => 'healthform_admin_page_access',
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+function healthform_admin_page_access(){
+	return user_access('manage healthform data') || user_access('view healthform contact data');
+}
+
+function healthform_user_autocomplete(){
+  $matches = array();
+  $string = $_GET['term'];
+  if ($string) {
+    $result = db_select('users')->fields('users', array('name'))->condition('name', db_like($string) . '%', 'LIKE')->range(0, 10)->execute();
+    foreach ($result as $user) {
+      $matches[$user->name] = check_plain($user->name);
+    }
+  }
+
+  drupal_json_output($matches);
+}
+
+function healthform_permission() {
+  return array(
+    'take healthform data' => array(
+      'title' => t('take healthform data'),
+    ),
+    'manage healthform data' => array(
+      'title' => t('manage healthform data'),
+    ),
+    'view healthform contact data' => array(
+      'title' => t('view healthform contact data'),
+    ),
+  );
+}
+
+function healthform_admin_page(){
+	//drupal_add_library('system', 'ui.autocomplete');
+	//drupal_add_js('misc/form.js');
+	
+	$header = array(
+		t('User'), t('Submit Time'),
+	);
+	
+	if(user_access('view healthform contact data')){
+		$header[] = t('Contact Name');
+		$header[] = t('Contact Email');
+		$header[] = t('Contact Telephone');
+	}
+	
+	$query = db_select('healthform_data', 'healthform_data')->extend('PagerDefault');
+	$query->leftJoin('users', 'users', "users.uid=healthform_data.uid");
+	$query->leftJoin('field_data_field_user_name', 'field_user_name', "field_user_name.entity_id = users.uid and field_user_name.entity_type='user'");
+	$query->fields('healthform_data');
+	//$query->addField('users', 'name', 'users_name');
+	$query->orderBy('healthform_data.created', "DESC");
+	
+	if(isset($_GET['name']) && $_GET['name']){
+		//$query->condition('users.name', db_like($_GET['name']) . '%', 'LIKE');
+		$query->condition('field_user_name.field_user_name_value', db_like($_GET['name']) . '%', 'LIKE');
+	}
+	
+	$find = $query
+		->limit(30)
+		->execute();
+	
+	$rows = array();
+	foreach($find as $r){
+		$account = user_load($r->uid);
+		$name = (isset($account->field_user_name['und'][0]['value']) && $account->field_user_name['und'][0]['value']) ? $account->field_user_name['und'][0]['value'] : $account->name;
+		
+		$row = array(
+			l($name, 'admin/people/health-data/'.$r->uid),
+			date('Y-m-d H:i:s', $r->created),
+		);
+		
+		if(user_access('view healthform contact data')){
+			$row[] = $r->name;
+			$row[] = $r->email;
+			$row[] = $r->telephone;
+		}
+		
+		$rows[] = $row;
+	}
+	
+	$html = '<form action="'.url('admin/people/health-data').'" method="get">';
+	$html .= '<div class="form-item"><label>'.t('Search by Name').'</label>
+			<input type="text" class="form-text search-name-field" value="'.(isset($_GET['name']) ? $_GET['name'] : '').'" name="name">
+		</div>';
+	$html .= '<input class="form-submit" type="submit" value="'.t('Search').'">';
+	$html .= '</form>';
+	
+	$html .= theme('table', array('header' => $header, 'rows' => $rows)).theme('pager');
+	
+	return $html;
+}
+
+function healthform_admin_userdata_page($account){
+	$data = db_query("select * from {healthform_data} where uid=:uid", array(':uid' => $account->uid))->fetchAssoc();
+	
+	if(!$data){
+		drupal_not_found();
+		exit();
+	}
+	
+	$html = '';
+	
+	if(user_access('view healthform contact data')){
+		$rows = array();
+		$rows[] = array(t('User'), l($account->name, 'user/'.$account->uid));
+		$rows[] = array(t('Submit Time'), date('Y-m-d H:i:s', $data['created']));
+		$rows[] = array(t('Contact Name'), $data['name']);
+		$rows[] = array(t('Contact Email'), $data['email']);
+		$rows[] = array(t('Contact Telephone'), $data['telephone']);
+		$rows[] = array(t('Contact Relation'), $data['relation']);
+		
+		$html .= '<h2>'.t('Contact Data').'</h2>';
+		$html .= theme('table', array('rows' => $rows));
+	}
+
+	if(user_access('manage healthform data')){
+		$rows = array();
+		$ms = array('ms_hypertension' => t('Hypertension (high / low)'), 
+					'ms_asthma' => t('Asthma or respiratory problems'),
+					'ms_headaches' => t('Headaches'),
+					'ms_balance' => t('Balance problems'),
+					'ms_neck' => t('Neck problems and shoulders'),
+					'ms_back' => t('Back problems'),
+					'ms_joint' => t('Joint problems'),
+					'ms_chronic' => t('Chronic disease (active / dormant)'),
+					'ms_surgeries' => t('Surgeries transplant'),
+					'ms_surgery' => t('Surgery'),
+					'ms_skin' => t('Skin problems / allergies'),
+					'ms_pain' => t('Pain / stress'),
+					'ms_chemotherapy' => t('Using chemotherapy'),
+					'ms_heart_disease' => t('Heart disease'),
+					'ms_epilepsy' => t('Epilepsy'),
+					'ms_radioactive' => t('Radioactive material handling'),
+					'ms_hiv' => t('HIV or infectious disease such as hepatitis, tuberculosis, typhoid'),
+					'ms_other' => t('Are suffering from a health condition/disease other than the specified above'),
+					'ms_pregnancy' => t('Pregnancy'),);
+		foreach($ms as $k => $label){
+			$content = $data[$k] ? t('Yes') : t('No');
+			if($data[$k]){
+				$content .= $data[$k.'_text'] ? check_markup($data[$k.'_text'], 'filtered_html') : '';
+			}
+			$rows[] = array($label, $content);
+		}
+		
+		if($data['ms_pregnancy']){
+			$rows[] = array(t('No. of weeks'), $data['ms_week_num']);
+		}
+		$html .= '<h2>'.t('Medical Status').'</h2>';
+		$html .= theme('table', array('rows' => $rows));
+		
+		$rows = array();
+		$mh = array('mh_depression' => t('Depression'), 
+					'mh_ongoing_anxieties' => t('Ongoing anxieties'), 
+					'mh_panic_attacks' => t('Panic attacks'), 
+					'mh_manic_depressive' => t('Manic depressive'), 
+					'mh_schizophrenia' => t('Schizophrenia'), 
+					'mh_suicide_attempts' => t('Suicide attempts'),
+					'mh_prescription' => t('Are You currently under psychiatric care'),
+					'mh_therapy' => t('Are you are currently in therapy'), );
+		foreach($mh as $k => $label){
+			$content = $data[$k] ? t('Yes') : t('No');
+			if($data[$k]){
+				$content .= $data[$k.'_text'] ? check_markup($data[$k.'_text'], 'filtered_html') : '';
+			}
+			$rows[] = array($label, $content);
+		}
+		$html .= '<h2>'.t('Mental Health').'</h2>';
+		$html .= theme('table', array('rows' => $rows));
+		
+		$rows = array();
+		$ad = array('ad_alcohol' => t('Whether now or in the past two years the / addicted / or use the / A alcohol regularly?'), 
+					'ad_drugs' => t('Whether now or in the past two years the / addicted / or using the / Z drugs regularly?'), );
+		foreach($ad as $k => $label){
+			$content = $data[$k] ? t('Yes') : t('No');
+			if($data[$k]){
+				$content .= $data[$k.'_text'] ? check_markup($data[$k.'_text'], 'filtered_html') : '';
+			}
+			$rows[] = array($label, $content);
+		}
+		$html .= '<h2>'.t('Alcohol and Drugs').'</h2>';
+		$html .= theme('table', array('rows' => $rows));
+		
+		$rows = array();
+		$ad = array('ai_smoking' => t('Smoking'), 
+					'ai_smoking_text' => t('Previous experience in physical activity'),
+					'ai_diet' => t('Diet'),
+					'ai_diet_text' => t('Do you have any other issues or sensitivities that you want to inform the teachers about?'), );
+		
+		$rows[] = array(t('Smoking'), ($data['ai_smoking'] ? t('Yes') : t('No')));
+		$rows[] = array(t('Previous experience in physical activity'), check_markup($data['ai_smoking_text'], 'filtered_html'));
+		
+		$dietopts = array('meat' => t('Meat'), 'vegetarian' => t('Vegetarian'), 'vegan' => t('Vegan'));
+		$rows[] = array(t('Diet'), $dietopts[$data['ai_diet']]);
+		$rows[] = array(t('Do you have any other issues or sensitivities that you want to inform the teachers about?'), check_markup($data['ai_diet_text'], 'filtered_html'));
+		
+		$html .= '<h2>'.t('Additional Information').'</h2>';
+		$html .= theme('table', array('rows' => $rows));
+	}
+	
+	return $html;
+}

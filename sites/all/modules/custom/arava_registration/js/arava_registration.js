@@ -44,6 +44,12 @@
                 Drupal.behaviors.arava_registration.saveAndCloseTakanon(name, takanon, $(this));
             });
 
+            // close dialog after health form. We might need to make this more general at some point
+            if ($('.close_dialog').length > 0) {
+                $('input[name=health_declaration_checkbox]', parent.document).attr('checked', 'checked').attr('disabled', 'disabled');
+                $('.ui-dialog-titlebar-close', parent.document).trigger('click');
+            }
+
             // Capture pressing of the "enter" button in this input, and "click" agree.
             $('.ui-dialog-content.takanon input').live("keypress", function(e) {
                 if (e.keyCode == 13) {
@@ -124,7 +130,13 @@
         },
 
         showTakanon: function (id, link) {
-            var selector = '.takanon[takanon-id=' + id + ']'
+
+            if (id == 'health') {
+                Drupal.behaviors.arava_registration.showTakanonIframe(id, link);
+                return;
+            }
+
+            var selector = '.takanon[takanon-id=' + id + ']';
             $(selector).removeClass('hidden');
             $('.takanon-text', selector).addClass('loading');
             $('.takanon-text', selector).load(link + ' .field-name-body', function(){
@@ -135,6 +147,18 @@
                 width: 600,
                 modal: true,
                 title: Drupal.t('Please read and sign your name at the bottom')
+            });
+            // keep the selector to use it for closing later
+            Drupal.behaviors.arava_registration.dialog_selector = selector;
+        },
+
+        showTakanonIframe: function(id, link) {
+            var selector = '<iframe src="' + link + '" width="564" height="350"></iframe>'
+            $(selector).dialog({
+                height: 450,
+                width: 600,
+                modal: true,
+                title: Drupal.t('Please fill out this form')
             });
             // keep the selector to use it for closing later
             Drupal.behaviors.arava_registration.dialog_selector = selector;
