@@ -527,4 +527,22 @@ class MySemesterAPI {
   public function getUser() {
     return user_load($this->user->uid);
   }
+
+  public function getSemesterOneTimeEvents() {
+    $results = db_select('node', 'node');
+    $results->join('field_data_field_semester', 'semester', 'node.nid = semester.entity_id');
+    $results->join('field_data_field_lesson_times', 'times', 'node.nid = times.entity_id');
+    $results
+    ->condition('node.type', 'one_time')
+    ->condition('semester.field_semester_target_id', $this->semester_id)
+    ->orderBy('times.field_lesson_times_value')
+    ->addField('node', 'nid');
+    $results = $results->execute();
+
+    $one_times = array();
+    foreach ($results as $row) {
+      $one_times[] = $row->nid;
+    }
+    return $one_times;
+  }
 }

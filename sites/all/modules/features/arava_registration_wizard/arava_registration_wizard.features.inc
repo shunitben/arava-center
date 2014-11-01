@@ -57,6 +57,14 @@ function arava_registration_wizard_node_info() {
       'title_label' => t('Title'),
       'help' => '',
     ),
+    'one_time' => array(
+      'name' => t('One Time Event'),
+      'base' => 'node_content',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
     'semester' => array(
       'name' => t('Semester'),
       'base' => 'node_content',

@@ -14,7 +14,8 @@ function arava_registration_wizard_user_default_permissions() {
   $permissions['signup to courses and accommodation'] = array(
     'name' => 'signup to courses and accommodation',
     'roles' => array(
-      'Site Manager' => 'Site Manager',
+      'Registration Manager' => 'Registration Manager',
+      'Site Admin' => 'Site Admin',
       'authenticated user' => 'authenticated user',
     ),
     'module' => 'arava_registration',

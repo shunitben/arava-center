@@ -43,9 +43,11 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
   $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['view_node']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view_node']['text'] = 'מידע נוסף';
-  /* Field: Content: Price */
+  /* Field: Content: עלות לסמסטר */
   $handler->display->display_options['fields']['field_price']['id'] = 'field_price';
   $handler->display->display_options['fields']['field_price']['table'] = 'field_data_field_price';
   $handler->display->display_options['fields']['field_price']['field'] = 'field_price';
@@ -64,7 +66,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_type'] = '0';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
-  /* Sort criterion: Content: Price (field_price) */
+  /* Sort criterion: Content: עלות לסמסטר (field_price) */
   $handler->display->display_options['sorts']['field_price_value']['id'] = 'field_price_value';
   $handler->display->display_options['sorts']['field_price_value']['table'] = 'field_data_field_price';
   $handler->display->display_options['sorts']['field_price_value']['field'] = 'field_price_value';
@@ -149,20 +151,47 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['field_semester_target_id']['relationship'] = 'field_my_courses_node';
   $handler->display->display_options['relationships']['field_semester_target_id']['label'] = 'semester';
   $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = 'node/[nid]';
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['target'] = '_blank';
+  $handler->display->display_options['fields']['title']['alter']['max_length'] = '12';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = '';
+  $handler->display->display_options['fields']['title_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['path'] = 'node/[nid]';
+  $handler->display->display_options['fields']['title_1']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['target'] = '_blank';
+  $handler->display->display_options['fields']['title_1']['alter']['max_length'] = '12';
+  $handler->display->display_options['fields']['title_1']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
   /* Field: Content: Lesson times */
   $handler->display->display_options['fields']['field_lesson_times']['id'] = 'field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['table'] = 'field_data_field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['field'] = 'field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['label'] = '';
+  $handler->display->display_options['fields']['field_lesson_times']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_lesson_times']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_lesson_times']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_lesson_times']['settings'] = array(
@@ -174,6 +203,20 @@ function arava_registration_wizard_views_default_views() {
   );
   $handler->display->display_options['fields']['field_lesson_times']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_lesson_times']['delta_offset'] = '0';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<div class="colored-item" course="[nid]">
+  <div class="title">[title_1]</div>
+  <div class="hours">[field_lesson_times]</div>
+<div class="calendar-popup">
+ <div class="title">[title]</div>
+  <div class="hours">[field_lesson_times]</div>
+</div>
+</div>';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Lesson times -  start date (field_lesson_times) */
   $handler->display->display_options['sorts']['field_lesson_times_value']['id'] = 'field_lesson_times_value';
   $handler->display->display_options['sorts']['field_lesson_times_value']['table'] = 'field_data_field_lesson_times';
@@ -443,6 +486,118 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
     'field_data_field_lesson_times.field_lesson_times_value' => 'field_data_field_lesson_times.field_lesson_times_value',
   );
+
+  /* Display: Catalog */
+  $handler = $view->new_display('page', 'Catalog', 'page_4');
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'date_views_pager';
+  $handler->display->display_options['pager']['options']['date_id'] = 'month';
+  $handler->display->display_options['pager']['options']['link_format'] = 'clean';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'calendar_style';
+  $handler->display->display_options['style_options']['name_size'] = '3';
+  $handler->display->display_options['style_options']['mini'] = '0';
+  $handler->display->display_options['style_options']['with_weekno'] = '0';
+  $handler->display->display_options['style_options']['multiday_theme'] = '1';
+  $handler->display->display_options['style_options']['theme_style'] = '1';
+  $handler->display->display_options['style_options']['max_items'] = '0';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'calendar_entity';
+  $handler->display->display_options['row_options']['colors']['legend'] = 'type';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Entity Reference: Referenced Entity */
+  $handler->display->display_options['relationships']['field_semester_target_id']['id'] = 'field_semester_target_id';
+  $handler->display->display_options['relationships']['field_semester_target_id']['table'] = 'field_data_field_semester';
+  $handler->display->display_options['relationships']['field_semester_target_id']['field'] = 'field_semester_target_id';
+  $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['path'] = 'node/[nid]';
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['target'] = '_blank';
+  $handler->display->display_options['fields']['title']['alter']['max_length'] = '12';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = '';
+  $handler->display->display_options['fields']['title_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['path'] = 'node/[nid]';
+  $handler->display->display_options['fields']['title_1']['alter']['absolute'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['target'] = '_blank';
+  $handler->display->display_options['fields']['title_1']['alter']['max_length'] = '12';
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
+  /* Field: Content: Lesson times */
+  $handler->display->display_options['fields']['field_lesson_times']['id'] = 'field_lesson_times';
+  $handler->display->display_options['fields']['field_lesson_times']['table'] = 'field_data_field_lesson_times';
+  $handler->display->display_options['fields']['field_lesson_times']['field'] = 'field_lesson_times';
+  $handler->display->display_options['fields']['field_lesson_times']['label'] = '';
+  $handler->display->display_options['fields']['field_lesson_times']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_lesson_times']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_lesson_times']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['field_lesson_times']['settings'] = array(
+    'format_type' => 'hour',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+  );
+  $handler->display->display_options['fields']['field_lesson_times']['group_rows'] = FALSE;
+  $handler->display->display_options['fields']['field_lesson_times']['delta_offset'] = '0';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<div class="colored-item" course="[nid]">
+  <div class="title">[title_1]</div>
+  <div class="hours">[field_lesson_times]</div>
+<div class="calendar-popup">
+ <div class="title">[title]</div>
+  <div class="hours">[field_lesson_times]</div>
+</div>
+</div>';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Date: Date (node) */
+  $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
+  $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
+  $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
+  $handler->display->display_options['arguments']['date_argument']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['date_argument']['default_argument_type'] = 'date';
+  $handler->display->display_options['arguments']['date_argument']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['date_argument']['add_delta'] = 'yes';
+  $handler->display->display_options['arguments']['date_argument']['date_fields'] = array(
+    'field_data_field_lesson_times.field_lesson_times_value' => 'field_data_field_lesson_times.field_lesson_times_value',
+  );
+  $handler->display->display_options['path'] = 'catalog-calendar';
+  $handler->display->display_options['menu']['type'] = 'default tab';
+  $handler->display->display_options['menu']['title'] = 'Month';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Calendar';
+  $handler->display->display_options['tab_options']['weight'] = '0';
   $translatables['calendar'] = array(
     t('Master'),
     t('more'),
@@ -454,6 +609,14 @@ function arava_registration_wizard_views_default_views() {
     t('my course field collection'),
     t('my semester'),
     t('semester'),
+    t('<div class="colored-item" course="[nid]">
+  <div class="title">[title_1]</div>
+  <div class="hours">[field_lesson_times]</div>
+<div class="calendar-popup">
+ <div class="title">[title]</div>
+  <div class="hours">[field_lesson_times]</div>
+</div>
+</div>'),
     t('Month'),
     t('All'),
     t('Week'),
@@ -462,6 +625,8 @@ function arava_registration_wizard_views_default_views() {
     t('Block'),
     t('Upcoming'),
     t('Upcoming events block'),
+    t('Catalog'),
+    t('Content entity referenced from field_semester'),
   );
   $export['calendar'] = $view;
 
@@ -508,27 +673,38 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
     'faculties' => 'faculties',
   );
+  /* Relationship: Content: פקולטה (field_faculty) */
+  $handler->display->display_options['relationships']['field_faculty_tid']['id'] = 'field_faculty_tid';
+  $handler->display->display_options['relationships']['field_faculty_tid']['table'] = 'field_data_field_faculty';
+  $handler->display->display_options['relationships']['field_faculty_tid']['field'] = 'field_faculty_tid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   /* Field: Content: Link */
   $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
   $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
   $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['view_node']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view_node']['text'] = 'מידע נוסף';
-  /* Field: Content: Teacher */
+  /* Field: Content: מורה */
   $handler->display->display_options['fields']['field_teacher']['id'] = 'field_teacher';
   $handler->display->display_options['fields']['field_teacher']['table'] = 'field_data_field_teacher';
   $handler->display->display_options['fields']['field_teacher']['field'] = 'field_teacher';
   $handler->display->display_options['fields']['field_teacher']['label'] = 'מרצה';
+  $handler->display->display_options['fields']['field_teacher']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_teacher']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['field_teacher']['settings'] = array(
-    'link' => 1,
+    'link' => 0,
   );
   /* Field: Content: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -540,23 +716,50 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_type'] = '0';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
-  /* Field: Content: Faculty */
+  /* Field: Content: פקולטה */
   $handler->display->display_options['fields']['field_faculty']['id'] = 'field_faculty';
   $handler->display->display_options['fields']['field_faculty']['table'] = 'field_data_field_faculty';
   $handler->display->display_options['fields']['field_faculty']['field'] = 'field_faculty';
   $handler->display->display_options['fields']['field_faculty']['label'] = '';
   $handler->display->display_options['fields']['field_faculty']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_faculty']['type'] = 'taxonomy_term_reference_plain';
-  /* Sort criterion: Taxonomy term: Weight */
-  $handler->display->display_options['sorts']['weight']['id'] = 'weight';
-  $handler->display->display_options['sorts']['weight']['table'] = 'taxonomy_term_data';
-  $handler->display->display_options['sorts']['weight']['field'] = 'weight';
-  $handler->display->display_options['sorts']['weight']['relationship'] = 'term_node_tid';
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Field: Content: Lesson times */
+  $handler->display->display_options['fields']['field_lesson_times']['id'] = 'field_lesson_times';
+  $handler->display->display_options['fields']['field_lesson_times']['table'] = 'field_data_field_lesson_times';
+  $handler->display->display_options['fields']['field_lesson_times']['field'] = 'field_lesson_times';
+  $handler->display->display_options['fields']['field_lesson_times']['label'] = '';
+  $handler->display->display_options['fields']['field_lesson_times']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_lesson_times']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_lesson_times']['settings'] = array(
+    'format_type' => 'long',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+  );
+  $handler->display->display_options['fields']['field_lesson_times']['delta_offset'] = '0';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['element_class'] = 'lesson-times';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+_arava_registration_print_lesson_times($data);
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Sort criterion: Field: Weight (field_weight) */
+  $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
+  $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
+  $handler->display->display_options['sorts']['field_weight_value']['field'] = 'field_weight_value';
+  $handler->display->display_options['sorts']['field_weight_value']['relationship'] = 'field_faculty_tid';
+  /* Sort criterion: Field: Weight (field_weight) */
+  $handler->display->display_options['sorts']['field_weight_value_1']['id'] = 'field_weight_value_1';
+  $handler->display->display_options['sorts']['field_weight_value_1']['table'] = 'field_data_field_weight';
+  $handler->display->display_options['sorts']['field_weight_value_1']['field'] = 'field_weight_value';
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -593,6 +796,7 @@ function arava_registration_wizard_views_default_views() {
     t('Desc'),
     t('semester'),
     t('faculty'),
+    t('term from field_faculty'),
     t('מידע נוסף'),
     t('מרצה'),
     t('<span class="hidden">nid:[nid]</span>'),

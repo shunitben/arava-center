@@ -95,7 +95,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -136,15 +136,9 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => ' ',
-        ),
-        'type' => 'number_integer',
-        'weight' => 4,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -179,14 +173,42 @@ function arava_registration_wizard_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'image',
+        'label' => 'hidden',
+        'module' => 'field_slideshow',
         'settings' => array(
-          'image_link' => '',
-          'image_style' => '',
+          'slideshow_caption' => '',
+          'slideshow_caption_link' => '',
+          'slideshow_carousel_circular' => 1,
+          'slideshow_carousel_follow' => 0,
+          'slideshow_carousel_image_style' => '',
+          'slideshow_carousel_scroll' => 1,
+          'slideshow_carousel_skin' => '',
+          'slideshow_carousel_speed' => 500,
+          'slideshow_carousel_vertical' => 0,
+          'slideshow_carousel_visible' => 3,
+          'slideshow_colorbox_image_style' => '',
+          'slideshow_colorbox_slideshow' => '',
+          'slideshow_colorbox_slideshow_speed' => 4000,
+          'slideshow_colorbox_speed' => 350,
+          'slideshow_colorbox_transition' => 'elastic',
+          'slideshow_controls' => 0,
+          'slideshow_controls_pause' => 0,
+          'slideshow_controls_position' => 'after',
+          'slideshow_field_collection_image' => '',
+          'slideshow_fx' => 'fade',
+          'slideshow_image_style' => 'large',
+          'slideshow_link' => '',
+          'slideshow_order' => '',
+          'slideshow_pager' => 'number',
+          'slideshow_pager_image_style' => '',
+          'slideshow_pager_position' => 'after',
+          'slideshow_pause' => 1,
+          'slideshow_speed' => 1000,
+          'slideshow_start_on_hover' => 0,
+          'slideshow_timeout' => 4000,
         ),
-        'type' => 'image',
-        'weight' => 2,
+        'type' => 'slideshow',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -241,15 +263,9 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => ' ',
-        ),
-        'type' => 'number_integer',
-        'weight' => 3,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -286,16 +302,16 @@ function arava_registration_wizard_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'number',
         'settings' => array(
           'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
+          'prefix_suffix' => 1,
           'scale' => 0,
-          'thousand_separator' => ' ',
+          'thousand_separator' => '',
         ),
         'type' => 'number_integer',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -306,7 +322,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_price',
-    'label' => 'Price',
+    'label' => 'עלות לסמסטר',
     'required' => 0,
     'settings' => array(
       'max' => '',
@@ -380,7 +396,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -437,7 +453,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_classroom',
-    'label' => 'Classroom',
+    'label' => 'כיתה',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -448,6 +464,42 @@ function arava_registration_wizard_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance: 'node-course-field_examiners'
+  $field_instances['node-course-field_examiners'] = array(
+    'bundle' => 'course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 17,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_examiners',
+    'label' => 'Examiners',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 20,
     ),
   );
 
@@ -463,7 +515,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'module' => 'link',
         'settings' => array(),
         'type' => 'link_default',
-        'weight' => 12,
+        'weight' => 7,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -514,10 +566,9 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 6,
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -528,8 +579,8 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_faculty',
-    'label' => 'Faculty',
-    'required' => 0,
+    'label' => 'פקולטה',
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -542,6 +593,48 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-course-field_final_test'
+  $field_instances['node-course-field_final_test'] = array(
+    'bundle' => 'course',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_final_test',
+    'label' => 'Final Test',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'node-course-field_image'
   $field_instances['node-course-field_image'] = array(
     'bundle' => 'course',
@@ -549,14 +642,14 @@ function arava_registration_wizard_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'image',
         'settings' => array(
           'image_link' => '',
           'image_style' => '',
         ),
         'type' => 'image',
-        'weight' => 2,
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -614,7 +707,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 8,
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -625,7 +718,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_lesson_days',
-    'label' => 'Lesson days',
+    'label' => 'ימי השיעור',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -659,7 +752,7 @@ function arava_registration_wizard_field_default_field_instances() {
           ),
         ),
         'type' => 'timefield_default',
-        'weight' => 9,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -670,7 +763,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_lesson_hours',
-    'label' => 'Lesson hours',
+    'label' => 'שעות השיעור',
     'required' => 0,
     'settings' => array(
       'disable_plugin' => 1,
@@ -711,16 +804,9 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-        ),
-        'type' => 'date_default',
-        'weight' => 10,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -734,8 +820,8 @@ function arava_registration_wizard_field_default_field_instances() {
     'label' => 'Lesson times',
     'required' => 0,
     'settings' => array(
-      'default_value' => 'now',
-      'default_value2' => 'same',
+      'default_value' => 'blank',
+      'default_value2' => 'blank',
       'default_value_code' => '',
       'default_value_code2' => '',
       'user_register_form' => FALSE,
@@ -769,10 +855,9 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 11,
+        'type' => 'hidden',
+        'weight' => 10,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -794,6 +879,90 @@ function arava_registration_wizard_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_buttons',
       'weight' => 19,
+    ),
+  );
+
+  // Exported field_instance: 'node-course-field_number_of_homework'
+  $field_instances['node-course-field_number_of_homework'] = array(
+    'bundle' => 'course',
+    'default_value' => array(
+      0 => array(
+        'value' => 10,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 13,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_number_of_homework',
+    'label' => 'Number of Homework',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-course-field_number_of_quizzes'
+  $field_instances['node-course-field_number_of_quizzes'] = array(
+    'bundle' => 'course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 16,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_number_of_quizzes',
+    'label' => 'Number of Quizzes',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 4,
     ),
   );
 
@@ -852,12 +1021,9 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 4,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 8,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -868,7 +1034,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_semester',
-    'label' => 'Semester',
+    'label' => 'סמסטר',
     'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -893,10 +1059,11 @@ function arava_registration_wizard_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
-          'link' => FALSE,
+          'links' => 1,
+          'view_mode' => 'default',
         ),
-        'type' => 'entityreference_label',
-        'weight' => 1,
+        'type' => 'entityreference_entity_view',
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -907,7 +1074,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_teacher',
-    'label' => 'Teacher',
+    'label' => 'מורה',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -918,6 +1085,46 @@ function arava_registration_wizard_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-course-field_weight'
+  $field_instances['node-course-field_weight'] = array(
+    'bundle' => 'course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 12,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_weight',
+    'label' => 'Weight',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 2,
     ),
   );
 
@@ -1206,6 +1413,46 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-my_semester-field_payment_comments'
+  $field_instances['node-my_semester-field_payment_comments'] = array(
+    'bundle' => 'my_semester',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 17,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_payment_comments',
+    'label' => 'Payment Comments',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 7,
+    ),
+  );
+
   // Exported field_instance: 'node-my_semester-field_payment_made'
   $field_instances['node-my_semester-field_payment_made'] = array(
     'bundle' => 'my_semester',
@@ -1294,6 +1541,89 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'node-my_semester-field_registration_complete'
+  $field_instances['node-my_semester-field_registration_complete'] = array(
+    'bundle' => 'my_semester',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 19,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_registration_complete',
+    'label' => 'registration complete',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-my_semester-field_roommates'
+  $field_instances['node-my_semester-field_roommates'] = array(
+    'bundle' => 'my_semester',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 18,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_roommates',
+    'label' => 'Roommates',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
       'weight' => 5,
     ),
   );
@@ -1552,6 +1882,181 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-one_time-body'
+  $field_instances['node-one_time-body'] = array(
+    'bundle' => 'one_time',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(
+          'trim_length' => 600,
+        ),
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'body',
+    'label' => 'Body',
+    'required' => FALSE,
+    'settings' => array(
+      'display_summary' => TRUE,
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+        'summary_rows' => 5,
+      ),
+      'type' => 'text_textarea_with_summary',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'node-one_time-field_lesson_times'
+  $field_instances['node-one_time-field_lesson_times'] = array(
+    'bundle' => 'one_time',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'medium',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+        ),
+        'type' => 'date_default',
+        'weight' => 1,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_lesson_times',
+    'label' => 'Lesson times',
+    'required' => 1,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'm/d/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-one_time-field_semester'
+  $field_instances['node-one_time-field_semester'] = array(
+    'bundle' => 'one_time',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 2,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_semester',
+    'label' => 'Semester',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'node-semester-field_approved_pay_accomodation'
+  $field_instances['node-semester-field_approved_pay_accomodation'] = array(
+    'bundle' => 'semester',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_approved_pay_accomodation',
+    'label' => 'Approved pay accomodation',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 5,
+    ),
+  );
+
   // Exported field_instance: 'node-semester-field_early_bird_ends_on'
   $field_instances['node-semester-field_early_bird_ends_on'] = array(
     'bundle' => 'semester',
@@ -1560,15 +2065,8 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-        ),
-        'type' => 'date_default',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 4,
       ),
       'teaser' => array(
@@ -1617,9 +2115,8 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
+        'type' => 'hidden',
         'weight' => 2,
       ),
       'teaser' => array(
@@ -1655,15 +2152,8 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-        ),
-        'type' => 'date_default',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 3,
       ),
       'teaser' => array(
@@ -1712,7 +2202,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -1751,14 +2241,14 @@ function arava_registration_wizard_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'image',
         'settings' => array(
           'image_link' => '',
           'image_style' => '',
         ),
         'type' => 'image',
-        'weight' => 1,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1804,6 +2294,148 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-teacher-field_mt_contact_info'
+  $field_instances['node-teacher-field_mt_contact_info'] = array(
+    'bundle' => 'teacher',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_mt_contact_info',
+    'label' => 'Contact information',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => -1,
+    ),
+  );
+
+  // Exported field_instance: 'node-teacher-field_mt_photo'
+  $field_instances['node-teacher-field_mt_photo'] = array(
+    'bundle' => 'teacher',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'image',
+        'settings' => array(
+          'image_link' => '',
+          'image_style' => '',
+        ),
+        'type' => 'image',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_mt_photo',
+    'label' => 'Photo',
+    'required' => 0,
+    'settings' => array(
+      'alt_field' => 0,
+      'default_image' => 0,
+      'file_directory' => '',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'title_field' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'image',
+      'settings' => array(
+        'insert' => 0,
+        'insert_absolute' => 0,
+        'insert_class' => '',
+        'insert_default' => 'auto',
+        'insert_styles' => array(
+          'auto' => 'auto',
+          'icon_link' => 0,
+          'image' => 0,
+          'image_large' => 0,
+          'image_medium' => 0,
+          'image_mt_photo' => 0,
+          'image_mt_teaser' => 0,
+          'image_slideshow' => 0,
+          'image_small' => 0,
+          'image_thumbnail' => 0,
+          'link' => 0,
+        ),
+        'insert_width' => '',
+        'preview_image_style' => 'thumbnail',
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'image_image',
+      'weight' => 0,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-faculties-field_weight'
+  $field_instances['taxonomy_term-faculties-field_weight'] = array(
+    'bundle' => 'faculties',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_weight',
+    'label' => 'Weight',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 2,
+    ),
+  );
+
   // Exported field_instance: 'user-user-field_dairy'
   $field_instances['user-user-field_dairy'] = array(
     'bundle' => 'user',
@@ -1836,7 +2468,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -1905,7 +2537,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 6,
+      'weight' => 7,
     ),
   );
 
@@ -1941,7 +2573,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -1962,7 +2594,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_user_address',
-    'label' => 'address',
+    'label' => 'כתובת מגורים',
     'required' => 1,
     'settings' => array(
       'text_processing' => 0,
@@ -1984,7 +2616,7 @@ function arava_registration_wizard_field_default_field_instances() {
     'bundle' => 'user',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'אנא מלאו את שמכם המלא (שם פרטי + משפחה) בעברית',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1996,7 +2628,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_user_name',
-    'label' => 'name',
+    'label' => 'שם מלא',
     'required' => 1,
     'settings' => array(
       'text_processing' => 0,
@@ -2030,7 +2662,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'user',
     'field_name' => 'field_user_phone',
-    'label' => 'phone',
+    'label' => 'טלפון',
     'required' => 1,
     'settings' => array(
       'text_processing' => 0,
@@ -2047,89 +2679,66 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'user-user-field_vegan'
-  $field_instances['user-user-field_vegan'] = array(
-    'bundle' => 'user',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 4,
-      ),
-    ),
-    'entity_type' => 'user',
-    'field_name' => 'field_vegan',
-    'label' => 'Vegan',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => 0,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 7,
-    ),
-  );
-
   // Translatables
   // Included for use with string extractors like potx.
   t(' כמה שולם עד כה עבור הסמסטר הזה');
   t('(if the course costs money)');
+  t('Approved pay accomodation');
   t('Body');
-  t('Classroom');
   t('Comments');
+  t('Contact information');
   t('Course');
   t('Days Present');
   t('Early Bird Ends On');
   t('Early Bird Price');
+  t('Examiners');
   t('External Link');
   t('Extra Days Present');
   t('Extra Guests Num.');
-  t('Faculty');
+  t('Final Test');
   t('Health Declaration');
   t('Image');
   t('Images');
-  t('Lesson days');
-  t('Lesson hours');
   t('Lesson times');
   t('Lesson times type');
   t('My Accomodation');
   t('My Courses');
+  t('Number of Homework');
+  t('Number of Quizzes');
   t('Number of beds');
   t('Open for registration');
   t('Paid');
+  t('Payment Comments');
   t('Payment made');
   t('Payment total');
+  t('Photo');
   t('Price');
+  t('Roommates');
   t('Semester');
   t('Semester Dates');
   t('Takanon Amuta');
   t('Takanon Moa');
   t('Takanon School');
-  t('Teacher');
   t('User');
-  t('Vegan');
   t('Waver');
-  t('address');
+  t('Weight');
   t('dairy allergy');
   t('gluten allergy');
-  t('name');
   t('other allergies');
   t('peanuts allergy');
-  t('phone');
+  t('registration complete');
+  t('אנא מלאו את שמכם המלא (שם פרטי + משפחה) בעברית');
+  t('טלפון');
+  t('ימי השיעור');
+  t('כיתה');
   t('כמה יש לשלם עבור הסמסטר הזה');
+  t('כתובת מגורים');
+  t('מורה');
+  t('סמסטר');
+  t('עלות לסמסטר');
+  t('פקולטה');
+  t('שם מלא');
+  t('שעות השיעור');
 
   return $field_instances;
 }

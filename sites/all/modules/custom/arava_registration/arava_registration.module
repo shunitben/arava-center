@@ -671,3 +671,41 @@ function _arava_registration_validate_all_registration() {
 
   return $missing;
 }
+
+/**
+ * Add the one_time events to the calendar.
+ *
+ * Implements hook_views_post_execute
+ * @param $view
+ */
+function arava_registration_views_post_execute(&$view) {
+  if ($view->name == 'calendar' && $view->current_display == 'page_1') {
+    module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+    $MySemesterApi = new MySemesterAPI();
+    $one_time_ids = $MySemesterApi->getSemesterOneTimeEvents();
+    $one_times = node_load_multiple($one_time_ids);
+
+    $showing_month = date('n', strtotime($view->args[0]));
+
+    foreach ($one_times as $one_time) {
+      if (date('n', $one_time->field_lesson_times[LANGUAGE_NONE][0]['value']) == $showing_month
+          || date('n', $one_time->field_lesson_times[LANGUAGE_NONE][0]['value2']) == $showing_month) {
+        $view->result[] = (object) array(
+          'nid' => $one_time->nid,
+          'node_title' => $one_time->title,
+          'field_data_field_lesson_times_field_lesson_times_value' => $one_time->field_lesson_times[LANGUAGE_NONE][0]['value'],
+          'field_data_field_lesson_times_field_lesson_times_value2' => $one_time->field_lesson_times[LANGUAGE_NONE][0]['value2'],
+          'field_field_lesson_times' => array(
+            array(
+              'rendered' => array(
+                '#markup' => date('H:i', $one_time->field_lesson_times[LANGUAGE_NONE][0]['value']) . ' - ' . date('H:i', $one_time->field_lesson_times[LANGUAGE_NONE][0]['value2']),
+                '#access' => true,
+              ),
+              'raw' => $one_time->field_lesson_times[LANGUAGE_NONE][0]
+            )
+          ),
+        );
+      }
+    }
+  }
+}

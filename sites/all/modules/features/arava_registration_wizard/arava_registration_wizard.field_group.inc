@@ -21,9 +21,10 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'לינה',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_my_accomodation',
+      1 => 'field_roommates',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -50,8 +51,8 @@ function arava_registration_wizard_field_group_info() {
     'label' => 'accordion',
     'weight' => '20',
     'children' => array(
-      0 => 'group_recurring',
-      1 => 'group_manual',
+      0 => 'group_manual',
+      1 => 'group_recurring',
     ),
     'format_type' => 'accordion',
     'format_settings' => array(
@@ -75,7 +76,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'קורסים',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_my_courses',
     ),
@@ -130,13 +131,15 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'מזון',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_dairy',
       1 => 'field_gluten',
       2 => 'field_other_allergies',
       3 => 'field_peanuts',
-      4 => 'field_vegan',
+      4 => 'field_soy',
+      5 => 'field_i_eat_dairy',
+      6 => 'field_i_eat_eggs',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -170,8 +173,8 @@ function arava_registration_wizard_field_group_info() {
       4 => 'field_semester',
       5 => 'field_price',
       6 => 'field_faculty',
-      7 => 'title',
-      8 => 'field_external_link',
+      7 => 'field_external_link',
+      8 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -201,6 +204,7 @@ function arava_registration_wizard_field_group_info() {
       0 => 'field_user',
       1 => 'field_semester',
       2 => 'title',
+      3 => 'field_registration_complete',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -252,7 +256,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'ארוחות',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'field_days_present',
       1 => 'group_extra_meals',
@@ -304,6 +308,58 @@ function arava_registration_wizard_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_mt_contact_info|node|teacher|default';
+  $field_group->group_name = 'group_mt_contact_info';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'teacher';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_mt_faculty_details';
+  $field_group->data = array(
+    'label' => 'Contact information',
+    'weight' => '5',
+    'children' => array(
+      0 => 'field_mt_contact_info',
+    ),
+    'format_type' => 'accordion-item',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'classes' => 'group-mt-contact-info field-group-accordion-item',
+      ),
+    ),
+  );
+  $export['group_mt_contact_info|node|teacher|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_mt_faculty_details|node|teacher|default';
+  $field_group->group_name = 'group_mt_faculty_details';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'teacher';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Details',
+    'weight' => '2',
+    'children' => array(
+      0 => 'group_mt_contact_info',
+    ),
+    'format_type' => 'accordion',
+    'format_settings' => array(
+      'formatter' => '',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-mt-faculty-details field-group-accordion',
+        'effect' => 'bounceslide',
+      ),
+    ),
+  );
+  $export['group_mt_faculty_details|node|teacher|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_payment|node|my_semester|form';
   $field_group->group_name = 'group_payment';
   $field_group->entity_type = 'node';
@@ -312,10 +368,11 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'תשלומים',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'field_payment_total',
       1 => 'field_payment_made',
+      2 => 'field_payment_comments',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
