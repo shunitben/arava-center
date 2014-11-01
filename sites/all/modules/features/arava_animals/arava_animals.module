@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Arava animals feature.
+ */
+
+include_once 'arava_animals.features.inc';

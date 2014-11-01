@@ -204,3 +204,33 @@ function _arava_center_hello_user_block() {
   }
   return t('Hello, @you', array('@you' => $username));
 }
+
+function arava_center_animals_breadcrumb($view) {
+  $tid = $view->args[0];
+  if ($tid == 0) {
+    return '';
+  }
+  $parents = taxonomy_get_parents_all($tid);
+  $breadcrumbs = array();
+  foreach ($parents as $parent) {
+    $breadcrumbs[$parent->tid] = $parent->name;
+  }
+  $breadcrumbs['0'] = t('Animals in the Area');
+  $breadcrumbs = array_reverse($breadcrumbs, true);
+  foreach ($breadcrumbs as $key => &$crumb) {
+    $crumb = l($crumb, 'animals-in-area/' . $key, array('absolute' => true));
+  }
+
+  return '<div class="animals-breadcrumbs">' . implode(' > ', $breadcrumbs ) . '</div>' ;
+}
+
+function arava_center_animals_term_description($view) {
+  $tid = $view->args[0];
+  if ($tid == 0) {
+    return '';
+  }
+  $term = taxonomy_term_load($tid);
+  if (!empty($term)) {
+    print '<div class="animals-description">' . $term->description . "</div>";
+  }
+}
