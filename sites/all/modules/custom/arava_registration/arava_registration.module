@@ -709,3 +709,24 @@ function arava_registration_views_post_execute(&$view) {
     }
   }
 }
+
+/**
+ * Implements hook_user_view
+ * @param $account
+ * @param $view_mode
+ * @param $langcode
+ */
+function arava_registration_user_view($account, $view_mode, $langcode){
+  global $user;
+  if($view_mode == 'full' && $user->uid == $account->uid){
+      $account->content['one_time_rides'] = array(
+        '#type' => 'markup',
+        '#weight' => 4,
+        '#markup' => '<ul class="item-list"><li>'.l(
+            t('One-time rides'),
+            'https://docs.google.com/spreadsheets/d/1pwQVwKjejglxuYUO7nYbljBwVF0wg51f3RhdYQaguqg/edit#gid=112547581',
+            array('attributes' => array('target' => '_blank'))
+          ).'</li></ul>',
+      );
+    }
+}
