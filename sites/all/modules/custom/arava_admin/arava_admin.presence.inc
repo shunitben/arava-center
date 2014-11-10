@@ -19,9 +19,9 @@ function arava_admin_presence_page() {
   node
   INNER JOIN field_data_field_semester semester ON node.nid = semester.entity_id AND semester.field_semester_target_id = $semesterId
   INNER JOIN field_data_field_days_present present ON node.nid = present.entity_id
-  INNER JOIN field_data_field_user users ON node.nid = users.entity_id
-  INNER JOIN field_data_field_registration_complete complete ON node.nid = complete.entity_id AND complete.field_registration_complete_value = '1'
-  WHERE
+  INNER JOIN field_data_field_user users ON node.nid = users.entity_id " .
+ // INNER JOIN field_data_field_registration_complete complete ON node.nid = complete.entity_id AND complete.field_registration_complete_value = '1'
+  "WHERE
   node.type = 'my_semester'
   GROUP BY present.field_days_present_value
   ");

@@ -24,9 +24,9 @@ function arava_admin_meals_page() {
   node
   INNER JOIN field_data_field_semester semester ON node.nid = semester.entity_id AND semester.field_semester_target_id = $semesterId
   INNER JOIN field_data_field_days_present present ON node.nid = present.entity_id
-  INNER JOIN field_data_field_user users ON node.nid = users.entity_id
-  INNER JOIN field_data_field_registration_complete complete ON node.nid = complete.entity_id AND complete.field_registration_complete_value = '1'
-  LEFT JOIN field_data_field_gluten gluten ON users.field_user_target_id = gluten.entity_id
+  INNER JOIN field_data_field_user users ON node.nid = users.entity_id " .
+//  INNER JOIN field_data_field_registration_complete complete ON node.nid = complete.entity_id AND complete.field_registration_complete_value = '1'
+  "LEFT JOIN field_data_field_gluten gluten ON users.field_user_target_id = gluten.entity_id
   LEFT JOIN field_data_field_soy soy ON users.field_user_target_id = soy.entity_id
   LEFT JOIN field_data_field_dairy dairy ON users.field_user_target_id = dairy.entity_id
   LEFT JOIN field_data_field_peanuts peanuts ON users.field_user_target_id = peanuts.entity_id
