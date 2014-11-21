@@ -1,0 +1,184 @@
+<?php
+
+function gradereg_init() {
+}
+
+/**
+ * @file
+ * Provides a views style plugin for FullCalendar
+ */
+
+function gradereg_menu() {
+  $items = array();
+
+  $items['node/%node/grades'] = array(
+    'title' => t('Course Student Grades'),
+    'page callback' => 'gradereg_node_grades_list',
+    'page arguments' => array(1),
+    'access callback' => 'gradereg_node_grades_list_access',
+    'access arguments' => array(1),
+    'file' => 'gradereg.pages.php',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['user/%user/grades'] = array(
+    'title' => t('Course Grades'),
+    'page callback' => 'gradereg_user_grades_list',
+    'page arguments' => array(1),
+    'access callback' => 'gradereg_user_grades_list_access',
+    'access arguments' => array(1),
+    'file' => 'gradereg.pages.php',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['node/%node/grades/edit/%user'] = array(
+    'title' => t('Edit Student Course Grades'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('gradereg_edit_grade', 1, 4),
+    'access callback' => 'gradereg_edit_grade_access',
+    'access arguments' => array(1, 4),
+    'file' => 'gradereg.pages.php',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/people/grade-courses'] = array(
+    'title' => t('Grade Courses'),
+    'page callback' => 'gradereg_course_list',
+    'access callback' => 'user_access',
+    'access arguments' => array('grade management'),
+    'file' => 'gradereg.admin.php',
+  );
+
+  $items['admin/people/grade-courses/%node/export'] = array(
+    'title' => t('Export Grade Courses'),
+    'page callback' => 'gradereg_course_export',
+    'page arguments' => array(3),
+    'access callback' => 'user_access',
+    'access arguments' => array('grade management'),
+    'file' => 'gradereg.admin.php',
+    'type' => MENU_CALLBACK,
+  );
+  
+  
+  return $items;
+}
+
+function gradereg_load_grade($node, $account){
+	$grades = db_query("select * from {grades_data} where nid=:nid and uid=:uid", array(':uid' => $account->uid, ':nid' => $node->nid))->fetchAssoc();
+	
+	if(!$grades){
+		return array();
+	}
+	
+	$grade = array();
+	$query = db_query("select * from {grades} where nid=:nid and uid=:uid order by field asc, delta asc", array(':uid' => $account->uid, ':nid' => $node->nid));
+	foreach($query as $r){
+		$grade[$r->field.'_'.$r->delta] = array('score' => $r->score, 'examiner_uid' => $r->examiner_uid, 'created' => $r->created);
+	}
+	
+	$grades['grade'] = $grade;
+	
+	return $grades;
+}
+
+function gradereg_user_grades_list_access($account){
+	global $user;
+
+	if(user_access('available for grade score', $account) && ($account->uid == $user->uid || user_access('administer users'))){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function gradereg_edit_grade_access($node, $account){
+	if($node && $node->type == 'course' && user_access('grade examine') && isset($node->field_examiners['und'][0]['target_id']) && $node->field_examiners['und'][0]['target_id']){
+		global $user;
+		foreach($node->field_examiners['und'] as $r){
+			if($user->uid == $r['target_id']){
+				$semester = $node->field_semester['und'][0]['target_id'];
+				$query = db_select('node', 'node')->extend('PagerDefault');
+				$query->join('field_data_field_my_courses', 'field_my_courses', "field_my_courses.entity_type='node' and field_my_courses.bundle='my_semester' and field_my_courses.revision_id=node.vid");
+				$query->join('field_data_field_course', 'field_course', "field_course.entity_type='field_collection_item' and field_course.bundle='field_my_courses' and field_course.revision_id=field_my_courses.field_my_courses_revision_id");
+				$query->join('field_data_field_semester', 'field_semester', "field_semester.entity_type='node' and field_semester.bundle='my_semester' and field_semester.revision_id=node.vid");
+				$query->join('field_data_field_user', 'field_user', "field_user.entity_type='node' and field_user.bundle='my_semester' and field_user.revision_id=node.vid");
+				
+				$query->condition('node.type', 'my_semester');
+				$query->condition('node.status', '1');
+				$query->condition('field_user.field_user_target_id', $account->uid);
+				$query->condition('field_semester.field_semester_target_id', $semester);
+				$query->condition('field_course.field_course_target_id', $node->nid);
+				$query->addField('field_user', 'field_user_target_id');
+				$find = $query->limit(1)->execute();
+				if($find){
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
+
+function gradereg_node_grades_list_access($node){
+	if($node && $node->type == 'course' && user_access('grade examine') && isset($node->field_examiners['und'][0]['target_id']) && $node->field_examiners['und'][0]['target_id']){
+		global $user;
+		foreach($node->field_examiners['und'] as $r){
+			if($user->uid == $r['target_id']){
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
+function gradereg_permission() {
+  return array(
+    'grade management' => array(
+      'title' => t('grade management'),
+    ),
+    'grade examine' => array(
+      'title' => t('grade examine'),
+    ),
+    'available for grade score' => array(
+      'title' => t('available for grade score'),
+    ),
+  );
+}
+
+
+function gradereg_export_excel($filename, $header, $rows){
+	require_once(dirname(__FILE__).'/PHPExcel_Classes/PHPExcel.php');
+	require_once(dirname(__FILE__).'/PHPExcel_Classes/PHPExcel/Writer/Excel5.php');
+	
+	$cols = array();
+	for($i=0; $i<count($header); $i++){
+		if($i>=52){
+			$cols[] = 'B'.chr(ord('A') + $i-52);
+		}else if($i>=26){
+			$cols[] = 'A'.chr(ord('A') + $i-26);
+		}else{
+			$cols[] = chr(ord('A') + $i);
+		}
+	}
+	
+	$objPHPExcel = new PHPExcel();
+	$objPHPExcel->setActiveSheetIndex(0);
+	foreach($header as $index => $r){
+		$colid = $cols[$index].'1';
+		$objPHPExcel->getActiveSheet()->setCellValue($colid, $r);
+	}
+	
+	$rowindex = 0;
+	foreach($rows as $row){
+		$rowindex++;
+		foreach($row as $index => $r){
+			$colid = $cols[$index].''.($rowindex+1);
+			$objPHPExcel->getActiveSheet()->setCellValue($colid, $r);
+		}
+	}
+	
+	$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+	$objWriter->save($filename);
+}

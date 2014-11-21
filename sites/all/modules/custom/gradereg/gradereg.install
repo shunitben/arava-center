@@ -1,0 +1,98 @@
+<?php
+
+function gradereg_install() {
+	
+}
+
+function gradereg_uninstall() {
+}
+ 
+
+/**
+ * Implementation of hook_schema().
+ */
+function gradereg_schema() {
+	$fields = array(
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'field' => array(
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => false
+      ),
+      'delta' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'score' => array(
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+		'default' => 0,
+      ),
+      'examiner_uid' => array(
+        'type' => 'int',
+        'unsigned' => false,
+        'not null' => TRUE,
+		'default' => 0,
+      ),
+      'created' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+	);
+	
+	
+  $schema['grades'] = array(
+    'fields' => $fields,
+    'primary key' => array('nid', 'uid', 'field', 'delta'),
+  );
+	
+	
+  $schema['grades_data'] = array(
+    'fields' => array(
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'homework_avg' => array(
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+		'default' => 0,
+      ),
+      'quiz_avg' => array(
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+		'default' => 0,
+      ),
+      'finaltest_avg' => array(
+        'type' => 'numeric',
+        'precision' => 10,
+        'scale' => 2,
+		'default' => 0,
+      ),
+	),
+    'primary key' => array('nid', 'uid'),
+  );
+  
+
+  return $schema;
+}
