@@ -30,6 +30,15 @@ function arava_admin_menu() {
     'file' => 'arava_admin.meals.inc'
   );
 
+  $items['admin/send-emails'] = array(
+    'title' => t('Send Emails'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_admin_send_emails_form'),
+    'access arguments' => array('view arava administration reports'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_admin.send_emails.inc'
+  );
+
 //  $items['admin/admin-registration'] = array(
 //    'title' => t('Administer Registration'),
 //    'page callback' => 'arava_admin_registration_page',
@@ -67,5 +76,25 @@ function arava_admin_preprocess_page(&$vars) {
       $uid = $vars['node']->field_user[LANGUAGE_NONE][0]['target_id'];
       drupal_set_message(l(t('Edit user\'s personal details'), 'user/' . $uid . '/edit'), 'status');
     }
+  }
+}
+
+function view_get_link_to_send_emails($view) {
+  return l(t('send emails'),
+          'admin/send-emails',
+          array('query' => array(
+            'view' => $view->name,
+            'display' => $view->current_display,
+            'args' => $view->args))
+          );
+}
+
+
+function arava_admin_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'send_email':
+      $message['subject'] = $params['subject'];
+      $message['body'] = $params['body'];
+      break;
   }
 }
