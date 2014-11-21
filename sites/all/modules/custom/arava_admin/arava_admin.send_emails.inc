@@ -92,7 +92,8 @@ function arava_admin_send_emails_form_submit($form, &$form_state) {
   $counter = 0;
 
   foreach ($form_state['values']['emails'] as $email) {
-    $result = drupal_mail('arava_admin', 'send_email', $email, 'en', $params);
-//    if ($result->success)
+    if (!empty($email)) {
+      $result = drupal_mail('arava_admin', 'send_email', $email, 'en', $params);
+    }
   }
 }
