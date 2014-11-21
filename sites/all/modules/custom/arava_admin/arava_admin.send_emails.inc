@@ -47,6 +47,10 @@ function _arava_admin_get_emails_from_view() {
   $display = $_GET['display'];
   $args = $_GET['args'];
 
+  if (empty($view_name) || empty($display) || empty($args)) {
+    return array();
+  }
+
   // get the view
   $view = views_get_view($view_name);
   $view->set_display($display);
@@ -83,17 +87,41 @@ function _arava_admin_get_emails_from_view() {
   return $emails;
 }
 
+/**
+ * Form submit function.
+ * @param $form
+ * @param $form_state
+ */
 function arava_admin_send_emails_form_submit($form, &$form_state) {
-
   $params = array(
     'subject' => $form_state['values']['subject'],
     'body' => '<div style="direction:rtl; text-align: right">' . $form_state['values']['message']['value'] . '</div>',
   );
-  $counter = 0;
 
-  foreach ($form_state['values']['emails'] as $email) {
-    if (!empty($email)) {
-      $result = drupal_mail('arava_admin', 'send_email', $email, 'en', $params);
-    }
+  $batch = arava_admin_send_emails_batch($form_state['values']['emails'], $params);
+  batch_set($batch);
+}
+
+/**
+ * Batch setup function
+ *
+ * @param $apps_type
+ * @return array
+ */
+function arava_admin_send_emails_batch($emails, $params) {
+
+  $chunks = array_chunk($emails, 10, true);
+  $operations = array();
+  foreach ($chunks as $chunk) {
+    $operations[] = array('arava_admin_send_emails_op', array($chunk, $params));
   }
+
+
+  $batch = array(
+    'operations' => $operations,
+    'finished' => 'arava_admin_finished',
+    'progress_message' => t('Processed @percentage%'),
+    'error_message' => t('Send emails script has encountered an error.'),
+  );
+  return $batch;
 }
