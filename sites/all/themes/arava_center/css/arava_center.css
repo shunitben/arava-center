@@ -254,3 +254,14 @@ Animals in the area
 .view-animals-taxonomy- .views-field-body {
     margin-top: 10px;
 }
+
+/******************************
+* fixed for admin toolbar
+******************************/
+
+div#admin-toolbar div.admin-tab {
+    height: 24px !important;
+}
+#admin-toolbar ul.menu li a {
+    height: 21px !important;
+}
