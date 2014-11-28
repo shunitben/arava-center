@@ -34,10 +34,21 @@ function arava_admin_send_emails_form($form, &$form_state) {
     '#required' => true,
   );
 
+  for ($i = 1; $i <= 5; $i++) {
+    $form['attachment_' . $i] = array(
+      '#type' => 'file',
+      '#title' => t('Attach file'),
+    );
+  }
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Send Emails'),
   );
+
+  $get = $_GET;
+  unset($get['q']);
+  $_SESSION['send_emails_redirect'] = $get;
 
   return $form;
 }
@@ -87,15 +98,42 @@ function _arava_admin_get_emails_from_view() {
   return $emails;
 }
 
+function arava_admin_send_emails_form_validate($form, &$form_state) {
+  foreach ($form_state['values'] as $key => $attachment) {
+    if (strpos($key, 'attachment_') === 0) {
+      $file = file_save_upload($key, array(
+        'file_validate_extensions' => array('jpg jpeg gif png txt doc docx xls xlsx pdf ppt pptx pps ppsx odt ods odp zip'), // Validate extensions.
+      ), false, FILE_EXISTS_REPLACE);
+      // If the file passed validation:
+      if ($file) {
+        // Save the file for use in the submit handler.
+        $form_state['storage'][$key] = $file;
+      }
+    }
+  }
+}
+
 /**
  * Form submit function.
  * @param $form
  * @param $form_state
  */
 function arava_admin_send_emails_form_submit($form, &$form_state) {
+
+  $attachments = array();
+  foreach ($form_state['storage'] as $key => $file) {
+    $attachment = array(
+      'filecontent' => file_get_contents($file->uri),
+      'filename' => $file->filename,
+      'filemime' => $file->filemime,
+    );
+    $attachments[] = $attachment;
+  }
+
   $params = array(
     'subject' => $form_state['values']['subject'],
     'body' => '<div style="direction:rtl; text-align: right">' . $form_state['values']['message']['value'] . '</div>',
+    'attachments' => $attachments,
   );
 
   $batch = arava_admin_send_emails_batch($form_state['values']['emails'], $params);
