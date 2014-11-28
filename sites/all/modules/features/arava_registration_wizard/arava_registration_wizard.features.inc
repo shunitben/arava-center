@@ -30,7 +30,7 @@ function arava_registration_wizard_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('כותרת'),
       'help' => '',
     ),
     'class_room' => array(
@@ -38,15 +38,15 @@ function arava_registration_wizard_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('כותרת'),
       'help' => '',
     ),
     'course' => array(
-      'name' => t('Course'),
+      'name' => t('קורס'),
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('כותרת'),
       'help' => '',
     ),
     'my_semester' => array(
@@ -54,7 +54,7 @@ function arava_registration_wizard_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('כותרת'),
       'help' => '',
     ),
     'one_time' => array(
@@ -66,11 +66,11 @@ function arava_registration_wizard_node_info() {
       'help' => '',
     ),
     'semester' => array(
-      'name' => t('Semester'),
+      'name' => t('סמסטר'),
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('כותרת'),
       'help' => '',
     ),
     'teacher' => array(
@@ -78,9 +78,10 @@ function arava_registration_wizard_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('כותרת'),
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

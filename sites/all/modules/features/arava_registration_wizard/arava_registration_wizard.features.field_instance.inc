@@ -428,6 +428,48 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-course-field_audio_files'
+  $field_instances['node-course-field_audio_files'] = array(
+    'bundle' => 'course',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_table',
+        'weight' => 18,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_audio_files',
+    'label' => 'קבצי שמע',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 1,
+      'file_directory' => 'audio_files',
+      'file_extensions' => 'mp3 wav',
+      'max_filesize' => '50MB',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 8,
+    ),
+  );
+
   // Exported field_instance: 'node-course-field_classroom'
   $field_instances['node-course-field_classroom'] = array(
     'bundle' => 'course',
@@ -499,7 +541,7 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 20,
+      'weight' => 8,
     ),
   );
 
@@ -529,6 +571,7 @@ function arava_registration_wizard_field_default_field_instances() {
     'label' => 'External Link',
     'required' => 0,
     'settings' => array(
+      'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
         'configurable_title' => 0,
@@ -542,6 +585,7 @@ function arava_registration_wizard_field_default_field_instances() {
       'enable_tokens' => 1,
       'rel_remove' => 'default',
       'title' => 'optional',
+      'title_label_use_field_label' => FALSE,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -631,7 +675,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 5,
+      'weight' => 7,
     ),
   );
 
@@ -922,7 +966,7 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 3,
+      'weight' => 5,
     ),
   );
 
@@ -962,7 +1006,49 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 4,
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance: 'node-course-field_pdf_files'
+  $field_instances['node-course-field_pdf_files'] = array(
+    'bundle' => 'course',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_table',
+        'weight' => 19,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_pdf_files',
+    'label' => 'קבצי pdf',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 1,
+      'file_directory' => 'pdf_files',
+      'file_extensions' => 'pdf',
+      'max_filesize' => '50MB',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 9,
     ),
   );
 
@@ -1124,7 +1210,7 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -2737,6 +2823,8 @@ function arava_registration_wizard_field_default_field_instances() {
   t('סמסטר');
   t('עלות לסמסטר');
   t('פקולטה');
+  t('קבצי pdf');
+  t('קבצי שמע');
   t('שם מלא');
   t('שעות השיעור');
 

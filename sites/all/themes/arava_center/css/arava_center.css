@@ -123,9 +123,12 @@ ul.menu li a{
 }
 
 /*Course*/
+.node-type-course .field-name-body {
+    margin-top: 20px;
+}
 .node-type-course .field-name-field-teacher{
     margin-top:20px;
-    border-top:1px solid #acacac;
+    /*border-top:1px solid #acacac;*/
     float:right;
 }
 .node-type-course .field-name-field-teacher .field-label{
@@ -137,6 +140,10 @@ ul.menu li a{
 .node-type-course .field-name-field-lesson-days .field-items div{
     display: inline;
     margin-left: 5px;
+}
+.node-type-course .field-name-field-audio-files {
+    clear: both;
+    padding-top: 20px;
 }
 /*catalog*/
 .page-catalog .view-catalog .item-list{
