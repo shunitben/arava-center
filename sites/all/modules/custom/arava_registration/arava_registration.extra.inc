@@ -34,8 +34,8 @@ function arava_registration_extra($form, &$form_state) {
   $form['health_declaration_checkbox'] = _agreement_field_checkbox("health declaration", 'arava_center_health_declaration_link', 'health', $selected['health_declaration']);
   $form['health_declaration'] = _agreement_field_textfield('health');
 
-//  $form['waver_checkbox'] = _agreement_field_checkbox("the waver", 'arava_center_waver_link', 'waver', $selected['waver']);
-//  $form['waver'] = _agreement_field_textfield('waver');
+  $form['waver_checkbox'] = _agreement_field_checkbox("the waver", 'arava_center_waver_link', 'waver', $selected['waver']);
+  $form['waver'] = _agreement_field_textfield('waver');
 
   $form['comments'] = array(
     '#type' => 'textarea',

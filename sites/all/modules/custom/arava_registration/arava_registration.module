@@ -660,7 +660,10 @@ function _arava_registration_validate_all_registration() {
   // extra info
   $extra = $mySemesterAPI->getExtraInfoForUser();
   unset($extra['comments']);
-  $required = array('takanon_moa' => true,);
+  $required = array('takanon_moa' => true,
+                    'takanon_school' => true,
+                    'health_declaration' => true,
+                    'waver' => true,);
 
   foreach ($extra as $key => $info) {
     if (isset($required[$key]) && $required[$key] && !$info) {

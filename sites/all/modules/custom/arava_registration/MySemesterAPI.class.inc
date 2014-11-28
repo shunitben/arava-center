@@ -327,7 +327,10 @@ class MySemesterAPI {
     $extra_info = $this->getExtraInfoForUser();
     unset($extra_info['comments']);
 	
-	$required = array('takanon_moa' => true,);
+	$required = array('takanon_moa' => true,
+                    'takanon_school' => true,
+                    'health_declaration' => true,
+                    'waver' => true);
 	
     foreach ($extra_info as $key => $info) {
       if (isset($required[$key]) && $required[$key] && !$info) {
