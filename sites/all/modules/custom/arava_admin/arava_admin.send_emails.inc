@@ -121,13 +121,15 @@ function arava_admin_send_emails_form_validate($form, &$form_state) {
 function arava_admin_send_emails_form_submit($form, &$form_state) {
 
   $attachments = array();
-  foreach ($form_state['storage'] as $key => $file) {
-    $attachment = array(
-      'filecontent' => file_get_contents($file->uri),
-      'filename' => $file->filename,
-      'filemime' => $file->filemime,
-    );
-    $attachments[] = $attachment;
+  if (!empty($form_state['storage'])) {
+    foreach ($form_state['storage'] as $key => $file) {
+      $attachment = array(
+        'filecontent' => file_get_contents($file->uri),
+        'filename' => $file->filename,
+        'filemime' => $file->filemime,
+      );
+      $attachments[] = $attachment;
+    }
   }
 
   $params = array(
