@@ -39,13 +39,15 @@ function arava_admin_menu() {
     'file' => 'arava_admin.send_emails.inc'
   );
 
-//  $items['admin/admin-registration'] = array(
-//    'title' => t('Administer Registration'),
-//    'page callback' => 'arava_admin_registration_page',
-//    'access arguments' => array('administer menu'),
-//    'type' => MENU_NORMAL_ITEM,
-//    'file' => 'arava_admin.registration.inc'
-//  );
+  $items['admin/attendance/take'] = array(
+    'title' => t('Take attendance'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_admin_take_attendance_form'),
+    'access arguments' => array('take attendance'),
+    'type' => MENU_CALLBACK,
+    'file' => 'arava_admin.attendance.inc'
+  );
+
 
 
   return $items;
@@ -58,6 +60,12 @@ function arava_admin_permission() {
   return array(
     'view arava administration reports' => array(
       'title' => t('View Arava administration reports'),
+    ),
+    'take attendance' => array(
+      'title' => t('Take Attendance'),
+    ),
+    'administer attendance' => array(
+      'title' => t('Administer Attendance'),
     )
   );
 }

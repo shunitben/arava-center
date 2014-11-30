@@ -44,7 +44,7 @@ class MySemesterAPI {
 	 *
 	 * @return mixed
 	 */
-	protected function getCurrentSemester() {
+	public function getCurrentSemester($return = false) {
 		$query = db_query(" SELECT open_reg.entity_id AS entity_id
 											FROM field_data_field_open_for_registration open_reg
 											INNER JOIN field_data_field_semester_dates dates ON open_reg.entity_id = dates.entity_id
@@ -54,6 +54,9 @@ class MySemesterAPI {
 			$result = $row->entity_id; // override to get the latest open semester, just in case.
 		}
 		$this->semester_id = $result;
+    if ($return){
+      return $result;
+    }
 	}
 
 	/**
@@ -350,7 +353,7 @@ class MySemesterAPI {
 //    $user_semester_node = node_load($this->user_semester->getIdentifier());
 //
 //    $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $extra_info['comments'];
-//    $user_semester_node->field_takanon_moa[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_moa'];
+//    $user_semester_node->field_n_moa[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_moa'];
 //    $user_semester_node->field_takanon_school[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_school'];
 //    $user_semester_node->field_takanon_amuta[LANGUAGE_NONE][0]['value'] = $extra_info['takanon_amuta'];
 //    $user_semester_node->field_health_declaration[LANGUAGE_NONE][0]['value'] = $extra_info['health_declaration'];
