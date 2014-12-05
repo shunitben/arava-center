@@ -62,7 +62,7 @@ function gradereg_node_grades_list($node){
 		
 		$query->orderBy('field_user_name.field_user_name_value', 'ASC');
 		
-		$find = $query->limit(20)->execute();
+		$find = $query->limit(200)->execute();
 		
 		$hm_num = (isset($node->field_number_of_homework['und'][0]['value']) && $node->field_number_of_homework['und'][0]['value'] > 0) ? $node->field_number_of_homework['und'][0]['value'] : 0;
 		$quiz_num = (isset($node->field_number_of_quizzes['und'][0]['value']) && $node->field_number_of_quizzes['und'][0]['value'] > 0) ? $node->field_number_of_quizzes['und'][0]['value'] : 0;
@@ -87,13 +87,13 @@ function gradereg_node_grades_list($node){
 				//$r->created ? date('Y-m-d H:i:s', $r->created) : '',
 				//$hw ? number_format($hw, 0) : '',
 			);
-			
+
 			/*
 			if($quiz_num){
 				$quiz = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $r->uid, ':field' => 'quiz'))->fetchField();
 				$row[] = $quiz ? number_format($quiz, 0) : '';
 			}
-			
+
 			if($finaltest){
 				$finaltest_score = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $r->uid, ':field' => 'finaltest'))->fetchField();
 				$row[] = $finaltest_score ? number_format($finaltest_score, 0) : '';
@@ -362,14 +362,14 @@ function gradereg_user_grades_list($account){
 		
 		$query->orderBy('course.title', 'ASC');
 		
-		$find = $query->limit(20)->execute();
+		$find = $query->limit(200)->execute();
 		
 		$hm_num = (isset($node->field_number_of_homework['und'][0]['value']) && $node->field_number_of_homework['und'][0]['value'] > 0) ? $node->field_number_of_homework['und'][0]['value'] : 0;
 		$quiz_num = (isset($node->field_number_of_quizzes['und'][0]['value']) && $node->field_number_of_quizzes['und'][0]['value'] > 0) ? $node->field_number_of_quizzes['und'][0]['value'] : 0;
 		$finaltest = (isset($node->field_final_test['und'][0]['value']) && $node->field_final_test['und'][0]['value']) ? true : false;
 		$header = array(t('Course'));
 		
-		for($i=0; $i<20; $i++){
+		for($i=0; $i<200; $i++){
 			if(!$hide_examiner){
 				$header[] = t('Examiner');
 				$header[] = t('Date');
@@ -409,7 +409,7 @@ function gradereg_user_grades_list($account){
 				$grade[$r2->field.'_'.$r2->delta.'_examiner'] = $r2->examiner_uid ? l($r2->examiner_name, 'user/'.$r2->examiner_uid) : '';
 				$grade[$r2->field.'_'.$r2->delta.'_date'] = $r2->created ? date('Y-m-d H:i:s', $r2->created) : '';
 			}
-			for($i=0; $i<20; $i++){
+			for($i=0; $i<200; $i++){
 				if(isset($grade['homework_'.$i])){
 					if(!$hide_examiner){
 						$row[] = $grade['homework_'.$i.'_examiner'];
@@ -530,7 +530,7 @@ function gradereg_user_grades_list_export($account){
 		$finaltest = (isset($node->field_final_test['und'][0]['value']) && $node->field_final_test['und'][0]['value']) ? true : false;
 		$header = array(t('Course'));
 		
-		for($i=0; $i<20; $i++){
+		for($i=0; $i<200; $i++){
 			if(!$hide_examiner){
 				$header[] = t('Examiner');
 				$header[] = t('Date');
@@ -569,7 +569,7 @@ function gradereg_user_grades_list_export($account){
 				$grade[$r2->field.'_'.$r2->delta.'_examiner'] = $r2->examiner_uid ? $r2->examiner_name : '';
 				$grade[$r2->field.'_'.$r2->delta.'_date'] = $r2->created ? date('Y-m-d H:i:s', $r2->created) : '';
 			}
-			for($i=0; $i<20; $i++){
+			for($i=0; $i<200; $i++){
 				if(isset($grade['homework_'.$i])){
 					if(!$hide_examiner){
 						$row[] = $grade['homework_'.$i.'_examiner'];
