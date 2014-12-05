@@ -87,6 +87,50 @@ function arava_admin_preprocess_page(&$vars) {
   }
 }
 
+/**
+ * Implements hook_block_info
+ * @return mixed
+ */
+function arava_admin_block_info() {
+  $blocks['attendance_choose_lesson'] = array(
+    'info' => t('Attendance choose lesson'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view
+ * @param string $delta
+ * @return mixed
+ */
+function arava_admin_block_view($delta = '') {
+  switch ($delta) {
+    case 'attendance_choose_lesson':
+      module_load_include('inc', 'arava_admin', 'arava_admin.attendance');
+      $block['subject'] = null;
+      $form = drupal_get_form('arava_admin_attendance_choose_lesson_form');
+      $block['content'] = drupal_render($form);
+      break;
+  }
+
+  return $block;
+}
+
+
+/**
+ * Implements hook_page_build().
+ */
+function arava_admin_page_build(&$page) {
+  if (arg(1) == 'attendance' && arg(2) == 'take') {
+    $block = module_invoke('arava_admin', 'block_view', 'attendance_choose_lesson');
+    $blocks['attendance_choose_lesson'] = array(
+      '#markup' => $block['content'],
+      '#weight' => -10,
+    );
+    $page['content'] = array_merge($blocks, $page['content']);
+  }
+}
+
 function view_get_link_to_send_emails($view) {
   return l(t('send emails'),
           'admin/send-emails',

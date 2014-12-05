@@ -4,15 +4,34 @@
     Drupal.behaviors.arava_admin = {
         attach: function (context) {
 
-            // @todo: color all unchecked in attendance red
+            // disable attendance form when changing lesson selection
+            $('#arava-admin-attendance-choose-lesson-form select').change(function() {
+                $('.attendance_warning').show();
+            });
+            $('.discard_attendance_warning').click(function() {
+                $('.attendance_warning').hide();
+            });
+
+            Drupal.behaviors.arava_admin.colorUncheckedRed();
 
             $('.page-admin-attendance-take .form-type-checkboxes input[type=checkbox]').click(function(){
                 if ($(this).is(':checked')) {
                     $(this).parent().siblings().find('input[type=checkbox]').removeAttr('checked');
                 }
-                //@todo: color it red if unchecked
+                Drupal.behaviors.arava_admin.colorUncheckedRed();
             })
 
+        },
+
+        colorUncheckedRed: function() {
+            $('#edit-attendance .form-type-checkboxes').each(function() {
+                if ($(this).find('input[type=checkbox]:checked').length == 0) {
+                    $(this).find('label').addClass('absent');
+                }
+                else {
+                    $(this).find('label').removeClass('absent');
+                }
+            })
         }
 
 

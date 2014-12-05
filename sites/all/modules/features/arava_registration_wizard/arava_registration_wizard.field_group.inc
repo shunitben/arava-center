@@ -135,6 +135,7 @@ function arava_registration_wizard_field_group_info() {
     'children' => array(
       0 => 'field_audio_files',
       1 => 'field_pdf_files',
+      2 => 'field_files_restricted',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -263,6 +264,7 @@ function arava_registration_wizard_field_group_info() {
       1 => 'field_final_test',
       2 => 'field_number_of_quizzes',
       3 => 'field_examiners',
+      4 => 'field_num_lessons',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

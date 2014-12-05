@@ -1,3 +1,22 @@
+.page-admin-attendance-take .form-item-semester,
+.page-admin-attendance-take #course-div,
+.page-admin-attendance-take #lesson-div {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.attendance_warning {
+    display: none;
+    position: absolute;
+    z-index: 5;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
 .attendance_status {
     border: 1px solid #ccc;
     padding: 10px;
@@ -31,4 +50,7 @@
 }
 .page-admin-attendance-take .form-type-checkboxes .form-checkboxes label {
     display: none;
+}
+label.absent {
+    color: red;
 }

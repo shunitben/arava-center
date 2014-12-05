@@ -1,17 +1,20 @@
 <?php
 
-function arava_admin_take_attendance_form($form, &$form_state) {
-
-  $path = drupal_get_path('module', 'arava_admin');
-  drupal_add_js($path . '/js/arava_admin.js');
-  drupal_add_css($path . '/css/arava_admin.css');
-
+function arava_admin_attendance_choose_lesson_form($form, &$form_state) {
   $form['#prefix'] ='<div id="form-div">';
   $form['#suffix'] ='</div>';
   $form['#tree'] = true;
 
   $semester_options = _arava_admin_get_semester_options();
-  $default_semester = !empty($form_state['values']['semester']) ? $form_state['values']['semester'] : _arava_admin_get_default_semester();
+  if (!empty($form_state['values']['semester'])) {
+    $default_semester = $form_state['values']['semester'];
+  }
+  elseif (!empty($_GET['semester'])) {
+    $default_semester = $_GET['semester'];
+  }
+  else {
+    $default_semester = _arava_admin_get_default_semester();
+  }
   $form['semester'] = array(
     '#title' => t('Semester'),
     '#type' => 'select',
@@ -30,6 +33,9 @@ function arava_admin_take_attendance_form($form, &$form_state) {
   if (!empty($form_state['triggering_element']) && $form_state['triggering_element']['#name'] != 'semester' && !empty($form_state['values']['course'])) {
     $default_course = $form_state['values']['course'];
   }
+  elseif (!empty($_GET['course'])) {
+    $default_course = $_GET['course'];
+  }
   $form['course'] = array(
     '#title' => t('Course'),
     '#type' => 'select',
@@ -46,46 +52,77 @@ function arava_admin_take_attendance_form($form, &$form_state) {
   );
 
   $lesson_options = _arava_admin_get_lesson_options($default_course);
-  // $default_lesson isn't really relevant for the lessons selection, but we need it for the students list
-  $default_lesson = null;
-  if (!empty($form_state['triggering_element']) && !in_array($form_state['triggering_element']['#name'], array('semester', 'course')) && !empty($form_state['values']['lesson'])) {
-    $default_lesson = $form_state['values']['lesson'];
-  }
   $form['lesson'] = array(
     '#title' => t('Lesson'),
     '#type' => 'select',
     '#options' => $lesson_options,
-    '#default_value' => $default_lesson,
+    '#default_value' => !empty($_GET['lesson']) ? $_GET['lesson'] : null,
     '#prefix' => '<div id="lesson-div">',
     '#suffix' => '</div>',
-    '#ajax' => array(
-      'callback' => 'attendance_choose_lesson',
-      'wrapper' => 'form-div',
-      'method' => 'replace',
-      'effect' => 'none',
-    ),
   );
 
-  $form['attendance'] = array(
-    '#type' => 'fieldset',
-    '#prefix' => '<div id="students-div">',
-    '#suffix' => '</div>',
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'go',
   );
 
-  if ($default_lesson) {
+  return $form;
+}
+
+function arava_admin_attendance_choose_lesson_form_submit($form, &$form_state) {
+  drupal_goto('admin/attendance/take', array('query' => array(
+    'semester' => $form_state['values']['semester'],
+    'course' => $form_state['values']['course'],
+    'lesson' => $form_state['values']['lesson'],
+  )));
+}
+
+function arava_admin_take_attendance_form($form, &$form_state) {
+
+  $path = drupal_get_path('module', 'arava_admin');
+  drupal_add_js($path . '/js/arava_admin.js');
+  drupal_add_css($path . '/css/arava_admin.css');
+
+  $course = !empty($_GET['course']) ? $_GET['course'] : null;
+  $lesson = !empty($_GET['lesson']) ? $_GET['lesson'] : null;
+
+  if ((!$course || !is_numeric($course)) || (!$lesson || !is_numeric($lesson))) {
+    $form['attendance'] = array(
+      '#markup' => t('Please choose a course and lesson above.'),
+    );
+  }
+  else {
+
+    $form['course'] = array(
+      '#type' => 'value',
+      '#value' => $course,
+    );
+    $form['lesson'] = array(
+      '#type' => 'value',
+      '#value' => $lesson,
+    );
+
 
     $form['attendance'] = array(
       '#type' => 'fieldset',
+      '#prefix' => '<div class="attendance_warning">' .
+        t('You have changed the selection of semesters, courses or lessons above.<br> The attendance form has not yet changed.') . '<br><br>' .
+        t('To take attendance for the lesson you have selected above, please click the "go" button above.') . "<br>" .
+        t('To continue with the attendance you were taking, <a class="discard_attendance_warning">click here</a>') .
+        '</div>'
     );
 
-    $students = _arava_admin_get_attendance_list_for_lesson($default_course, $default_lesson);
+    $students = _arava_admin_get_attendance_list_for_lesson($course, $lesson);
 
+    $course_node = node_load($course);
+    $course_name = $course_node->title;
+    $attendance_status = '<h3>' . t('@course lesson @lesson.', array('@course' => $course_name, '@lesson' => $lesson)) . '</h1>';
     if ($students['first_time']) {
-      $attendance_status = t('Attendance has not yet been taken for this lesson. All students have been marked as present for your
+      $attendance_status .= t('Attendance has not yet been taken for this lesson. All students have been marked as present for your
                               convenience. Please remove any student that was not present.');
     }
     else {
-      $attendance_status = t('Attendance has already been taken for this lesson. This is real data. Edit away!');
+      $attendance_status .= t('Attendance has already been taken for this lesson. This is real data. Edit away!');
     }
 
     $form['attendance']['header'] = array(
@@ -110,12 +147,11 @@ function arava_admin_take_attendance_form($form, &$form_state) {
       );
     }
 
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Submit'),
+    );
   }
-
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-  );
 
   return $form;
 }
@@ -130,16 +166,6 @@ function attendance_choose_course($form, $form_state) {
 }
 function attendance_choose_lesson($form, $form_state) {
   $form_state['rebuild'] = true;
-  // this should fix some bug/weird behavior or drupal's form API:
-  // we're copying the attendance default values into form state values, because they are not refreshed otherwise when
-  // you choose a lesson and then another one.
-  foreach ($form_state['values']['attendance'] as $key => &$value) {
-    if (!empty($form['attendance'][$key])) {
-      $default_value = $form['attendance'][$key]['#default_value'][0];
-      $value[1] = $default_value == 1;
-      $value[2] = $default_value == 2;
-    }
-  }
   return $form;
 }
 
@@ -247,7 +273,7 @@ function _arava_admin_get_attendance_list_for_lesson($course, $lesson) {
 
 function arava_admin_take_attendance_form_submit($form, &$form_state) {
   global $user;
-  foreach($form_state['values']['attendance'] as $student => $attendance) {
+  foreach($form_state['values'] as $student => $attendance) {
     $uid = str_replace('student_', '', $student);
     $present = !empty($attendance[1]);
     $made_up = !empty($attendance[2]);
@@ -255,9 +281,9 @@ function arava_admin_take_attendance_form_submit($form, &$form_state) {
 
     db_insert('attendance')
       ->fields(array(
-        'student_uid' => $uid,
-        'course_nid' => $form_state['values']['course'],
-        'lesson_num' => $form_state['values']['lesson'],
+        'student_uid' => (int)$uid,
+        'course_nid' => (int)$form_state['values']['course'],
+        'lesson_num' => (int)$form_state['values']['lesson'],
         'attendance_taker_uid' => $user->uid,
         'attendance_status' => $status,
         'updated_date' => time(),
@@ -265,5 +291,5 @@ function arava_admin_take_attendance_form_submit($form, &$form_state) {
       ->execute();
   }
 
-  drupal_set_message('The attendance data you submitted has been saved. On to the next lesson:');
+  drupal_set_message('The attendance data you submitted has been saved.');
 }
