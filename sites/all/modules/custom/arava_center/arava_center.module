@@ -234,3 +234,29 @@ function arava_center_animals_term_description($view) {
     print '<div class="animals-description">' . $term->description . "</div>";
   }
 }
+
+/**
+ * Implements hook_preprocess_node
+ * @param $vars
+ */
+function arava_center_preprocess_node(&$vars) {
+  if ($vars['type'] == 'course') {
+    $GLOBALS['conf']['cache'] = FALSE;
+    $restricted_fields = array(
+      'field_audio_files',
+      'field_pdf_files',
+    );
+    foreach ($restricted_fields as $field) {
+      if (!empty($vars[$field]) && !_user_signed_up_to_course($vars['nid'])) {
+        unset($vars['content'][$field]);
+      }
+    }
+  }
+}
+
+function _user_signed_up_to_course($course_id) {
+  global $user;
+  module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
+  $dbApi = new AravaCenterDbApi();
+  return $dbApi->isUserSignedUpToCourse($user->uid, $course_id);
+}
