@@ -220,7 +220,7 @@ function _arava_admin_get_lesson_options($course_id) {
   $lessons = array('null' => $empty_text);
   if (!empty($num_lessons)) {
     for ($i = 1; $i <= $num_lessons; $i++) {
-      $lessons[$i] = t('lesson ' . $i);
+      $lessons[$i] = t('lesson') . ' ' . $i;
     }
   }
   return $lessons;
