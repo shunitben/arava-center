@@ -141,7 +141,8 @@ ul.menu li a{
     display: inline;
     margin-left: 5px;
 }
-.node-type-course .field-name-field-audio-files {
+.node-type-course .field-name-field-audio-files,
+.node-type-course .field-name-field-pdf-files {
     clear: both;
     padding-top: 20px;
 }
