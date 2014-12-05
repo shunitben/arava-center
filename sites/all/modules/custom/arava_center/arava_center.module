@@ -241,14 +241,17 @@ function arava_center_animals_term_description($view) {
  */
 function arava_center_preprocess_node(&$vars) {
   if ($vars['type'] == 'course') {
-    $GLOBALS['conf']['cache'] = FALSE;
-    $restricted_fields = array(
-      'field_audio_files',
-      'field_pdf_files',
-    );
-    foreach ($restricted_fields as $field) {
-      if (!empty($vars[$field]) && !_user_signed_up_to_course($vars['nid'])) {
-        unset($vars['content'][$field]);
+    $restricted = !empty($vars['field_files_restricted']) && $vars['field_files_restricted'][LANGUAGE_NONE][0]['value'] == 1;
+    if ($restricted) {
+//      $GLOBALS['conf']['cache'] = FALSE;
+      $restricted_fields = array(
+        'field_audio_files',
+        'field_pdf_files',
+      );
+      foreach ($restricted_fields as $field) {
+        if (!empty($vars[$field]) && !_user_signed_up_to_course($vars['nid'])) {
+          unset($vars['content'][$field]);
+        }
       }
     }
   }
