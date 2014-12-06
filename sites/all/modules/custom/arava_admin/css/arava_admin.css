@@ -5,6 +5,20 @@
     margin-left: 5px;
 }
 
+.page-admin-attendance-take .form-type-select {
+    position: relative;
+}
+.page-admin-attendance-take select.progress-disabled {
+    float: none;
+}
+.page-admin-attendance-take .ajax-progress {
+    position: absolute;
+    right: 0;
+    bottom: -13px;
+    width: 200px;
+}
+
+
 .attendance_warning {
     display: none;
     position: absolute;

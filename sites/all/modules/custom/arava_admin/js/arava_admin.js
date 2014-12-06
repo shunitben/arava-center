@@ -5,16 +5,31 @@
         attach: function (context) {
 
             // disable attendance form when changing lesson selection
-            $('#arava-admin-attendance-choose-lesson-form select').change(function() {
+            $('.page-admin-attendance-take select').change(function() {
                 $('.attendance_warning').show();
             });
             $('.discard_attendance_warning').click(function() {
                 $('.attendance_warning').hide();
             });
 
+            // confirm before leaving the page with unsaved changes
+            $('.page-admin-attendance-take #form-div .form-submit').click(function(e) {
+                if (Drupal.behaviors.arava_admin.hasChanges) {
+                    var message = Drupal.t("You are about to leave this attendance form without saving your changes.\n" +
+                        "If that is what you want to do, click 'OK'.\n" +
+                        "Otherwise click 'cancel' to close this warning and then save your changes at the bottom of the page."),
+                        confirm = window.confirm(message);
+                    if (confirm == false) {
+                        $('.attendance_warning').hide();
+                        e.preventDefault();
+                    }
+                }
+            })
+
             Drupal.behaviors.arava_admin.colorUncheckedRed();
 
             $('.page-admin-attendance-take .form-type-checkboxes input[type=checkbox]').click(function(){
+                Drupal.behaviors.arava_admin.hasChanges = true;
                 if ($(this).is(':checked')) {
                     $(this).parent().siblings().find('input[type=checkbox]').removeAttr('checked');
                 }
@@ -22,6 +37,8 @@
             })
 
         },
+
+        hasChanges: false,
 
         colorUncheckedRed: function() {
             $('#edit-attendance .form-type-checkboxes').each(function() {

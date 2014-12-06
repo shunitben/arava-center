@@ -381,13 +381,13 @@ function gradereg_user_grades_list($account){
 				$header[] = t('Examiner');
 				$header[] = t('Date');
 			}
-			$header[] = t('HW'.($i+1));
+			$header[] = t('HW @num', array('@num' => ($i+1)));
 			if($i<15){
 				if(!$hide_examiner){
 					$header[] = t('Examiner');
 					$header[] = t('Date');
 				}
-				$header[] = t('Q'.($i+1));
+				$header[] = t('Quiz @num', array('@num' => ($i+1)));
 			}
 		}
 		$header[] = t('Final Test');
