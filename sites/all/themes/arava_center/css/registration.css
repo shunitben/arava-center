@@ -59,6 +59,12 @@ Takanon popups
 #healthform-mainform {
     padding: 0 10px;
 }
+#healthform-mainform .ajax-progress {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: 140px;
+}
 
 /*wizard menu*/
 #block-arava-registration-registration-steps{
