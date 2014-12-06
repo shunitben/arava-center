@@ -92,54 +92,28 @@ function gradereg_user_grades_list_access($account){
 }
 
 function gradereg_edit_grade_access($node, $account){
-	if($node && $node->type == 'course' && user_access('grade examine') && isset($node->field_examiners['und'][0]['target_id']) && $node->field_examiners['und'][0]['target_id']){
-		global $user;
-		foreach($node->field_examiners['und'] as $r){
-			if($user->uid == $r['target_id']){
-				$semester = $node->field_semester['und'][0]['target_id'];
-				$query = db_select('node', 'node')->extend('PagerDefault');
-				$query->join('field_data_field_my_courses', 'field_my_courses', "field_my_courses.entity_type='node' and field_my_courses.bundle='my_semester' and field_my_courses.revision_id=node.vid");
-				$query->join('field_data_field_course', 'field_course', "field_course.entity_type='field_collection_item' and field_course.bundle='field_my_courses' and field_course.revision_id=field_my_courses.field_my_courses_revision_id");
-				$query->join('field_data_field_semester', 'field_semester', "field_semester.entity_type='node' and field_semester.bundle='my_semester' and field_semester.revision_id=node.vid");
-				$query->join('field_data_field_user', 'field_user', "field_user.entity_type='node' and field_user.bundle='my_semester' and field_user.revision_id=node.vid");
-				
-				$query->condition('node.type', 'my_semester');
-				$query->condition('node.status', '1');
-				$query->condition('field_user.field_user_target_id', $account->uid);
-				$query->condition('field_semester.field_semester_target_id', $semester);
-				$query->condition('field_course.field_course_target_id', $node->nid);
-				$query->addField('field_user', 'field_user_target_id');
-				$find = $query->limit(1)->execute();
-				if($find){
-					return true;
-				}
-			}
-		}
-	}
-	
-	return false;
+	$generally_allowed = gradereg_node_grades_list_access($node);
+  if (!$generally_allowed) {
+    return false;
+  }
+  global $user;
+  if ($account->uid == $user->uid) {
+    return false;
+  }
+  return true;
 }
 
 function gradereg_node_grades_list_access($node){
-	if($node && $node->type == 'course' && user_access('grade examine') && isset($node->field_examiners['und'][0]['target_id']) && $node->field_examiners['und'][0]['target_id']){
-		global $user;
-		foreach($node->field_examiners['und'] as $r){
-			if($user->uid == $r['target_id']){
-				return true;
-			}
-		}
-	}
-	
-	return false;
+  global $user;
+	module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
+  $dbApi = new AravaCenterDbApi();
+  return $dbApi->isUserSignedUpToCourse($user->uid, $node->nid);
 }
 
 function gradereg_permission() {
   return array(
     'grade management' => array(
       'title' => t('grade management'),
-    ),
-    'grade examine' => array(
-      'title' => t('grade examine'),
     ),
     'available for grade score' => array(
       'title' => t('available for grade score'),

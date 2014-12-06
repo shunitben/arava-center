@@ -138,18 +138,32 @@ function gradereg_edit_grade($form, &$form_state, $node, $account){
 	
 	for($i=0; $i<$hm_num; $i++){
 		$key = 'homework_'.$i;
-		$form['homework'][$key] = array(
-			'#title' => t('HW'.($i+1)),
-			'#required' => false,
-			'#type' => 'textfield',
-			'#default_value' => isset($grade['grade'][$key]['score']) ? $grade['grade'][$key]['score'] : '',
-		);
+    $hw_grade = isset($grade['grade'][$key]) ? $grade['grade'][$key] : array();
+    // if someone else already graded this item, don't show the grade
+    if (!empty($hw_grade['score']) && $hw_grade['examiner_uid'] !== $user->uid) {
+      $form['homework'][$key] = array(
+        '#type' => 'value',
+        '#default_value' => $hw_grade['score'],
+      );
+      $form['homework'][$key]['done'] = array(
+        '#type' => 'item',
+        '#title' => t('HW @num', array('@num' => ($i+1))),
+        '#markup' => '<div>' . t('Already graded by someone else.') . '</div>',
+      );
+    }
+    // if this item is ungraded or graded by me, show textbox (with grade if applicable)
+    else {
+      $form['homework'][$key] = array(
+        '#title' => t('HW @num', array('@num' => ($i+1))),
+        '#required' => false,
+        '#type' => 'textfield',
+        '#default_value' => isset($grade['grade'][$key]['score']) ? $grade['grade'][$key]['score'] : '',
+        '#element_validate' => array('_gradereg_grade_validate'),
+      );
+    }
 		
 		$form['homework']['homework_'.$i.'_examiner'] = array(
-			'#type' => 'select',
-			'#required' => false,
-			'#options' => $examiners,
-			'#title' => t('Examiner'),
+			'#type' => 'value',
 			'#default_value' => isset($grade['grade'][$key]['examiner_uid']) ? $grade['grade'][$key]['examiner_uid'] : $user->uid,
 		);
 	}
@@ -162,38 +176,65 @@ function gradereg_edit_grade($form, &$form_state, $node, $account){
 	);
 	for($i=0; $i<$quiz_num; $i++){
 		$key = 'quiz_'.$i;
-		$form['quiz'][$key] = array(
-			'#title' => t('Quiz'.($i+1)),
-			'#required' => false,
-			'#type' => 'textfield',
-			'#default_value' => isset($grade['grade'][$key]['score']) ? $grade['grade'][$key]['score'] : '',
-		);
-		
-		$form['quiz']['quiz_'.$i.'_examiner'] = array(
-			'#type' => 'select',
-			'#required' => false,
-			'#options' => $examiners,
-			'#title' => t('Examiner'),
-			'#default_value' => isset($grade['grade'][$key]['examiner_uid']) ? $grade['grade'][$key]['examiner_uid'] : $user->uid,
-		);
+    $quiz_grade = isset($grade['grade'][$key]) ? $grade['grade'][$key] : array();
+    // if someone else already graded this item, don't show the grade
+    if (!empty($quiz_grade['score']) && $quiz_grade['examiner_uid'] !== $user->uid) {
+      $form['quiz'][$key] = array(
+        '#type' => 'value',
+        '#default_value' => $quiz_grade['score'],
+      );
+      $form['quiz'][$key]['done'] = array(
+        '#type' => 'item',
+        '#title' => t('Quiz @num', array('@num' => ($i+1))),
+        '#markup' => '<div>' . t('Already graded by someone else.') . '</div>',
+      );
+    }
+    // if this item is ungraded or graded by me, show textbox (with grade if applicable)
+    else {
+      $form['quiz'][$key] = array(
+        '#title' => t('Quiz @num', array('@num' => ($i+1))),
+        '#required' => false,
+        '#type' => 'textfield',
+        '#default_value' => isset($grade['grade'][$key]['score']) ? $grade['grade'][$key]['score'] : '',
+        '#element_validate' => array('_gradereg_grade_validate'),
+      );
+    }
+
+    $form['quiz']['quiz_'.$i.'_examiner'] = array(
+      '#type' => 'value',
+      '#default_value' => isset($grade['grade'][$key]['examiner_uid']) ? $grade['grade'][$key]['examiner_uid'] : $user->uid,
+    );
 	}
 	
 	if($finaltest){
 		$key = 'finaltest_0';
-		$form[$key] = array(
-			'#title' => t('Final Test'),
-			'#required' => false,
-			'#type' => 'textfield',
-			'#default_value' => isset($grade['grade'][$key]['score']) ? $grade['grade'][$key]['score'] : '',
-		);
-		
-		$form['finaltest_'.$i.'_examiner'] = array(
-			'#type' => 'select',
-			'#required' => false,
-			'#options' => $examiners,
-			'#title' => t('Examiner'),
-			'#default_value' => isset($grade['grade'][$key]['examiner_uid']) ? $grade['grade'][$key]['examiner_uid'] : $user->uid,
-		);
+    $test_grade = isset($grade['grade'][$key]) ? $grade['grade'][$key] : array();
+    // if someone else already graded this item, don't show the grade
+    if (!empty($test_grade['score']) && $test_grade['examiner_uid'] !== $user->uid) {
+      $form[$key] = array(
+        '#type' => 'value',
+        '#default_value' => $test_grade['score'],
+      );
+      $form[$key]['done'] = array(
+        '#type' => 'item',
+        '#title' => t('Final Test'),
+        '#markup' => '<div>' . t('Already graded by someone else.') . '</div>',
+      );
+    }
+    // if this item is ungraded or graded by me, show textbox (with grade if applicable)
+    else {
+      $form[$key] = array(
+        '#title' => t('Final Test'),
+        '#required' => false,
+        '#type' => 'textfield',
+        '#default_value' => isset($grade['grade'][$key]['score']) ? $grade['grade'][$key]['score'] : '',
+        '#element_validate' => array('_gradereg_grade_validate'),
+      );
+    }
+    $form['finaltest_0_examiner'] = array(
+      '#type' => 'value',
+      '#default_value' => isset($grade['grade'][$key]['examiner_uid']) ? $grade['grade'][$key]['examiner_uid'] : $user->uid,
+    );
 	}
 	
 	$form['submit'] = array(
@@ -204,6 +245,12 @@ function gradereg_edit_grade($form, &$form_state, $node, $account){
 	return $form;
 }
 
+function _gradereg_grade_validate($element, &$form_state, $form) {
+  if (!empty($element['#value']) && ($element['#value'] < 80 || $element['#value'] > 100)) {
+    form_error($element, t('Grades must be between 80 and 100. Please fix @item', array('@item' => $element['#title'])));
+  }
+}
+
 function gradereg_edit_grade_submit($form, &$form_state){
 	$node = $form_state['storage']['node'];
 	$account = $form_state['storage']['account'];
@@ -211,8 +258,7 @@ function gradereg_edit_grade_submit($form, &$form_state){
 	$hm_num = (isset($node->field_number_of_homework['und'][0]['value']) && $node->field_number_of_homework['und'][0]['value'] > 0) ? $node->field_number_of_homework['und'][0]['value'] : 0;
 	$quiz_num = (isset($node->field_number_of_quizzes['und'][0]['value']) && $node->field_number_of_quizzes['und'][0]['value'] > 0) ? $node->field_number_of_quizzes['und'][0]['value'] : 0;
 	$finaltest = (isset($node->field_final_test['und'][0]['value']) && $node->field_final_test['und'][0]['value']) ? true : false;
-	
-	//db_query("delete from {grades} where nid=:nid and uid=:uid", array(':uid' => $account->uid, ':nid' => $node->nid));
+
 	if($hm_num){
 		for($i=0; $i<$hm_num; $i++){
 			$key = 'homework_'.$i;
@@ -345,8 +391,7 @@ function gradereg_user_grades_list($account){
 		$query->join('users', 'users', "users.uid = field_user.field_user_target_id");
 		$query->join('field_data_field_user_name', 'field_user_name', "field_user_name.entity_type='user' and field_user_name.bundle='user' and field_user_name.entity_id=users.uid");
 		$query->leftJoin('grades_data', 'grades_data', "grades_data.nid=field_course.field_course_target_id and grades_data.uid=users.uid");
-		//$query->leftJoin('field_data_field_user_name', 'examiner_field_user_name', "examiner_field_user_name.entity_type='user' and examiner_field_user_name.bundle='user' and examiner_field_user_name.entity_id=grades_data.examiner_uid");
-		
+
 		$query->condition('node.type', 'my_semester');
 		$query->condition('node.status', '1');
 		$query->condition('field_semester.field_semester_target_id', $current_semester);
@@ -356,20 +401,14 @@ function gradereg_user_grades_list($account){
 		$query->addField('course', 'nid');
 		$query->addField('course', 'title');
 		$query->addField('field_user_name', 'field_user_name_value');
-		//$query->addField('grades_data', 'created');
-		//$query->addField('grades_data', 'examiner_uid', 'examiner_uid');
-		//$query->addField('examiner_field_user_name', 'field_user_name_value', 'examiner_name');
 		
 		$query->orderBy('course.title', 'ASC');
 		
-		$find = $query->limit(200)->execute();
+		$find = $query->limit(20)->execute();
 		
-		$hm_num = (isset($node->field_number_of_homework['und'][0]['value']) && $node->field_number_of_homework['und'][0]['value'] > 0) ? $node->field_number_of_homework['und'][0]['value'] : 0;
-		$quiz_num = (isset($node->field_number_of_quizzes['und'][0]['value']) && $node->field_number_of_quizzes['und'][0]['value'] > 0) ? $node->field_number_of_quizzes['und'][0]['value'] : 0;
-		$finaltest = (isset($node->field_final_test['und'][0]['value']) && $node->field_final_test['und'][0]['value']) ? true : false;
 		$header = array(t('Course'));
 		
-		for($i=0; $i<200; $i++){
+		for($i=0; $i<20; $i++){
 			if(!$hide_examiner){
 				$header[] = t('Examiner');
 				$header[] = t('Date');
@@ -395,11 +434,6 @@ function gradereg_user_grades_list($account){
 				l($r->title, 'node/'.$r->nid),
 			);
 			
-			//if(!$hide_examiner){
-			//	$row[] = $r->examiner_uid ? l($r->examiner_name, 'user/'.$r->examiner_uid) : '';
-			//	$row[] = $r->created ? date('Y-m-d H:i:s', $r->created) : '';
-			//}
-			
 			$grade = array();
 			$query = db_query("select grades.*,examiner_field_user_name.field_user_name_value as examiner_name from {grades} grades
 									left join {field_data_field_user_name} examiner_field_user_name on examiner_field_user_name.entity_type='user' and examiner_field_user_name.bundle='user' and examiner_field_user_name.entity_id=grades.examiner_uid
@@ -409,7 +443,7 @@ function gradereg_user_grades_list($account){
 				$grade[$r2->field.'_'.$r2->delta.'_examiner'] = $r2->examiner_uid ? l($r2->examiner_name, 'user/'.$r2->examiner_uid) : '';
 				$grade[$r2->field.'_'.$r2->delta.'_date'] = $r2->created ? date('Y-m-d H:i:s', $r2->created) : '';
 			}
-			for($i=0; $i<200; $i++){
+			for($i=0; $i<20; $i++){
 				if(isset($grade['homework_'.$i])){
 					if(!$hide_examiner){
 						$row[] = $grade['homework_'.$i.'_examiner'];
@@ -530,7 +564,7 @@ function gradereg_user_grades_list_export($account){
 		$finaltest = (isset($node->field_final_test['und'][0]['value']) && $node->field_final_test['und'][0]['value']) ? true : false;
 		$header = array(t('Course'));
 		
-		for($i=0; $i<200; $i++){
+		for($i=0; $i<20; $i++){
 			if(!$hide_examiner){
 				$header[] = t('Examiner');
 				$header[] = t('Date');
@@ -569,7 +603,7 @@ function gradereg_user_grades_list_export($account){
 				$grade[$r2->field.'_'.$r2->delta.'_examiner'] = $r2->examiner_uid ? $r2->examiner_name : '';
 				$grade[$r2->field.'_'.$r2->delta.'_date'] = $r2->created ? date('Y-m-d H:i:s', $r2->created) : '';
 			}
-			for($i=0; $i<200; $i++){
+			for($i=0; $i<20; $i++){
 				if(isset($grade['homework_'.$i])){
 					if(!$hide_examiner){
 						$row[] = $grade['homework_'.$i.'_examiner'];

@@ -37,13 +37,13 @@ function gradereg_schema() {
         'type' => 'numeric',
         'precision' => 10,
         'scale' => 2,
-		'default' => 0,
+		    'default' => 0,
       ),
       'examiner_uid' => array(
         'type' => 'int',
         'unsigned' => false,
         'not null' => TRUE,
-		'default' => 0,
+		    'default' => 0,
       ),
       'created' => array(
         'type' => 'int',
