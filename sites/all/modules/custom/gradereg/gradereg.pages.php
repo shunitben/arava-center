@@ -45,8 +45,7 @@ function gradereg_node_grades_list($node){
 		$query->join('users', 'users', "users.uid = field_user.field_user_target_id");
 		$query->join('field_data_field_user_name', 'field_user_name', "field_user_name.entity_type='user' and field_user_name.bundle='user' and field_user_name.entity_id=users.uid");
 		$query->leftJoin('grades_data', 'grades_data', "grades_data.nid=field_course.field_course_target_id and grades_data.uid=users.uid");
-		//$query->leftJoin('field_data_field_user_name', 'examiner_field_user_name', "examiner_field_user_name.entity_type='user' and examiner_field_user_name.bundle='user' and examiner_field_user_name.entity_id=grades_data.examiner_uid");
-		
+
 		$query->condition('node.type', 'my_semester');
 		$query->condition('node.status', '1');
 		$query->condition('users.uid', $user->uid, '!=');
@@ -56,50 +55,20 @@ function gradereg_node_grades_list($node){
 		
 		$query->addField('users', 'uid');
 		$query->addField('field_user_name', 'field_user_name_value');
-		//$query->addField('grades_data', 'created');
-		//$query->addField('grades_data', 'examiner_uid', 'examiner_uid');
-		//$query->addField('examiner_field_user_name', 'field_user_name_value', 'examiner_name');
-		
+
 		$query->orderBy('field_user_name.field_user_name_value', 'ASC');
 		
 		$find = $query->limit(200)->execute();
 		
-		$hm_num = (isset($node->field_number_of_homework['und'][0]['value']) && $node->field_number_of_homework['und'][0]['value'] > 0) ? $node->field_number_of_homework['und'][0]['value'] : 0;
-		$quiz_num = (isset($node->field_number_of_quizzes['und'][0]['value']) && $node->field_number_of_quizzes['und'][0]['value'] > 0) ? $node->field_number_of_quizzes['und'][0]['value'] : 0;
-		$finaltest = (isset($node->field_final_test['und'][0]['value']) && $node->field_final_test['und'][0]['value']) ? true : false;
 		$header = array(t('Student'), /*t('Examiner'), t('Date')*/);
-		/*
-		if($quiz_num){
-			$header[] = t('Average Quizzes Grade');
-		}
-		if($finaltest){
-			$header[] = t('Final Test Grade');
-		}
-		*/
 		$header[] = t('');
 		
 		$rows = array();
 		foreach($find as $r){
-			//$hw = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $r->uid, ':field' => 'homework'))->fetchField();
 			$row = array(
-				l($r->field_user_name_value, 'user/'.$r->uid),
-				//$r->examiner_uid ? l($r->examiner_name, 'user/'.$r->examiner_uid) : '',
-				//$r->created ? date('Y-m-d H:i:s', $r->created) : '',
-				//$hw ? number_format($hw, 0) : '',
+				$r->field_user_name_value,
 			);
 
-			/*
-			if($quiz_num){
-				$quiz = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $r->uid, ':field' => 'quiz'))->fetchField();
-				$row[] = $quiz ? number_format($quiz, 0) : '';
-			}
-
-			if($finaltest){
-				$finaltest_score = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $r->uid, ':field' => 'finaltest'))->fetchField();
-				$row[] = $finaltest_score ? number_format($finaltest_score, 0) : '';
-			}
-			*/
-			
 			$row[] = l(t('Edit Grade'), 'node/'.$node->nid.'/grades/edit/'.$r->uid);
 			$rows[] = $row;
 		}
@@ -113,7 +82,7 @@ function gradereg_node_grades_list($node){
 function gradereg_edit_grade($form, &$form_state, $node, $account){
 	$form_state['storage'] = array(
 		'node' => $node,
-		'account' => $account,
+		'account' => user_load($account->uid),
 	);
 	
 	$grade = gradereg_load_grade($node, $account);
@@ -123,11 +92,10 @@ function gradereg_edit_grade($form, &$form_state, $node, $account){
 	$finaltest = (isset($node->field_final_test['und'][0]['value']) && $node->field_final_test['und'][0]['value']) ? true : false;
 	
 	global $user;
-	$examiners = array();
-	foreach($node->field_examiners['und'] as $r){
-		$examiner = user_load($r['target_id']);
-		$examiners[$examiner->uid] = (isset($examiner->field_user_name['und'][0]['value']) && $examiner->field_user_name['und'][0]['value']) ? $examiner->field_user_name['und'][0]['value'] : $examiner->name;
-	}
+
+  $form['title'] = array(
+    '#markup' => '<h2>' . $account->field_user_name[LANGUAGE_NONE][0]['value'] . ' - ' . $node->title . '</h2>',
+  );
 	
 	$form['homework'] = array(
 		'#type' => 'fieldset',
@@ -441,7 +409,7 @@ function gradereg_user_grades_list($account){
 			foreach($query as $r2){
 				$grade[$r2->field.'_'.$r2->delta] = $r2->score;
 				$grade[$r2->field.'_'.$r2->delta.'_examiner'] = $r2->examiner_uid ? l($r2->examiner_name, 'user/'.$r2->examiner_uid) : '';
-				$grade[$r2->field.'_'.$r2->delta.'_date'] = $r2->created ? date('Y-m-d H:i:s', $r2->created) : '';
+				$grade[$r2->field.'_'.$r2->delta.'_date'] = $r2->created ? date('d.m.Y', $r2->created) : '';
 			}
 			for($i=0; $i<20; $i++){
 				if(isset($grade['homework_'.$i])){
