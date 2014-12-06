@@ -408,7 +408,7 @@ function gradereg_user_grades_list($account){
 									where nid=:nid and uid=:uid order by field asc, delta asc", array(':uid' => $account->uid, ':nid' => $r->nid));
 			foreach($query as $r2){
 				$grade[$r2->field.'_'.$r2->delta] = $r2->score;
-				$grade[$r2->field.'_'.$r2->delta.'_examiner'] = $r2->examiner_uid ? l($r2->examiner_name, 'user/'.$r2->examiner_uid) : '';
+				$grade[$r2->field.'_'.$r2->delta.'_examiner'] = $r2->examiner_uid ? $r2->examiner_name : '';
 				$grade[$r2->field.'_'.$r2->delta.'_date'] = $r2->created ? date('d.m.Y', $r2->created) : '';
 			}
 			for($i=0; $i<20; $i++){
@@ -419,8 +419,10 @@ function gradereg_user_grades_list($account){
 					}
 					$row[] = $grade['homework_'.$i];
 				}else{
-					$row[] = '';
-					$row[] = '';
+          if(!$hide_examiner){
+					  $row[] = '';
+					  $row[] = '';
+          }
 					$row[] = '';
 				}
 				
@@ -432,8 +434,10 @@ function gradereg_user_grades_list($account){
 						}
 						$row[] = $grade['quiz_'.$i];
 					}else{
-						$row[] = '';
-						$row[] = '';
+            if(!$hide_examiner){
+						  $row[] = '';
+						  $row[] = '';
+            }
 						$row[] = '';
 					}
 				}
@@ -446,9 +450,11 @@ function gradereg_user_grades_list($account){
 				}
 				$row[] = $grade['finaltest_0'];
 			}else{
-				$row[] = '';
-				$row[] = '';
-				$row[] = '';
+        if(!$hide_examiner){
+			  	$row[] = '';
+				  $row[] = '';
+        }
+        $row[] = '';
 			}
 			
 			$rows[] = $row;
