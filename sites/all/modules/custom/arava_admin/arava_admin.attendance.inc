@@ -274,21 +274,25 @@ function _arava_admin_get_attendance_list_for_lesson($course, $lesson) {
 function arava_admin_take_attendance_form_submit($form, &$form_state) {
   global $user;
   foreach($form_state['values'] as $student => $attendance) {
-    $uid = str_replace('student_', '', $student);
-    $present = !empty($attendance[1]);
-    $made_up = !empty($attendance[2]);
-    $status = $present ? 1 : ($made_up ? 2 : 0);
+    if (strpos($student, 'student_') === 0) {
+      $uid = str_replace('student_', '', $student);
+      $present = !empty($attendance[1]);
+      $made_up = !empty($attendance[2]);
+      $status = $present ? 1 : ($made_up ? 2 : 0);
 
-    db_insert('attendance')
-      ->fields(array(
-        'student_uid' => (int)$uid,
-        'course_nid' => (int)$form_state['values']['course'],
-        'lesson_num' => (int)$form_state['values']['lesson'],
-        'attendance_taker_uid' => $user->uid,
-        'attendance_status' => $status,
-        'updated_date' => time(),
-      ))
-      ->execute();
+      db_merge('attendance')
+        ->key(array(
+          'student_uid' => (int)$uid,
+          'course_nid' => (int)$form_state['values']['course'],
+          'lesson_num' => (int)$form_state['values']['lesson'],
+        ))
+        ->fields(array(
+          'attendance_taker_uid' => $user->uid,
+          'attendance_status' => $status,
+          'updated_date' => time(),
+        ))
+        ->execute();
+    }
   }
 
   drupal_set_message('The attendance data you submitted has been saved.');
