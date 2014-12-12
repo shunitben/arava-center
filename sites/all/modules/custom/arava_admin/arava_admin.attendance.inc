@@ -297,3 +297,56 @@ function arava_admin_take_attendance_form_submit($form, &$form_state) {
 
   drupal_set_message('The attendance data you submitted has been saved.');
 }
+
+function arava_admin_attendance_report($course) {
+  $course = node_load(check_plain($course));
+
+  $intro = '<h3>' . t('Course: @course', array('@course' => $course->title)) . '</h3>';
+  $intro .= t('index:') . ' ';
+  $intro .= '<span class="int-val int-val-0"></span> ' . t('absent') . ' ... ';
+  $intro .= '<span class="int-val int-val-1"></span> ' . t('present') . ' ... ';
+  $intro .= '<span class="int-val int-val-2"></span> ' . t('made up');
+  $intro .= '<br>' . l('Back to courses list', 'admin/admin-courses');
+
+
+  if (!empty($course->field_num_lessons)) {
+
+    $num_lessons = $course->field_num_lessons[LANGUAGE_NONE][0]['value'];
+    $attendance_data = db_select('attendance')
+      ->condition('attendance.course_nid', $course->nid)
+      ->fields('attendance', array('student_uid', 'lesson_num', 'attendance_status'))
+      ->execute();
+
+    $headers = array(t('Student / Lesson'));
+    $rows = array();
+    $students = array();
+
+    for ($i = 1; $i <= $num_lessons; $i++) {
+      $semester = $course->field_semester[LANGUAGE_NONE][0]['target_id'];
+      $headers[] = $i . l(t('edit'), 'admin/attendance/take', array('query' => array(
+          'semester' => $semester,
+          'course' => $course->nid,
+          'lesson' => $i,
+          'destination' => current_path())));
+    }
+
+    foreach ($attendance_data as $row) {
+      $students[$row->student_uid][$row->lesson_num] = $row->attendance_status;
+    }
+    foreach ($students as $student => $lessons) {
+      $student = user_load($student);
+      $student_row = array($student->field_user_name[LANGUAGE_NONE][0]['value']);
+      for ($i = 1; $i <= $num_lessons; $i++) {
+        $value = !empty($lessons[$i]) ? $lessons[$i] : 0;
+        $student_row[] = '<span class="int-val int-val-' . $value . '">' . $value . '</span>';
+      }
+      $rows[] = $student_row;
+    }
+
+    return $intro . theme('table', array('header' => $headers, 'rows' => $rows));
+  }
+  else {
+    return $intro . '<br><br>' . t('No lessons defined for this course. If you have permissions, you can define them here:') . ' '
+           . l(t('edit lesson'), 'node/' . $course->nid . '/edit', array('query' => array('destination' => current_path())));
+  }
+}

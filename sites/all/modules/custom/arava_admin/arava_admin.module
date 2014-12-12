@@ -48,6 +48,15 @@ function arava_admin_menu() {
     'file' => 'arava_admin.attendance.inc'
   );
 
+  $items['admin/arava-reports/course/%/attendance'] = array(
+    'title' => t('Attendance Report'),
+    'page callback' => 'arava_admin_attendance_report',
+    'page arguments' => array(3),
+    'access arguments' => array('administer attendance'),
+    'type' => MENU_CALLBACK,
+    'file' => 'arava_admin.attendance.inc'
+  );
+
 
 
   return $items;

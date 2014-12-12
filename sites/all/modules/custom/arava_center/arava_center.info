@@ -4,3 +4,4 @@ core = 7.x
 
 files[] = mailsystem/MimeMailSystem__SmtpMailSystem.mail.inc
 
+stylesheets[all][] = css/arava_center.css

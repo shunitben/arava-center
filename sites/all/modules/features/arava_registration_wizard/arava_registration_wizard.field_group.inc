@@ -54,12 +54,11 @@ function arava_registration_wizard_field_group_info() {
       0 => 'group_manual',
       1 => 'group_recurring',
     ),
-    'format_type' => 'accordion',
+    'format_type' => 'htabs',
     'format_settings' => array(
       'formatter' => '',
       'instance_settings' => array(
-        'effect' => 'none',
-        'classes' => 'group-accordion field-group-accordion',
+        'classes' => '',
       ),
     ),
   );
@@ -293,13 +292,14 @@ function arava_registration_wizard_field_group_info() {
     'children' => array(
       0 => 'field_lesson_times',
     ),
-    'format_type' => 'accordion-item',
+    'format_type' => 'htab',
     'format_settings' => array(
       'formatter' => 'closed',
       'instance_settings' => array(
         'description' => '',
         'classes' => '',
         'required_fields' => 1,
+        'id' => '',
       ),
     ),
   );
@@ -492,15 +492,15 @@ function arava_registration_wizard_field_group_info() {
       0 => 'field_lesson_days',
       1 => 'field_lesson_hours',
     ),
-    'format_type' => 'accordion-item',
+    'format_type' => 'htab',
     'format_settings' => array(
-      'label' => 'זמנים חוזרים',
+      'formatter' => 'closed',
       'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => '',
         'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+        'id' => '',
       ),
-      'formatter' => 'open',
     ),
   );
   $export['group_recurring|node|course|form'] = $field_group;

@@ -209,23 +209,6 @@ ul.menu li a{
             width:200px;
         }
 
-/**
-admin
-**/
-.boolean-val {
-    display: block;
-    overflow: hidden;
-    width: 15px;
-    height: 15px;
-}
-.boolean-val-0{
-    background: red;
-    color: red;
-}
-.boolean-val-1 {
-    background: green;
-    color: green;
-}
 
 /**
 Animals in the area

@@ -534,42 +534,6 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-course-field_examiners'
-  $field_instances['node-course-field_examiners'] = array(
-    'bundle' => 'course',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 18,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_examiners',
-    'label' => 'Examiners',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 27,
-    ),
-  );
-
   // Exported field_instance: 'node-course-field_external_link'
   $field_instances['node-course-field_external_link'] = array(
     'bundle' => 'course',
@@ -2915,7 +2879,6 @@ function arava_registration_wizard_field_default_field_instances() {
   t('Days Present');
   t('Early Bird Ends On');
   t('Early Bird Price');
-  t('Examiners');
   t('External Link');
   t('Extra Days Present');
   t('Extra Guests Num.');

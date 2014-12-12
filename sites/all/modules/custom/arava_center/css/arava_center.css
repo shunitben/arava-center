@@ -1,0 +1,24 @@
+/**
+Show values of 0,1,2 visually.
+**/
+.boolean-val,
+.int-val {
+    display: inline-block;
+    overflow: hidden;
+    width: 15px;
+    height: 15px;
+}
+.boolean-val-0,
+.int-val-0 {
+    background: red;
+    color: red;
+}
+.boolean-val-1,
+.int-val-1 {
+    background: green;
+    color: green;
+}
+.int-val-2 {
+    background: orange;
+    color: orange;
+}
