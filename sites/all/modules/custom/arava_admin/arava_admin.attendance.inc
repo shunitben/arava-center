@@ -170,16 +170,9 @@ function attendance_choose_lesson($form, $form_state) {
 }
 
 function _arava_admin_get_semester_options() {
-  $result = db_select('node', 'node')
-    ->condition('type', 'semester')
-    ->fields('node', array('nid', 'title'))
-    ->execute();
-
-  $semesters = array();
-  foreach ($result as $row) {
-    $semesters[$row->nid] = $row->title;
-  }
-  return $semesters;
+  module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
+  $dbApi = new AravaCenterDbApi();
+  return $dbApi->getAllSemesters();
 }
 
 function _arava_admin_get_default_semester() {
@@ -306,7 +299,7 @@ function arava_admin_attendance_report($course) {
   $intro .= '<span class="int-val int-val-0"></span> ' . t('absent') . ' ... ';
   $intro .= '<span class="int-val int-val-1"></span> ' . t('present') . ' ... ';
   $intro .= '<span class="int-val int-val-2"></span> ' . t('made up');
-  $intro .= '<br>' . l('Back to courses list', 'admin/admin-courses');
+  $intro .= '<br>' . l(t('Back to courses list'), 'admin/admin-courses');
 
 
   if (!empty($course->field_num_lessons)) {

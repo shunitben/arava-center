@@ -68,7 +68,7 @@ class MySemesterAPI {
 	protected function getUserSemester($semester_id) {
 		$query = db_query(" SELECT user.entity_id
  											FROM field_data_field_user user
- 											INNER JOIN field_data_field_semester semester
+ 											INNER JOIN field_data_field_semester semester ON user.entity_id = semester.entity_id
 											WHERE field_user_target_id = " . $this->user->uid . "
 											AND field_semester_target_id = " . $semester_id);
 		foreach ($query as $row) {
@@ -94,7 +94,7 @@ class MySemesterAPI {
 		$entity = entity_create('node', $values);
 		$ewrapper = entity_metadata_wrapper('node', $entity);
 		$semester = node_load($this->semester_id);
-		$ewrapper->title->set($this->user->name . ' - ' . $semester->title);
+		$ewrapper->title->set($this->user->field_user_name[LANGUAGE_NONE][0]['value'] . ' - ' . $semester->title);
 		$ewrapper->field_user->set(intval($this->user->uid));
 		$ewrapper->field_semester->set(intval($this->semester_id));
 		$ewrapper->save();
@@ -319,7 +319,50 @@ class MySemesterAPI {
       'waver' => $this->user_semester->field_waver->value(),
     );
 
+    if ($extra_info['health_declaration'] == false && $this->healthDeclarationFilledThisYear()) {
+      //auto-check the health declaration if it's already been filled this year.
+      $this->setAgreement('field_health_declaration');
+      $extra_info['health_declaration'] = true;
+    }
+
     return $extra_info;
+  }
+
+  /**
+   * Check if the health declaration has been filled this year.
+   * We are assuming that no semester ever starts before september or ends after june.
+   */
+  protected function healthDeclarationFilledThisYear() {
+    $now = time();
+    $current_month = date('n', $now);
+    $current_year = date('Y', $now);
+    if ($current_month < 7) { // if this is the second part of the year
+      $current_year--;
+    }
+    $this_year_starts = mktime(0,0,0,9,1,$current_year);
+    $this_year_ends = mktime(0,0,0,7,1,$current_year+1);
+
+    // get all the semesters in this year
+    $query = db_select('field_data_field_semester_dates', 'dates');
+    $query->join('field_data_field_semester', 'semester', 'dates.entity_id = semester.field_semester_target_id');
+    $query->join('field_data_field_user', 'user', 'semester.entity_id = user.entity_id');
+    $query->leftJoin('field_data_field_health_declaration', 'health', 'semester.entity_id = health.entity_id');
+    $query
+      ->condition('dates.field_semester_dates_value', $this_year_starts, '>')
+      ->condition('dates.field_semester_dates_value2', $this_year_ends, '<')
+      ->condition('user.field_user_target_id', $this->user->uid)
+//      ->fields('dates', array('field_semester_dates_value', 'entity_id'))
+      ->fields('health', array('field_health_declaration_value'))
+      ->orderBy('dates.field_semester_dates_value', 'ASC');
+    $foo = $query->__toString();
+    $semesters = $query->execute();
+
+    foreach ($semesters as $semester) {
+      if ($semester->field_health_declaration_value == '1') {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

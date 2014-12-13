@@ -9,9 +9,14 @@
  * - want eggs/dairy
  */
 function arava_admin_meals_page() {
-  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
-  $mySemesterAPI = new MySemesterAPI();
-  $semesterId = $mySemesterAPI->getSemesterId();
+  if (!empty($_GET['semester']) && is_numeric($_GET['semester'])) {
+    $semesterId = $_GET['semester'];
+  }
+  else {
+    module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+    $mySemesterAPI = new MySemesterAPI();
+    $semesterId = $mySemesterAPI->getSemesterId();
+  }
 
   // get the students presence
   $result = db_query("
@@ -24,9 +29,9 @@ function arava_admin_meals_page() {
   node
   INNER JOIN field_data_field_semester semester ON node.nid = semester.entity_id AND semester.field_semester_target_id = $semesterId
   INNER JOIN field_data_field_days_present present ON node.nid = present.entity_id
-  INNER JOIN field_data_field_user users ON node.nid = users.entity_id " .
-//  INNER JOIN field_data_field_registration_complete complete ON node.nid = complete.entity_id AND complete.field_registration_complete_value = '1'
-  "LEFT JOIN field_data_field_gluten gluten ON users.field_user_target_id = gluten.entity_id
+  INNER JOIN field_data_field_user users ON node.nid = users.entity_id
+  INNER JOIN field_data_field_registration_complete complete ON node.nid = complete.entity_id AND complete.field_registration_complete_value = '1'
+  LEFT JOIN field_data_field_gluten gluten ON users.field_user_target_id = gluten.entity_id
   LEFT JOIN field_data_field_soy soy ON users.field_user_target_id = soy.entity_id
   LEFT JOIN field_data_field_dairy dairy ON users.field_user_target_id = dairy.entity_id
   LEFT JOIN field_data_field_peanuts peanuts ON users.field_user_target_id = peanuts.entity_id
@@ -37,7 +42,15 @@ function arava_admin_meals_page() {
   GROUP BY present.field_days_present_value
   ");
 
-  $rows = array();
+  $rows = array(
+    'sunday' => array(),
+    'monday' => array(),
+    'tuesday' => array(),
+    'wednesday' => array(),
+    'thursday' => array(),
+    'friday' => array(),
+    'saturday' => array(),
+  );
   foreach ($result as $row) {
     $rows[$row->day] = array(
       $row->day,
@@ -59,6 +72,7 @@ function arava_admin_meals_page() {
   SUM(num.field_extra_guests_num_value) AS num
   FROM
   node
+  INNER JOIN field_data_field_semester semester ON node.nid = semester.entity_id AND semester.field_semester_target_id = $semesterId
   INNER JOIN field_data_field_extra_days_present present ON node.nid = present.entity_id
   INNER JOIN field_data_field_extra_guests_num num ON node.nid = num.entity_id
   INNER JOIN field_data_field_registration_complete complete ON node.nid = complete.entity_id AND complete.field_registration_complete_value = '1'
@@ -71,18 +85,16 @@ function arava_admin_meals_page() {
     $rows[$row->day][2] = $row->num;
   }
 
-  // order the days
-  $rows_ordered = array(
-    $rows['sunday'],
-    $rows['monday'],
-    $rows['tuesday'],
-    $rows['wednesday'],
-    $rows['thursday'],
-    $rows['friday'],
-    $rows['saturday'],
-  );
+  foreach ($rows as $key => &$row) {
+    if (empty($row)) {
+      $row = array($key,0,0,0,0,0,0,0,0);
+    }
+  }
 
-  return theme('table', array(
+  $form_object = drupal_get_form('arava_admin_semesters_dropdown_form');
+  $form = drupal_render($form_object);
+
+  return $form . theme('table', array(
     'header' => array(
       t('Day'),
       t('Students'),
@@ -94,6 +106,6 @@ function arava_admin_meals_page() {
       t('People who eat eggs'),
       t('People who eat dairy'),
     ),
-    'rows' => $rows_ordered,
+    'rows' => $rows,
   ));
 }

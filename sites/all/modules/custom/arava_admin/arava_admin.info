@@ -1,3 +1,5 @@
 name = Arava Admin
 description = Administration functionality, such as reports.
 core = 7.x
+
+files[] = views/arava_admin_handler_filter_semester.inc

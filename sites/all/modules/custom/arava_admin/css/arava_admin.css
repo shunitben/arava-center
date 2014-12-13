@@ -68,3 +68,7 @@
 label.absent {
     color: red;
 }
+
+#arava-admin-semesters-dropdown-form .form-item-semesters{
+    display: inline-block;
+}

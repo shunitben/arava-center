@@ -125,6 +125,59 @@ function arava_admin_block_view($delta = '') {
   return $block;
 }
 
+/**
+ * Implements hook_views_api
+ * @return array
+ */
+function arava_admin_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'arava_admin') . '/views',
+  );
+}
+
+function _arava_admin_get_semesters_dropdown() {
+  // get list of semesters from database
+  module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
+  $dbApi = new AravaCenterDbApi();
+  $semesters = $dbApi->getAllSemesters();
+
+  if (!empty($_GET['semester']) && is_numeric($_GET['semester'])) {
+    $current_semester = $_GET['semester'];
+  }
+  else {
+    module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+    $mySemesterAPI = new MySemesterAPI();
+    $current_semester = $mySemesterAPI->getSemesterId();
+  }
+
+  // create form element with options retrieved from database
+  return array(
+    '#type' => 'select',
+    '#options' => $semesters,
+    '#default_value' => $current_semester,
+  );
+}
+
+function arava_admin_semesters_dropdown_form($form, &$form_state) {
+  $form['semesters'] = _arava_admin_get_semesters_dropdown();
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('go'),
+  );
+
+  return $form;
+}
+
+function arava_admin_semesters_dropdown_form_submit($form, &$form_state) {
+  if (!empty($form_state['values']['semesters']) && is_numeric($form_state['values']['semesters'])) {
+    $get = $_GET;
+    unset($get['q']);
+    $get['semester'] = $form_state['values']['semesters'];
+    drupal_goto($_GET['q'], array('query' => $get));
+  }
+}
 
 /**
  * Implements hook_page_build().
