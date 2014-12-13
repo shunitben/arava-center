@@ -22,7 +22,7 @@ class MySemesterAPI {
 	 * Construct:
 	 * Load current user's my_semester node
 	 */
-	public function __construct($uid = null, stdClass $my_semester = null) {
+	public function __construct($uid = null, stdClass $my_semester = null, $semester = null) {
     if ($uid === null) {
       global $user;
     }
@@ -30,7 +30,14 @@ class MySemesterAPI {
       $user = user_load($uid);
     }
 		$this->user = $user;
-		$this->getCurrentSemester();
+
+    if ($semester == null) {
+      $this->getCurrentSemester();
+    }
+    else {
+      $this->semester_id = $semester;
+    }
+
     if ($my_semester != null) {
       $this->user_semester = entity_metadata_wrapper('node', $my_semester);
     }

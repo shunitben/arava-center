@@ -57,6 +57,13 @@ function arava_admin_menu() {
     'file' => 'arava_admin.attendance.inc'
   );
 
+  $items['admin/course/%/remove/%'] = array(
+    'title' => t('Remove user from course'),
+    'page callback' => 'arava_admin_remove_user_form_course',
+    'page arguments' => array(2,4),
+    'access arguments' => array('administer permissions'),
+    'type' => MENU_CALLBACK,
+  );
 
 
   return $items;
@@ -214,9 +221,6 @@ function arava_admin_mail($key, &$message, $params) {
   }
 }
 
-/******************
- * Batch stuff
- *******************/
 /**
  * Batch 'finished' callback
  */
@@ -240,4 +244,22 @@ function arava_admin_send_emails_op($emails, $params) {
       $result = drupal_mail('arava_admin', 'send_email', $email, 'en', $params);
     }
   }
+}
+
+function _arava_admin_remove_user_from_course_link($data) {
+  $path = drupal_get_path('module', 'arava_admin');
+  drupal_add_js($path . '/js/arava_admin.js');
+
+  $user = $data->users_field_data_field_user_uid;
+  $course = $data->node_field_data_field_course_nid;
+  return '<a class="remove_from_course" course="' . $course . '" user="' . $user . '">Remove from course</a>';
+}
+
+function arava_admin_remove_user_form_course($course, $user) {
+  $course_node = node_load($course);
+  $semester = $course_node->field_semester[LANGUAGE_NONE][0]['target_id'];
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $mySemesterAPI = new MySemesterAPI($user, null, $semester);
+  $mySemesterAPI->removeCourse($course);
+  print json_encode(array('success' => true));
 }

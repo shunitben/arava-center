@@ -1322,6 +1322,17 @@ print view_get_link_to_send_emails($view);
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
   $handler->display->display_options['fields']['mail']['relationship'] = 'field_user_target_id';
   $handler->display->display_options['fields']['mail']['label'] = 'אימייל';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'מחיקה מהקורס';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+print _arava_admin_remove_user_from_course_link($data);
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
@@ -1453,6 +1464,7 @@ print $results[0]->node_field_data_field_course_title;
     t('field_course'),
     t('Title'),
     t('אימייל'),
+    t('מחיקה מהקורס'),
     t('All'),
     t('[field_user_name] <[mail]>;'),
   );
