@@ -22,3 +22,11 @@ Show values of 0,1,2 visually.
     background: orange;
     color: orange;
 }
+
+.remove_from_course.loading:after {
+    content: '';
+    background-image:  url("../../../../../../misc/throbber-active.gif");
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 20px;
+}
