@@ -45,12 +45,14 @@
   ?>
 </div>
 
+<?php if (arava_registration_access(true)): ?>
 <div class="edit-my-semester-block">
   <?php
   $block = module_invoke('arava_registration','block_view','edit_my_semester');
   print render($block['content']);
   ?>
 </div>
+<?php endif; ?>
 
 <!--<div class="remaining-payment-block">
   <?php

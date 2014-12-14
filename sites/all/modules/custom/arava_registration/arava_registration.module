@@ -441,6 +441,9 @@ function _arava_registration_steps_block() {
       }
     }
   }
+  if (!arava_registration_access(true)) {
+    unset($links['courses']['href']);
+  }
 
   return theme_links(array(
     'links' => $links,
