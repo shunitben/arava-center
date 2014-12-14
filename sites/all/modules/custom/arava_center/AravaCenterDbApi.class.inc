@@ -11,10 +11,12 @@ class AravaCenterDbApi {
     $query = db_select('node', 'my_semester');
     $query->join('field_data_field_user', 'user', 'my_semester.nid = user.entity_id');
     $query->join('field_data_field_my_courses', 'my_courses', 'my_semester.nid = my_courses.entity_id');
+    $query->join('field_data_field_registration_complete', 'complete', 'my_semester.nid = complete.entity_id');
     $query->join('field_data_field_course', 'course', 'my_courses.field_my_courses_value = course.entity_id');
     $query
       ->condition('my_semester.type', 'my_semester')
       ->condition('user.field_user_target_id', $uid)
+      ->condition('complete.field_registration_complete_value', "1")
       ->condition('course.field_course_target_id', $course_id)
       ->fields('user', array('field_user_target_id'))
       ->fields('course', array('field_course_target_id'));
