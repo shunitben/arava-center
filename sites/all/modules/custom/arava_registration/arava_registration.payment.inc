@@ -3,7 +3,7 @@
 function arava_registration_payment_page() {
 
   if (!arava_registration_access()) {
-    return t('You have already completed your registration. You may only change the courses you signed up to.<br>Please contact the site administrators to make any changes.');
+    return _arava_registration_step_denied_text();
   }
 
   $validate = _arava_registration_validate_all_registration();

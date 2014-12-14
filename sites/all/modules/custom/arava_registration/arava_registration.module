@@ -185,14 +185,30 @@ function arava_registration_menu() {
  * access callback function:
  * allow access to pages if user has the permission and has not completed registration yet
  */
-function arava_registration_access() {
+function arava_registration_access($courses = false) {
   $permission = user_access('signup to courses and accommodation');
 
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
   $registration_complete = $mySemesterAPI->getComplete();
 
-  return $permission && !$registration_complete;
+  if ($courses) {
+    $closed_for_course_updates = $mySemesterAPI->isSemesterClosedForCourseUpdates();
+    return $permission && (!$registration_complete || !$closed_for_course_updates);
+  }
+  else {
+    return $permission && !$registration_complete;
+  }
+}
+
+function _arava_registration_step_denied_text($courses = false) {
+  // if courses are also closed
+  if (!arava_registration_access(true)) {
+    return t('You have already completed your registration.<br>Please contact the site administrators to make any changes.');
+  }
+  else {
+    return t('You have already completed your registration. You may only change the courses you signed up to.<br>Please contact the site administrators to make any changes.');
+  }
 }
 
 /**

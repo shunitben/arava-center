@@ -5,6 +5,13 @@
  */
 function arava_registration_course($form, &$form_state) {
 
+  if (!arava_registration_access(true)) {
+    $form['denied'] = array(
+      '#markup' => _arava_registration_step_denied_text()
+    );
+    return $form;
+  }
+
   drupal_add_library('system', 'ui.accordion');
 
   $parts = _arava_registration_get_separated_sectioned_view('course_selection', 'block_1');

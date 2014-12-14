@@ -576,6 +576,11 @@ class MySemesterAPI {
     return $this->semester_id;
   }
 
+  public function isSemesterClosedForCourseUpdates() {
+    $semester = node_load($this->semester_id);
+    return !empty($semester->field_course_selection_finished) ? (bool)(int)$semester->field_course_selection_finished[LANGUAGE_NONE][0]['value'] : false;
+  }
+
   public function getMySemesterId() {
     return $this->user_semester->getIdentifier();
   }
