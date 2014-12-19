@@ -61,7 +61,7 @@ function arava_admin_menu() {
     'title' => t('Remove user from course'),
     'page callback' => 'arava_admin_remove_user_form_course',
     'page arguments' => array(2,4),
-    'access arguments' => array('administer permissions'),
+    'access arguments' => array('manage registration'),
     'type' => MENU_CALLBACK,
   );
 
@@ -82,7 +82,10 @@ function arava_admin_permission() {
     ),
     'administer attendance' => array(
       'title' => t('Administer Attendance'),
-    )
+    ),
+    'manage registration' => array(
+      'title' => t('Manage Registration'),
+    ),
   );
 }
 
