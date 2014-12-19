@@ -250,12 +250,17 @@ function arava_admin_send_emails_op($emails, $params) {
 }
 
 function _arava_admin_remove_user_from_course_link($data) {
-  $path = drupal_get_path('module', 'arava_admin');
-  drupal_add_js($path . '/js/arava_admin.js');
+  if (user_access('manage registration')) {
+    $path = drupal_get_path('module', 'arava_admin');
+    drupal_add_js($path . '/js/arava_admin.js');
 
-  $user = $data->users_field_data_field_user_uid;
-  $course = $data->node_field_data_field_course_nid;
-  return '<a class="remove_from_course" course="' . $course . '" user="' . $user . '">Remove from course</a>';
+    $user = $data->users_field_data_field_user_uid;
+    $course = $data->node_field_data_field_course_nid;
+    return '<a class="remove_from_course" course="' . $course . '" user="' . $user . '">' . t('Remove from course') . '</a>';
+  }
+  else {
+    return t('no permissions');
+  }
 }
 
 function arava_admin_remove_user_form_course($course, $user) {
