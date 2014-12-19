@@ -102,7 +102,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = 'group_meals';
   $field_group->data = array(
     'label' => 'Extra Meals',
-    'weight' => '8',
+    'weight' => '10',
     'children' => array(
       0 => 'field_extra_days_present',
       1 => 'field_extra_guests_num',
@@ -231,8 +231,8 @@ function arava_registration_wizard_field_group_info() {
     'children' => array(
       0 => 'field_user',
       1 => 'field_semester',
-      2 => 'title',
-      3 => 'field_registration_complete',
+      2 => 'field_registration_complete',
+      3 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -319,7 +319,9 @@ function arava_registration_wizard_field_group_info() {
     'weight' => '3',
     'children' => array(
       0 => 'field_days_present',
-      1 => 'group_extra_meals',
+      1 => 'field_arrival_time',
+      2 => 'field_departure_time',
+      3 => 'group_extra_meals',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

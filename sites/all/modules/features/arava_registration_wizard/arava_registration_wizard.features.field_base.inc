@@ -68,6 +68,29 @@ function arava_registration_wizard_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_arrival_time'
+  $field_bases['field_arrival_time'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_arrival_time',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'timefield',
+    'settings' => array(
+      'totime' => '',
+      'weekly_summary' => 0,
+      'weekly_summary_with_label' => 0,
+    ),
+    'translatable' => 0,
+    'type' => 'timefield',
+  );
+
   // Exported field_base: 'field_audio_files'
   $field_bases['field_audio_files'] = array(
     'active' => 1,
@@ -223,6 +246,35 @@ function arava_registration_wizard_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
+  // Exported field_base: 'field_course_selection_finished'
+  $field_bases['field_course_selection_finished'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_course_selection_finished',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => '',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_dairy'
   $field_bases['field_dairy'] = array(
     'active' => 1,
@@ -284,6 +336,29 @@ function arava_registration_wizard_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_departure_time'
+  $field_bases['field_departure_time'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_departure_time',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'timefield',
+    'settings' => array(
+      'totime' => '',
+      'weekly_summary' => 0,
+      'weekly_summary_with_label' => 0,
+    ),
+    'translatable' => 0,
+    'type' => 'timefield',
   );
 
   // Exported field_base: 'field_early_bird_ends_on'

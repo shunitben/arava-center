@@ -114,6 +114,8 @@
             $("#edit-submit").click(function() {
                 $(this).addClass('processing');
             });
+
+            $('#edit-arrival-time, #edit-departure-time').timepicker({ 'timeFormat': 'H:i', 'scrollDefault': '12:00' });
         },
 
         showCourseInfo: function (link) {

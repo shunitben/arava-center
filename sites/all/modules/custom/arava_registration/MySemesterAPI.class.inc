@@ -232,10 +232,23 @@ class MySemesterAPI {
    */
   public function getPresenceInfoForUser() {
     if ($this->user_semester == null) return null;
-    return $this->user_semester->field_days_present->value();
+    $settings = array(
+      'separator' => ':',
+      'period_separator' => '',
+      'period' => 'a',
+      'hour' => 'g',
+      'minute' => 'i'
+    );
+    $arrival = $this->user_semester->field_arrival_time->value();
+    $departure = $this->user_semester->field_departure_time->value();
+    return array(
+      'days' => $this->user_semester->field_days_present->value(),
+      'arrival_time' => timefield_integer_to_time($settings, $arrival['value']),
+      'departure_time' => timefield_integer_to_time($settings, $departure['value']),
+    );
   }
 
-  public function setPresenceInfo($presence_days) {
+  public function setPresenceInfo($presence_days, $arrival_time, $departure_time) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
 
     $days = array();
@@ -245,6 +258,8 @@ class MySemesterAPI {
       }
     }
     $user_semester_node->field_days_present[LANGUAGE_NONE] = $days;
+    $user_semester_node->field_arrival_time[LANGUAGE_NONE][0]['value'] = timefield_time_to_integer($arrival_time);
+    $user_semester_node->field_departure_time[LANGUAGE_NONE][0]['value'] = timefield_time_to_integer($departure_time);
 
     field_attach_update('node', $user_semester_node);
 

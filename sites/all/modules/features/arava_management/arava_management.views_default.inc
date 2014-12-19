@@ -458,13 +458,6 @@ function arava_management_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'ברשימה זו ישנם המיילים של כל מי שלא חתם על תקנום מואה ו/או לא לחץ על ״סיום הרשמה״.
-<br><br>';
-  $handler->display->display_options['header']['area']['format'] = 'html';
   /* Header: Global: PHP */
   $handler->display->display_options['header']['php']['id'] = 'php';
   $handler->display->display_options['header']['php']['table'] = 'views';
@@ -831,8 +824,6 @@ print view_get_link_to_send_emails($view);
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('ברשימה זו ישנם המיילים של כל מי שלא חתם על תקנום מואה ו/או לא לחץ על ״סיום הרשמה״.
-<br><br>'),
     t('user'),
     t('תלמיד'),
     t('עריכת הסמסטר של התלמיד'),
@@ -2102,6 +2093,32 @@ print view_get_link_to_send_emails($view);
   $handler->display->display_options['fields']['field_user_address']['table'] = 'field_data_field_user_address';
   $handler->display->display_options['fields']['field_user_address']['field'] = 'field_user_address';
   $handler->display->display_options['fields']['field_user_address']['relationship'] = 'field_user_target_id';
+  /* Field: Content: שעת הגעה */
+  $handler->display->display_options['fields']['field_arrival_time']['id'] = 'field_arrival_time';
+  $handler->display->display_options['fields']['field_arrival_time']['table'] = 'field_data_field_arrival_time';
+  $handler->display->display_options['fields']['field_arrival_time']['field'] = 'field_arrival_time';
+  $handler->display->display_options['fields']['field_arrival_time']['settings'] = array(
+    'display_format' => array(
+      'hour' => 'H',
+      'minute' => 'i',
+      'separator' => ':',
+      'period' => 'none',
+      'period_separator' => '',
+    ),
+  );
+  /* Field: Content: שעת עזיבה */
+  $handler->display->display_options['fields']['field_departure_time']['id'] = 'field_departure_time';
+  $handler->display->display_options['fields']['field_departure_time']['table'] = 'field_data_field_departure_time';
+  $handler->display->display_options['fields']['field_departure_time']['field'] = 'field_departure_time';
+  $handler->display->display_options['fields']['field_departure_time']['settings'] = array(
+    'display_format' => array(
+      'hour' => 'H',
+      'minute' => 'i',
+      'separator' => ':',
+      'period' => 'none',
+      'period_separator' => '',
+    ),
+  );
   /* Sort criterion: User: שם מלא (field_user_name) */
   $handler->display->display_options['sorts']['field_user_name_value']['id'] = 'field_user_name_value';
   $handler->display->display_options['sorts']['field_user_name_value']['table'] = 'field_data_field_user_name';
@@ -2162,6 +2179,8 @@ print view_get_link_to_send_emails($view);
     t('טלפון'),
     t('Days Present'),
     t('כתובת מגורים'),
+    t('שעת הגעה'),
+    t('שעת עזיבה'),
     t('Semester'),
     t('Page'),
   );

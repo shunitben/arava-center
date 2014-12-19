@@ -17,6 +17,13 @@
     background:  url("../Images/loader.gif") no-repeat center center;
 }
 
+/****
+Presence
+*******/
+#edit-arrival-time,
+#edit-departure-time {
+    width: 100px;
+}
 
 /****
 Tatakanon popups
