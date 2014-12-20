@@ -9,13 +9,14 @@ function carpoolingmod_offer_ride_page(){
 	global $user;
 	drupal_set_title(carpoolingmod_rides_carpooling_page_title());
 
-	$html = '';
 	$limit = 20;
+  $semester = _get_current_semester();
 	
 	$query = db_select('carpooling_pref', 'cp')->extend('PagerDefault');
 	$query->fields('cp');
 	$query->condition('cp.type', 'offer');
-	$query->leftjoin('carpooling_ride', 'ride', 'ride.offer_uid=cp.uid and ride.join_uid='.$user->uid);
+  $query->condition('cp.semester', $semester);
+	$query->leftjoin('carpooling_ride', 'ride', 'ride.offer_uid=cp.uid and ride.join_uid='.$user->uid.' AND ride.semester = '. $semester);
 	$query->addField('ride', 'join_uid');
 	
 	$header = array(
@@ -65,15 +66,16 @@ function carpoolingmod_offer_ride_page(){
 
 function carpoolingmod_look_for_ride_page(){
 	drupal_set_title(carpoolingmod_rides_carpooling_page_title());
-	
-	$html = '';
+
 	$limit = 20;
 	global $user;
+  $semester = _get_current_semester();
 	
 	$query = db_select('carpooling_pref', 'cp')->extend('PagerDefault');
 	$query->fields('cp');
 	$query->condition('cp.type', 'lookfor');
-	$query->leftjoin('carpooling_ride', 'ride', 'ride.join_uid=cp.uid and ride.offer_uid='.$user->uid);
+  $query->condition('cp.semester', $semester);
+	$query->leftjoin('carpooling_ride', 'ride', 'ride.join_uid=cp.uid and ride.offer_uid='.$user->uid.' AND ride.semester = '. $semester);
 	$query->addField('ride', 'offer_uid');
 	
 	$header = array(
@@ -130,14 +132,16 @@ function carpoolingmod_join_ride_form($form, &$form_status, $account){
 function carpoolingmod_join_ride_form_submit($form, &$form_status){
 	$account = $form_status['storage']['account'];
 	global $user;
+  $semester = _get_current_semester();
 	$data = array(
 		'join_uid' => $user->uid,
 		'offer_uid' => $account->uid,
 		'created' => time(),
+    'semester' => $semester,
 	);
 	drupal_write_record('carpooling_ride', $data);
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid", array(':uid' => $account->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid and semester=:semester", array(':uid' => $account->uid, ':semester' => $semester));
 	
 	drupal_set_message(t('You have joined !user\'s ride?.', array('!user' => l($account->name, 'user/'.$account->uid))));
 	unset($form_status['storage']);
@@ -146,14 +150,16 @@ function carpoolingmod_join_ride_form_submit($form, &$form_status){
 
 function carpoolingmod_join_ride_form_page($account){
 	global $user;
+  $semester = _get_current_semester();
 	$data = array(
 		'join_uid' => $user->uid,
 		'offer_uid' => $account->uid,
 		'created' => time(),
+    'semester' => $semester,
 	);
 	drupal_write_record('carpooling_ride', $data);
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid", array(':uid' => $account->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid and semester=:semester", array(':uid' => $account->uid, ':semester' => $semester));
 	
 	drupal_set_message(t('You have joined !user\'s ride?.', array('!user' => l($account->name, 'user/'.$account->uid))));
 	
@@ -171,14 +177,16 @@ function carpoolingmod_addmycar_ride_form($form, &$form_status, $account){
 function carpoolingmod_addmycar_ride_form_submit($form, &$form_status){
 	$account = $form_status['storage']['account'];
 	global $user;
+  $semester = _get_current_semester();
 	$data = array(
 		'join_uid' => $account->uid,
 		'offer_uid' => $user->uid,
 		'created' => time(),
+    'semester' => $semester,
 	);
 	drupal_write_record('carpooling_ride', $data);
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid", array(':uid' => $user->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid and semester=:semester", array(':uid' => $user->uid, ':semester' => $semester));
 	
 	drupal_set_message(t('You have added !user to your car.', array('!user' => l($account->name, 'user/'.$account->uid))));
 	unset($form_status['storage']);
@@ -187,14 +195,16 @@ function carpoolingmod_addmycar_ride_form_submit($form, &$form_status){
 
 function carpoolingmod_addmycar_ride_form_page($account){
 	global $user;
+  $semester = _get_current_semester();
 	$data = array(
 		'join_uid' => $account->uid,
 		'offer_uid' => $user->uid,
 		'created' => time(),
+    'semester' => $semester,
 	);
 	drupal_write_record('carpooling_ride', $data);
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid", array(':uid' => $user->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats-1 where uid=:uid and semester=:semester", array(':uid' => $user->uid, ':semester' => $semester));
 	
 	drupal_set_message(t('You have added !user to your car.', array('!user' => l($account->name, 'user/'.$account->uid))));
 	

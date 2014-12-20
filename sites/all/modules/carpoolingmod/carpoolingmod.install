@@ -17,6 +17,12 @@ function carpoolingmod_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'semester' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'type' => array(
         'type' => 'varchar',
         'length' => 10,
@@ -66,7 +72,7 @@ function carpoolingmod_schema() {
         'default' => '',
       ),
     ),
-    'primary key' => array('uid'),
+    'primary key' => array('uid', 'semester'),
   );
 
   $schema['carpooling_ride'] = array(
@@ -84,6 +90,12 @@ function carpoolingmod_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'semester' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'created' => array(
         'type' => 'int',
         'length' => 11,
@@ -91,7 +103,7 @@ function carpoolingmod_schema() {
         'default' => 0,
       ),
     ),
-    'primary key' => array('join_uid', 'offer_uid'),
+    'primary key' => array('join_uid', 'offer_uid', 'semester'),
   );
 
   return $schema;
@@ -106,4 +118,33 @@ function carpoolingmod_install() {
 function carpoolingmod_uninstall() {
 
 }
- 
+
+/**
+ * Add semester field to carpooling table, and set all existing rides to semester 1
+ */
+function carpoolingmod_update_7001() {
+
+  $spec = array(
+    'type' => 'int',
+    'length' => 11,
+    'not null' => TRUE,
+    'default' => 0,
+  );
+
+  db_add_field('carpooling_pref', 'semester', $spec);
+  db_add_field('carpooling_ride', 'semester', $spec);
+
+  db_query('UPDATE carpooling_pref SET semester=1');
+  db_query('UPDATE carpooling_ride SET semester=1');
+}
+
+/**
+ * Add semester to primary key
+ */
+function carpoolingmod_update_7002() {
+  db_drop_primary_key('carpooling_pref');
+  db_add_primary_key('carpooling_pref', array('uid', 'semester'));
+
+  db_drop_primary_key('carpooling_ride');
+  db_add_primary_key('carpooling_ride', array('join_uid', 'offer_uid', 'semester'));
+}

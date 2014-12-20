@@ -125,8 +125,8 @@ function carpoolingmod_pref_setup_form($form, &$form_status, $account, $redirect
 		$data['departureday'] = array();
 		$data['returnday'] = array();
 		
-		if($selected){
-			foreach($selected as $k => $v){
+		if($selected['days']){
+			foreach($selected['days'] as $k => $v){
 				$data['departureday'][] = $mapping[$v];
 				$data['returnday'][] = $mapping[$v];
 			}
@@ -194,13 +194,14 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 	$account = $form_status['storage']['account'];
 	$data = carpoolingmod_load_pref($account);
 	$values = $form_status['values'];
+  $semester = _get_current_semester();
 	
 	if($data){
 		if($data['type'] != $values['type']){
-			db_query("delete from {carpooling_ride} where offer_uid=:offer_uid", array(':offer_uid' => $account->uid));
+			db_query("delete from {carpooling_ride} where offer_uid=:offer_uid AND semester=:semester", array(':offer_uid' => $account->uid, ':semester' => $semester));
 			
-			db_query("update {carpooling_pref} set available_seats=available_seats+1 where uid in (select offer_uid from {carpooling_ride} where join_uid=:join_uid)", array(':join_uid' => $account->uid));
-			db_query("delete from {carpooling_ride} where join_uid=:join_uid", array(':join_uid' => $account->uid));
+			db_query("update {carpooling_pref} set available_seats=available_seats+1 where uid in (select offer_uid from {carpooling_ride} where join_uid=:join_uid)  AND semester=:semester", array(':join_uid' => $account->uid, ':semester' => $semester));
+			db_query("delete from {carpooling_ride} where join_uid=:join_uid  AND semester=:semester", array(':join_uid' => $account->uid, ':semester' => $semester));
 		}
 	
 		$data = array(
@@ -214,6 +215,7 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 			//'returnday' => $values['returnday'] ? implode(',', $values['returnday']) : '',
 			'returnday' => $values['returnday'] ? $values['returnday'] : '',
 			'returntime' => $values['returntime'],
+      'semester' => $semester,
 		);
 		
 		drupal_write_record('carpooling_pref', $data, 'uid');
@@ -229,6 +231,7 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 			'departuretime' => $values['departuretime'],
 			'returnday' => $values['returnday'],// ? implode(',', $values['returnday']) : '',
 			'returntime' => $values['returntime'],
+      'semester' => $semester,
 		);
 		
 		drupal_write_record('carpooling_pref', $data);
@@ -250,13 +253,16 @@ function carpoolingmod_myrides_page(){
 	global $user;
 
 	$html = '';
-	$html .= render(drupal_get_form('carpoolingmod_pref_setup_form', $user));
+  $form = drupal_get_form('carpoolingmod_pref_setup_form', $user);
+	$html .= render($form);
+
+  $semester = _get_current_semester();
 	
 	$data = carpoolingmod_load_pref($user);
 	if($data && $data['type'] == 'offer'){
 		$html .= '<fieldset class="form-wrapper"><legend><span class="fieldset-legend">'.t('List of passengers riding with you').'</span></legend><div class="fieldset-wrapper">';
 		
-		$query = db_query("select * from {carpooling_ride} where offer_uid=:uid order by created asc", array(':uid' => $user->uid));
+		$query = db_query("select * from {carpooling_ride} where offer_uid=:uid and semester=:semester order by created asc", array(':uid' => $user->uid, ':semester' => $semester));
 		$header = array('', t('Email'), t('Phone'), t('Name'));
 		$rows = array();
 		foreach($query as $r){
@@ -274,7 +280,7 @@ function carpoolingmod_myrides_page(){
 	}else if($data && $data['type'] == 'lookfor'){
 		$html .= '<fieldset class="form-wrapper"><legend><span class="fieldset-legend">'.t('Your driver details').'</span></legend><div class="fieldset-wrapper">';
 		
-		$query = db_query("select * from {carpooling_ride} where join_uid=:uid order by created asc", array(':uid' => $user->uid));
+		$query = db_query("select * from {carpooling_ride} where join_uid=:uid and semester=:semester order by created asc", array(':uid' => $user->uid, ':semester' => $semester));
 		$header = array('', t('Email'), t('Phone'), t('Name'));
 		$rows = array();
 		foreach($query as $r){
@@ -304,9 +310,10 @@ function carpoolingmod_removemycar_ride_form($form, &$form_status, $account){
 
 function carpoolingmod_removemycar_ride_form_page($account){
 	global $user;
-	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid));
+  $semester = _get_current_semester();
+	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid and semester=:semester", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid, ':semester' => $semester));
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid", array(':uid' => $user->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid and semester=:semester", array(':uid' => $user->uid, ':semester' => $semester));
 	
 	drupal_set_message(t('You have removed !user from your car.', array('!user' => l($account->name, 'user/'.$account->uid))));
 	
@@ -316,9 +323,10 @@ function carpoolingmod_removemycar_ride_form_page($account){
 function carpoolingmod_removemycar_ride_form_submit($form, &$form_status){
 	$account = $form_status['storage']['account'];
 	global $user;
-	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid));
+  $semester = _get_current_semester();
+	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid and semester=:semester", array(':join_uid' => $account->uid, ':offer_uid' => $user->uid, ':semester' => $semester));
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid", array(':uid' => $user->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid and semester=:semester", array(':uid' => $user->uid, ':semester' => $semester));
 	
 	drupal_set_message(t('You have removed !user from your car.', array('!user' => l($account->name, 'user/'.$account->uid))));
 	unset($form_status['storage']);
@@ -336,9 +344,10 @@ function carpoolingmod_leave_ride_form($form, &$form_status, $account){
 function carpoolingmod_leave_ride_form_submit($form, &$form_status){
 	$account = $form_status['storage']['account'];
 	global $user;
-	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid));
+  $semester = _get_current_semester();
+	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid and semester=:semester", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid, ':semester' => $semester));
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid", array(':uid' => $account->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid and semester=:semester", array(':uid' => $account->uid, ':semester' => $semester));
 	
 	drupal_set_message(t("You have leave !user's ride.", array('!user' => l($account->name, 'user/'.$account->uid))));
 	unset($form_status['storage']);
@@ -347,9 +356,10 @@ function carpoolingmod_leave_ride_form_submit($form, &$form_status){
 
 function carpoolingmod_leave_ride_form_page($account){
 	global $user;
-	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid));
+  $semester = _get_current_semester();
+	db_query("delete from {carpooling_ride} where join_uid=:join_uid and offer_uid=:offer_uid and semester=:semester", array(':join_uid' => $user->uid, ':offer_uid' => $account->uid, ':semester' => $semester));
 	
-	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid", array(':uid' => $account->uid));
+	db_query("update {carpooling_pref} set remaining_seats=remaining_seats+1 where uid=:uid and semester=:semester", array(':uid' => $account->uid, ':semester' => $semester));
 	
 	drupal_set_message(t("You have leave !user's ride.", array('!user' => l($account->name, 'user/'.$account->uid))));
 	
