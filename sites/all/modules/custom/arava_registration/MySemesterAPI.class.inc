@@ -25,7 +25,7 @@ class MySemesterAPI {
 	public function __construct($uid = null, stdClass $my_semester = null, $semester = null) {
     if ($uid === null) {
       global $user;
-      $user = user_load($user);
+      $user = user_load($user->uid);
     }
 		else {
       $user = user_load($uid);
