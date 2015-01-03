@@ -614,6 +614,36 @@ function arava_registration_wizard_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_guests_for_meals'
+  $field_bases['field_guests_for_meals'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_guests_for_meals',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
   // Exported field_base: 'field_health_declaration'
   $field_bases['field_health_declaration'] = array(
     'active' => 1,
@@ -621,6 +651,35 @@ function arava_registration_wizard_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_health_declaration',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => '',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
+  // Exported field_base: 'field_hide_from_catalog'
+  $field_bases['field_hide_from_catalog'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_hide_from_catalog',
     'field_permissions' => array(
       'type' => 0,
     ),
@@ -818,6 +877,38 @@ function arava_registration_wizard_field_default_field_bases() {
       'allowed_values' => array(
         'recurring' => 'חוזר',
         'manual' => 'ידני',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_meals_present'
+  $field_bases['field_meals_present'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_meals_present',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'thursday_supper' => 'חמישי ערב',
+        'friday_lunch' => 'שישי צהריים',
+        'friday_supper' => 'שישי ערב',
+        'saturday_lunch' => 'שבת צהריים',
+        'saturday_supper' => 'שבת ערב',
       ),
       'allowed_values_function' => '',
     ),

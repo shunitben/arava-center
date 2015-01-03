@@ -279,47 +279,42 @@ class MySemesterAPI {
     $meals_info = array(
       'gluten' => $user_wrapper->field_gluten->value(),
       'soy' => $user_wrapper->field_soy->value(),
-      'dairy' => $user_wrapper->field_dairy->value(),
-      'peanuts' => $user_wrapper->field_peanuts->value(),
-      'other_allergies' => $user_wrapper->field_other_allergies->value(),
       'i_eat_dairy' => $user_wrapper->field_i_eat_dairy->value(),
       'i_eat_eggs' => $user_wrapper->field_i_eat_eggs->value(),
     );
     if ($this->user_semester != null) {
       $meals_info['days_present'] = $this->user_semester->field_days_present->value();
-      $meals_info['extra_guests'] = $this->user_semester->field_extra_guests_num->value();
-      $meals_info['extra_days_present'] = $this->user_semester->field_extra_days_present->value();
+      $meals_info['meals_present'] = $this->user_semester->field_meals_present->value();
+      $meals_info['guests_for_meals'] = unserialize($this->user_semester->field_guests_for_meals->value());
     }
 
 
     return $meals_info;
   }
 
-  public function setMealsFoodInfo($allergies, $other_allergies, $i_eat_dairy, $i_eat_eggs) {
+  public function setMealsFoodInfo($allergies, $i_eat_dairy, $i_eat_eggs) {
     $user = user_load($this->user->uid);
     $user->field_gluten[LANGUAGE_NONE][0]['value'] = $allergies['gluten'];
     $user->field_soy[LANGUAGE_NONE][0]['value'] = $allergies['soy'];
-    $user->field_dairy[LANGUAGE_NONE][0]['value'] = $allergies['dairy'];
-    $user->field_peanuts[LANGUAGE_NONE][0]['value'] = $allergies['peanuts'];
-    $user->field_other_allergies[LANGUAGE_NONE][0]['value'] = $other_allergies;
     $user->field_i_eat_dairy[LANGUAGE_NONE][0]['value'] = $i_eat_dairy;
     $user->field_i_eat_eggs[LANGUAGE_NONE][0]['value'] = $i_eat_eggs;
 
     field_attach_update('user', $user);
   }
 
-  public function setMealsPresenceInfo($num_guests, $guests_presence_days) {
+  public function setMealsPresenceInfo($meals_present, $guests_for_meals) {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
 
-    $user_semester_node->field_extra_guests_num[LANGUAGE_NONE][0]['value'] = !empty($num_guests) ? $num_guests : 0;
-
-    $days = array();
-    foreach ($guests_presence_days as $day) {
-      if (!empty($day)) {
-        $days[]['value'] = $day;
+    $meals = array();
+    foreach ($meals_present as $meal) {
+      if (!empty($meal)) {
+        $meals[]['value'] = $meal;
       }
     }
-    $user_semester_node->field_extra_days_present[LANGUAGE_NONE] = $days;
+    $user_semester_node->field_meals_present[LANGUAGE_NONE] = $meals;
+
+    $guests_for_meals = serialize($guests_for_meals);
+    $user_semester_node->field_guests_for_meals[LANGUAGE_NONE][0]['value'] = $guests_for_meals;
 
     field_attach_update('node', $user_semester_node);
 

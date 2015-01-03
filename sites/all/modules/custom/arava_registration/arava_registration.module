@@ -590,7 +590,29 @@ function _arava_registration_days_of_week_options() {
   );
 }
 
+/**
+ *
+ */
+function _arava_registration_meals_options() {
+  return array(
+    'thursday_supper' => t('Thursday supper'),
+    'friday_lunch' => t('Friday lunch'),
+    'friday_supper' => t('Friday supper'),
+    'saturday_lunch' => t('Saturday lunch'),
+    'saturday_supper' => t('Saturday supper'),
+  );
+}
 
+/**
+ *
+ */
+function _arava_registration_guest_meals_options() {
+  return array(
+    'friday_supper' => t('Friday supper'),
+    'saturday_lunch' => t('Saturday lunch'),
+    'saturday_supper' => t('Saturday supper'),
+  );
+}
 
 function arava_registration_mail($key, &$message, $params) {
   switch ($key) {

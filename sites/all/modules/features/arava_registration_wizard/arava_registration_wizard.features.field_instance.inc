@@ -396,7 +396,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'teaser' => array(
         'label' => 'hidden',
@@ -509,7 +509,7 @@ function arava_registration_wizard_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -641,7 +641,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 19,
+        'weight' => 18,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -707,6 +707,48 @@ function arava_registration_wizard_field_default_field_instances() {
       ),
       'type' => 'options_onoff',
       'weight' => 26,
+    ),
+  );
+
+  // Exported field_instance: 'node-course-field_hide_from_catalog'
+  $field_instances['node-course-field_hide_from_catalog'] = array(
+    'bundle' => 'course',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 20,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_hide_from_catalog',
+    'label' => 'הסתרה בקטלוג',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 10,
     ),
   );
 
@@ -782,7 +824,7 @@ function arava_registration_wizard_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -827,7 +869,7 @@ function arava_registration_wizard_field_default_field_instances() {
           ),
         ),
         'type' => 'timefield_default',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -966,15 +1008,9 @@ function arava_registration_wizard_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => ' ',
-        ),
-        'type' => 'number_integer',
-        'weight' => 20,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 19,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1171,7 +1207,7 @@ function arava_registration_wizard_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 5,
+        'weight' => 6,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1247,11 +1283,10 @@ function arava_registration_wizard_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
-          'links' => 1,
-          'view_mode' => 'default',
+          'link' => 1,
         ),
-        'type' => 'entityreference_entity_view',
-        'weight' => 6,
+        'type' => 'entityreference_label',
+        'weight' => 1,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1312,7 +1347,7 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -1443,7 +1478,7 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_days_present',
-    'label' => 'Days Present',
+    'label' => 'ימי נוכחות',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1554,7 +1589,7 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 9,
+      'weight' => 8,
     ),
   );
 
@@ -1600,7 +1635,47 @@ function arava_registration_wizard_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 8,
+      'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'node-my_semester-field_guests_for_meals'
+  $field_instances['node-my_semester-field_guests_for_meals'] = array(
+    'bundle' => 'my_semester',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 23,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_guests_for_meals',
+    'label' => 'אורחים בארוחות',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 11,
     ),
   );
 
@@ -1644,6 +1719,43 @@ function arava_registration_wizard_field_default_field_instances() {
       ),
       'type' => 'options_onoff',
       'weight' => 19,
+    ),
+  );
+
+  // Exported field_instance: 'node-my_semester-field_meals_present'
+  $field_instances['node-my_semester-field_meals_present'] = array(
+    'bundle' => 'my_semester',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 22,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_meals_present',
+    'label' => 'נוכחות בארוחות',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 10,
     ),
   );
 
@@ -3047,7 +3159,6 @@ function arava_registration_wizard_field_default_field_instances() {
   t('Contact information');
   t('Course');
   t('Course Selection Finished');
-  t('Days Present');
   t('Early Bird Ends On');
   t('Early Bird Price');
   t('External Link');
@@ -3085,17 +3196,21 @@ function arava_registration_wizard_field_default_field_instances() {
   t('other allergies');
   t('peanuts allergy');
   t('registration complete');
+  t('אורחים בארוחות');
   t('אנא מלאו את שמכם המלא (שם פרטי + משפחה) בעברית');
   t('האם להציג את הקבצים של הקורס רק לתלמידים שרשומים אליו?');
+  t('הסתרה בקטלוג');
   t('הקלטות');
   t('חומרי קריאה ותרגול');
   t('טלפון');
   t('ימי השיעור');
+  t('ימי נוכחות');
   t('כיתה');
   t('כמה יש לשלם עבור הסמסטר הזה');
   t('כתובת מגורים');
   t('מורה');
   t('מספר שיעורים');
+  t('נוכחות בארוחות');
   t('סמסטר');
   t('עלות לסמסטר');
   t('פקולטה');

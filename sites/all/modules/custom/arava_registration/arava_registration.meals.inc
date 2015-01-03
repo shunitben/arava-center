@@ -43,33 +43,27 @@ function arava_registration_meals($form, &$form_state) {
     '#collapsible' => false,
   );
   $form['food']['allergies']['explanation'] = array(
-    '#markup' => '<div><b>' . t('Allergies: ') . '</b>' . t('Are you allergic to any foods? Please mark what\'s relevant.<br> (Please note, this isn\'t about naturopathic
-    or ayurvedic preferences, but about allergies.)') . '</div>',
+    '#markup' => '<div><b>' . t('Nutritional Preferences: ') . '</b>' . t('Institutional kitchen cooking holds many challenges . Please indicate your preferences so we can understand <b>the current trend</b> and try to respond to most needs and preferences:') . '</div>',
   );
   $form['food']['allergies']['gluten'] = array(
     '#type' => 'checkbox',
-    '#title' => t('I am allergic to gluten.'),
+    '#title' => t('I prefer gluten-free food.'),
     '#default_value' => $selected['gluten'],
   );
   $form['food']['allergies']['soy'] = array(
     '#type' => 'checkbox',
-    '#title' => t('I am allergic to soy.'),
+    '#title' => t('I prefer soy-free food.'),
     '#default_value' => $selected['soy'],
   );
-  $form['food']['allergies']['dairy'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('I am allergic to dairy.'),
-    '#default_value' => $selected['dairy'],
+  $form['food']['allergies']['send_email'] = array(
+    '#markup' => '<div>' . t('If you have any allergies, please send an email to foo@bar.com.') . '</div>',
   );
-  $form['food']['allergies']['peanuts'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('I am allergic to peanuts.'),
-    '#default_value' => $selected['peanuts'],
-  );
-  $form['food']['allergies']['other'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Other allergies:'),
-    '#default_value' => $selected['other_allergies'],
+
+  $form['food']['meals_presence'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('I expect to be present and dine at these meals:'),
+    '#options' => _arava_registration_meals_options(),
+    '#default_value' => $selected['meals_present'],
   );
 
 
@@ -77,19 +71,37 @@ function arava_registration_meals($form, &$form_state) {
   $form['guests'] = array(
     '#type' => 'fieldset',
     '#collapsible' => false,
-    '#title' => t('Guests')
+    '#title' => t('Guests'),
+    '#description' => t('Please write the number of guests you expect to have for each of these meals:')
   );
-  $form['guests']['number'] = array(
-    '#type' => 'textfield',
-    '#title' => t('The number of guests I am expecting to join me for meals:'),
-    '#size' => 5,
-    '#default_value' => $selected['extra_guests'],
+  $table_top = '<table><tr><td></td>';
+  for ($i=1; $i<=5; $i++) {
+    $table_top .= '<td>' . t('Week @num', array('@num' => $i)) . '</td>';
+  }
+  $table_top .= '</tr>';
+  $form['guests']['table_start'] = array(
+    '#markup' => $table_top
   );
-  $form['guests']['days'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('I expect my guests to be present for meals on these days:'),
-    '#options' => _arava_registration_days_of_week_options(),
-    '#default_value' => $selected['extra_days_present'],
+
+  foreach (_arava_registration_guest_meals_options() as $meal => $meal_name) {
+    $form['guests']['row_'.$meal.'_start'] = array(
+      '#markup' => '<tr><td>' . $meal_name . '</td>'
+    );
+    for ($i=1; $i<=5; $i++) {
+      $form['guests'][$meal . '-' . $i] = array(
+        '#type' => 'textfield',
+        '#default_value' => $selected['guests_for_meals'][$meal . '-' . $i],
+        '#prefix' => '<td>',
+        '#suffix' => '</td>'
+      );
+    }
+    $form['guests']['row_'.$meal.'_end'] = array(
+      '#markup' => '</tr>'
+    );
+  }
+
+  $form['guests']['table_end'] = array(
+    '#markup' => '</table>'
   );
 
   $form['submit'] = array(
@@ -115,14 +127,13 @@ function arava_registration_meals_submit($form, &$form_state) {
 
   // process the information a bit
   $allergies = $food['allergies'];
-  $other_allergies = array_pop($allergies);
 
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
 
   // save the information
-  $mySemesterAPI->setMealsFoodInfo($allergies, $other_allergies, $food['i_eat_dairy'], $food['i_eat_eggs']);
-  $mySemesterAPI->setMealsPresenceInfo($guests['number'], $guests['days']);
+  $mySemesterAPI->setMealsFoodInfo($allergies, $food['i_eat_dairy'], $food['i_eat_eggs']);
+  $mySemesterAPI->setMealsPresenceInfo($food['meals_presence'], $guests);
 
 	$form_state['redirect'] = array('registration/extra');
 }
