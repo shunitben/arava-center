@@ -126,17 +126,7 @@ ul.menu li a{
 .node-type-course .field-name-body {
     margin-top: 20px;
 }
-.node-type-course .field-name-field-teacher{
-    margin-top:20px;
-    /*border-top:1px solid #acacac;*/
-    float:right;
-}
-.node-type-course .field-name-field-teacher .field-label{
-    float: none;
-}
-.node-type-course .field-name-field-teacher h2{
-    margin-top:0px;
-}
+
 .node-type-course .field-name-field-lesson-days .field-items div{
     display: inline;
     margin-left: 5px;
@@ -147,6 +137,7 @@ ul.menu li a{
     padding-top: 20px;
 }
 /*catalog*/
+
 .page-catalog .view-catalog .item-list{
     border:1px solid #2a68af;
     margin-bottom: 40px;
@@ -188,12 +179,17 @@ ul.menu li a{
     display: inline-block;
 }
 .page-catalog .views-label-field-teacher{
-    float: right;
-    margin-left: 10px;
     font-weight: bold;
+    margin-top:20px;
+    float: right;
 }
-.page-catalog .views-field-field-teacher .field-content{
-    display: inline-block;
+.page-catalog .node-teacher h2{
+    margin-top:0px;
+    float:right;
+    width: 100%;
+}
+.page-catalog .node-teacher h2 a{
+    float: right;
 }
 .page-catalog .views-field-body table{
     margin-bottom: 0px;
