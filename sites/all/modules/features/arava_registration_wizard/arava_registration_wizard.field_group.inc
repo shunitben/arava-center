@@ -130,7 +130,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'קבצים',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_audio_files',
       1 => 'field_pdf_files',
@@ -202,7 +202,8 @@ function arava_registration_wizard_field_group_info() {
       5 => 'field_price',
       6 => 'field_faculty',
       7 => 'field_external_link',
-      8 => 'title',
+      8 => 'field_hide_from_catalog',
+      9 => 'title',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -257,13 +258,12 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'שעורי בית',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_number_of_homework',
       1 => 'field_final_test',
       2 => 'field_number_of_quizzes',
-      3 => 'field_examiners',
-      4 => 'field_num_lessons',
+      3 => 'field_num_lessons',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -276,6 +276,34 @@ function arava_registration_wizard_field_group_info() {
     ),
   );
   $export['group_homework|node|course|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_irrelevant_fields|node|my_semester|form';
+  $field_group->group_name = 'group_irrelevant_fields';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'my_semester';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'שדות לא רלוונטיים',
+    'weight' => '6',
+    'children' => array(
+      0 => 'field_extra_days_present',
+      1 => 'field_extra_guests_num',
+    ),
+    'format_type' => 'tab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-irrelevant-fields field-group-tab',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_irrelevant_fields|node|my_semester|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -321,7 +349,8 @@ function arava_registration_wizard_field_group_info() {
       0 => 'field_days_present',
       1 => 'field_arrival_time',
       2 => 'field_departure_time',
-      3 => 'group_extra_meals',
+      3 => 'field_meals_present',
+      4 => 'field_guests_for_meals',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -346,7 +375,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'מידע נוסף',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_health_declaration',
       1 => 'field_takanon_amuta',
@@ -518,7 +547,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'זמני השיעורים',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_lesson_times_type',
       1 => 'group_accordion',
