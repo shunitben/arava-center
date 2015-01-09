@@ -595,11 +595,14 @@ function _arava_registration_days_of_week_options() {
  */
 function _arava_registration_meals_options() {
   return array(
+    'thursday_lunch' => t('Thursday lunch'),
     'thursday_supper' => t('Thursday supper'),
     'friday_lunch' => t('Friday lunch'),
     'friday_supper' => t('Friday supper'),
     'saturday_lunch' => t('Saturday lunch'),
     'saturday_supper' => t('Saturday supper'),
+    'sunday_lunch' => t('Sunday lunch'),
+    'sunday_supper' => t('Sunday supper'),
   );
 }
 
