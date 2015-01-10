@@ -143,6 +143,7 @@ function arava_admin_views_api() {
   return array(
     'api' => 3,
     'path' => drupal_get_path('module', 'arava_admin') . '/views',
+    'template path' => drupal_get_path('module', 'arava_admin') . '/views/templates',
   );
 }
 
