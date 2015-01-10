@@ -209,7 +209,8 @@ function view_get_link_to_send_emails($view) {
           array('query' => array(
             'view' => $view->name,
             'display' => $view->current_display,
-            'args' => $view->args))
+            'args' => $view->args,
+            'exposed' => $view->exposed_raw_input))
           );
 }
 

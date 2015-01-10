@@ -54,11 +54,12 @@ function arava_admin_send_emails_form($form, &$form_state) {
 }
 
 function _arava_admin_get_emails_from_view() {
-  $view_name = $_GET['view'];
-  $display = $_GET['display'];
-  $args = $_GET['args'];
+  $view_name = !empty($_GET['view']) ? $_GET['view'] : null;
+  $display = !empty($_GET['display']) ? $_GET['display'] : null;
+  $args = !empty($_GET['args']) ? $_GET['args'] : array();
+  $exposed = !empty($_GET['exposed']) ? $_GET['exposed'] : array();
 
-  if (empty($view_name) || empty($display) || empty($args)) {
+  if (empty($view_name) || empty($display)) {
     return array();
   }
 
@@ -69,6 +70,10 @@ function _arava_admin_get_emails_from_view() {
   $pager = $view->display_handler->get_option('pager');
   $pager['type'] = 'none';
   $view->display_handler->set_option('pager', $pager);
+  // exposed input
+  if (!empty($exposed)) {
+    $view->set_exposed_input($exposed);
+  }
   // execute the view
   $view->pre_execute($args);
   $view->execute();
