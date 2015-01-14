@@ -173,6 +173,10 @@ Course selection
 .view-course-selection .all-courses{
     margin-bottom: 10px;
 }
+.view-course-selection .pager li a{
+    color:#f56767!important;
+    font-size: 16px!important;
+}
 /*accommodation*/   
 .view-accomodation-selection{
     width:100%;
