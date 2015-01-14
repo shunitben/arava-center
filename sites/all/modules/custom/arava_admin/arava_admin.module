@@ -30,6 +30,22 @@ function arava_admin_menu() {
     'file' => 'arava_admin.meals.inc'
   );
 
+  $items['admin/admin-meals/people'] = array(
+    'title' => t('Administer Meals - People'),
+    'page callback' => 'arava_admin_meals_people_page',
+    'access arguments' => array('view arava administration reports'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_admin.meals.inc'
+  );
+
+  $items['admin/admin-meals/guests'] = array(
+    'title' => t('Administer Meals - Guests'),
+    'page callback' => 'arava_admin_meals_guests_page',
+    'access arguments' => array('view arava administration reports'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'arava_admin.meals.inc'
+  );
+
   $items['admin/send-emails'] = array(
     'title' => t('Send Emails'),
     'page callback' => 'drupal_get_form',
