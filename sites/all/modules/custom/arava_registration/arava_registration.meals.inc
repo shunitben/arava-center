@@ -89,8 +89,21 @@ function arava_registration_meals($form, &$form_state) {
     );
     for ($i=1; $i<=5; $i++) {
       $form['guests'][$meal . '-' . $i] = array(
-        '#type' => 'textfield',
+        '#type' => 'select',
         '#default_value' => $selected['guests_for_meals'][$meal . '-' . $i],
+        '#options' => array(
+          0 => 0,
+          1 => 1,
+          2 => 2,
+          3 => 3,
+          4 => 4,
+          5 => 5,
+          6 => 6,
+          7 => 7,
+          8 => 8,
+          9 => 9,
+          10 => 10,
+        ),
         '#prefix' => '<td>',
         '#suffix' => '</td>'
       );
