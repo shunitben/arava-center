@@ -289,3 +289,15 @@ function arava_admin_remove_user_form_course($course, $user) {
   $mySemesterAPI->removeCourse($course);
   print json_encode(array('success' => true));
 }
+
+function _arava_admin_get_semester_options() {
+  module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
+  $dbApi = new AravaCenterDbApi();
+  return $dbApi->getAllSemesters();
+}
+
+function _arava_admin_get_default_semester() {
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $MySemesterApi = new MySemesterAPI();
+  return $MySemesterApi->getCurrentSemester(true);
+}

@@ -6,13 +6,16 @@ function gradereg_course_list(){
 	foreach($semester_query as $r){
 		$semesters[$r->nid] = $r->title;
 	}
-	
-	$current_semester = 0;
+
 	if(isset($_GET['semester']) && $_GET['semester']){
 		$current_semester = $_GET['semester'];
-	}else if(arg(3) && is_numeric(arg(3))){
+	}
+  else if(arg(3) && is_numeric(arg(3))){
 		$current_semester = arg(3);
 	}
+  else {
+    $current_semester = _arava_admin_get_default_semester();
+  }
 	
 	$html = '<form action="'.url('admin/people/grade-courses').'" method="get">
 		<div class="form-item"><label>'.t('Semester').'</label><select name="semester">';
@@ -28,18 +31,20 @@ function gradereg_course_list(){
 		<input type="submit" class="form-submit" value="'.t('Search').'">';
 	$html .= '</form>';
 	
-	if($current_semester){
+	if($current_semester && is_numeric($current_semester)){
 		$query = db_select('node', 'node')->extend('PagerDefault');
+    $query->join('field_data_field_semester', 'semester' , 'node.nid = semester.entity_id');
 
 		$query->condition('node.type', 'course');
 		$query->condition('node.status', '1');
+    $query->condition('semester.field_semester_target_id', $current_semester);
 		
 		$query->addField('node', 'nid');
 		$query->addField('node', 'title');
 		
 		$query->orderBy('node.title', 'ASC');
 		
-		$find = $query->limit(20)->execute();
+		$find = $query->limit(50)->execute();
 		$header = array(t('Course'), t('HW Completed'), t('Quiz Completed'), t('Final Test Completed'), '');
 		$rows = array();
 		foreach($find as $r){

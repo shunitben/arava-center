@@ -4,36 +4,38 @@ function gradereg_node_grades_list($node){
 	
 	global $user;
 	
-	$semesters = array();
-	$semester_query = db_query("select * from {node} where type='semester' and status='1' order by created desc");
-	foreach($semester_query as $r){
-		$semesters[$r->nid] = $r->title;
-	}
-	
-	if(isset($_GET['semester']) && $_GET['semester']){
-		$current_semester = $_GET['semester'];
-	}else if(arg(3) && is_numeric(arg(3))){
-		$current_semester = arg(3);
-	}else{
-		$current_semester = db_query("select nid from {node} node
-										left join {field_data_field_semester_dates} field_semester_dates on field_semester_dates.entity_type='node' and field_semester_dates.bundle='semester' and field_semester_dates.revision_id=node.vid
-										where node.type='semester' and node.status='1' and field_semester_dates.field_semester_dates_value<=:now1 and field_semester_dates.field_semester_dates_value2>=:now2 limit 0,1", array(':now1' => time(), ':now2' => time()))->fetchField();
-		$current_semester = $current_semester ? $current_semester : 0;
-	}
-	
-	$html = '<form action="'.url('node/'.$node->nid.'/grades').'" method="get">
-		<div class="form-item"><label>'.t('Semester').'</label><select name="semester">';
-	if(!(isset($semesters[$current_semester]) && $semesters[$current_semester])){
-		$html .= '<option value="">'.t('Select a Semester').'</option>';
-	}
-		
-	foreach($semesters as $nid => $label){
-		$selected = ($nid == $current_semester) ? 'selected="selected"' : '';
-		$html .= '<option value="'.$nid.'" '.$selected.'>'.$label.'</option>';
-	}
-	$html .= '</select></div>
-		<input type="submit" class="form-submit" value="'.t('Search').'">';
-	$html .= '</form>';
+//	$semesters = array();
+//	$semester_query = db_query("select * from {node} where type='semester' and status='1' order by created desc");
+//	foreach($semester_query as $r){
+//		$semesters[$r->nid] = $r->title;
+//	}
+//
+//	if(isset($_GET['semester']) && $_GET['semester']){
+//		$current_semester = $_GET['semester'];
+//	}else if(arg(3) && is_numeric(arg(3))){
+//		$current_semester = arg(3);
+//	}else{
+//		$current_semester = db_query("select nid from {node} node
+//										left join {field_data_field_semester_dates} field_semester_dates on field_semester_dates.entity_type='node' and field_semester_dates.bundle='semester' and field_semester_dates.revision_id=node.vid
+//										where node.type='semester' and node.status='1' and field_semester_dates.field_semester_dates_value<=:now1 and field_semester_dates.field_semester_dates_value2>=:now2 limit 0,1", array(':now1' => time(), ':now2' => time()))->fetchField();
+//		$current_semester = $current_semester ? $current_semester : 0;
+//	}
+//
+//	$html = '<form action="'.url('node/'.$node->nid.'/grades').'" method="get">
+//		<div class="form-item"><label>'.t('Semester').'</label><select name="semester">';
+//	if(!(isset($semesters[$current_semester]) && $semesters[$current_semester])){
+//		$html .= '<option value="">'.t('Select a Semester').'</option>';
+//	}
+//
+//	foreach($semesters as $nid => $label){
+//		$selected = ($nid == $current_semester) ? 'selected="selected"' : '';
+//		$html .= '<option value="'.$nid.'" '.$selected.'>'.$label.'</option>';
+//	}
+//	$html .= '</select></div>
+//		<input type="submit" class="form-submit" value="'.t('Search').'">';
+//	$html .= '</form>';
+
+  $current_semester = $node->field_semester[LANGUAGE_NONE][0]['target_id'];
 	
 	if($current_semester){
 		$query = db_select('node', 'node')->extend('PagerDefault');
@@ -73,7 +75,7 @@ function gradereg_node_grades_list($node){
 			$rows[] = $row;
 		}
 		
-		$html .= theme('table', array('header' => $header, 'rows' => $rows)).theme('pager');
+		$html = theme('table', array('header' => $header, 'rows' => $rows)).theme('pager');
 	}
 
 	return $html;

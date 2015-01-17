@@ -169,18 +169,6 @@ function attendance_choose_lesson($form, $form_state) {
   return $form;
 }
 
-function _arava_admin_get_semester_options() {
-  module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
-  $dbApi = new AravaCenterDbApi();
-  return $dbApi->getAllSemesters();
-}
-
-function _arava_admin_get_default_semester() {
-  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
-  $MySemesterApi = new MySemesterAPI();
-  return $MySemesterApi->getCurrentSemester(true);
-}
-
 function _arava_admin_get_course_options($semester_id) {
   $query = db_select('node', 'node');
   $query->join('field_data_field_semester', 'semester', 'node.nid = semester.entity_id');
