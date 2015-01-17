@@ -25,6 +25,21 @@ class AravaCenterDbApi {
     return !empty($result);
   }
 
+  public function hasStudentAttendedClass($student, $course, $lesson) {
+    $query = db_select('attendance')
+      ->condition('student_uid', $student)
+      ->condition('course_nid', $course)
+      ->condition('lesson_num', $lesson)
+      ->fields('attendance', array('attendance_status'))
+      ->execute()
+      ->fetchAssoc();
+    if (!empty($query['attendance_status']) && (int)$query['attendance_status']) {
+      return true;
+    }
+    return false;
+
+  }
+
   public function getAllSemesters() {
     $result = db_select('node')
       ->condition('node.type', 'semester')

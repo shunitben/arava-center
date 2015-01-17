@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the arava_assignments_feature feature.
+ */
+
+include_once 'arava_assignments_feature.features.inc';

@@ -210,6 +210,9 @@ function arava_registration_wizard_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_course',
+    'field_permissions' => array(
+      'type' => 0,
+    ),
     'foreign keys' => array(
       'node' => array(
         'columns' => array(
@@ -904,11 +907,14 @@ function arava_registration_wizard_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
+        'thursday_lunch' => 'חמישי צהריים',
         'thursday_supper' => 'חמישי ערב',
         'friday_lunch' => 'שישי צהריים',
         'friday_supper' => 'שישי ערב',
         'saturday_lunch' => 'שבת צהריים',
         'saturday_supper' => 'שבת ערב',
+        'sunday_lunch' => 'ראשון צהריים',
+        'sunday_supper' => 'ראשון ערב',
       ),
       'allowed_values_function' => '',
     ),

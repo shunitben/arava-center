@@ -1,0 +1,84 @@
+<?php
+
+
+/**
+ * Implementation of hook_schema().
+ */
+function arava_assignments_schema() {
+
+  $schema['assignment_completion'] = array(
+    'fields' => array(
+      'assignment_completion_id' => array(
+        'type' => 'serial',
+      ),
+      'assignment_id' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'student' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'checker' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'grade' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('assignment_completion_id', 'assignment_id', 'student', 'checker'),
+  );
+
+  $schema['assignment_answers'] = array(
+    'fields' => array(
+      'assignment_completion_id' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'question' => array(
+        'type' => 'varchar',
+        'length' => '100',
+        'not null' => TRUE,
+      ),
+      'answer' => array(
+        'type' => 'blob',
+      ),
+    ),
+    'primary key' => array('assignment_completion_id', 'question'),
+  );
+
+  $schema['assignment_remarks'] = array(
+    'fields' => array(
+      'assignment_completion_id' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'question' => array(
+        'type' => 'varchar',
+        'length' => '100',
+        'not null' => TRUE,
+      ),
+      'remark' => array(
+        'type' => 'blob',
+      ),
+    ),
+    'primary key' => array('assignment_completion_id', 'question'),
+  );
+
+
+  return $schema;
+
+}

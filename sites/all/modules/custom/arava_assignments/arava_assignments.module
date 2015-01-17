@@ -1,0 +1,100 @@
+<?php
+
+
+function arava_assignments_menu() {
+  $items['node/%/assignment/%'] = array(
+    'title callback' => 'arava_assignments_do_assignment_title',
+    'title arguments' => array(3),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_assignments_do_assignment_form'),
+    'file' => 'arava_assignments.do.inc',
+    'type' => MENU_CALLBACK,
+    'access callback' => 'arava_assignments_do_assignment_access',
+    'access arguments' => array(3),
+  );
+
+  return $items;
+}
+
+function arava_assignments_do_assignment_title($nid) {
+  $node = node_load($nid);
+  return $node->title;
+}
+
+function arava_assignments_do_assignment_access($nid) {
+  $node = node_load($nid);
+  $assignment_wrp = entity_metadata_wrapper('node', $node);
+  $type = $assignment_wrp->field_assignment_type->value();
+  $course = $assignment_wrp->field_course->value();
+  $lesson = $assignment_wrp->field_lesson_num->value();
+  global $user;
+
+  // first, is the user signed up to the course?
+  module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
+  $dbAPI = new AravaCenterDbApi();
+  if (!$dbAPI->isUserSignedUpToCourse($user->uid, $course->nid)) {
+    return false;
+  }
+
+  // then, make sure it is allowed:
+  // homework and quizzes - if student was present / made up the class
+  if ($type == 'homework' || $type == 'quiz') {
+    return $dbAPI->hasStudentAttendedClass($user->uid, $course->nid, $lesson);
+  }
+  // tests - if all other assignments are complete
+  // for the time being, we deem an assignment complete if a user began to answer it.
+  else {
+    // find any homework and quizzes for this course, which the user hadn't begun.
+    $query = db_select('node', 'assignments');
+    $query->join('field_data_field_course', 'course_ref', 'assignments.nid = course_ref.entity_id');
+    $query->join('field_data_field_lesson_num', 'lesson_num', 'assignments.nid = lesson_num.entity_id');
+    $query->join('field_data_field_assignment_type', 'type', 'assignments.nid = type.entity_id');
+    $query->leftJoin('assignment_completion', 'assignment_completion', 'course_ref.field_course_target_id = assignment_completion.assignment_id');
+    $query
+      ->condition('assignments.type', 'assignment')
+      ->condition('course_ref.field_course_target_id', $course->nid)
+      ->isNull('assignment_completion.student')
+      ->fields('lesson_num', array('field_lesson_num_value'))
+      ->fields('type', array('field_assignment_type_value'));
+    $results = $query->execute();
+
+    $incomplete = array();
+    foreach ($results as $row) {
+      $incomplete[$row->field_assignment_type_value][] = $row->field_lesson_num_value;
+    }
+    if (empty($incomplete)) {
+      return true;
+    }
+    else {
+      $missing = '';
+      if (!empty($incomplete['homework'])) {
+        $missing .= t('homework for lessons') . ' ' . implode(' ,', $incomplete['homework']) . ', ';
+      }
+      if (!empty($incomplete['quiz'])) {
+        $missing .= t('quizzes for lessons') . ' ' . implode(' ,', $incomplete['quiz']);
+      }
+      drupal_set_message(t('You must complete these before taking the final test:') . ' ' . $missing, 'warning');
+      return false;
+    }
+  }
+}
+
+/**
+ * Helper function for auto-setting an assignment node title
+ * @param $node
+ * @return string
+ */
+function _arava_assignments_assignment_node_title($node) {
+  $node_wrp = entity_metadata_wrapper('node', $node);
+  $course = $node_wrp->field_course->title->value();
+  $assignment_type = $node_wrp->field_assignment_type->value();
+  $lesson_num = $node_wrp->field_lesson_num->value();
+
+  $assignment_type_field_info = field_info_field('field_assignment_type');
+
+  $title = $course . ' - ' . $assignment_type_field_info['settings']['allowed_values'][$assignment_type];
+  if (!empty($lesson_num)) {
+    $title .= ' - ' . $lesson_num;
+  }
+  return $title;
+}
