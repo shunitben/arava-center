@@ -41,6 +41,10 @@ class MySemesterAPI {
 
     if ($my_semester != null) {
       $this->user_semester = entity_metadata_wrapper('node', $my_semester);
+      $semester = $this->user_semester->field_semester->value();
+      if (!empty($semester)) {
+        $this->semester_id = $semester->nid;
+      }
     }
     else {
       $this->getUserSemester($this->semester_id);

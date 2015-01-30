@@ -48,8 +48,8 @@ function arava_assignments_schema() {
         'not null' => TRUE,
       ),
       'question' => array(
-        'type' => 'varchar',
-        'length' => '100',
+        'type' => 'int',
+        'unsigned' => TRUE,
         'not null' => TRUE,
       ),
       'answer' => array(
@@ -67,8 +67,8 @@ function arava_assignments_schema() {
         'not null' => TRUE,
       ),
       'question' => array(
-        'type' => 'varchar',
-        'length' => '100',
+        'type' => 'int',
+        'unsigned' => TRUE,
         'not null' => TRUE,
       ),
       'remark' => array(

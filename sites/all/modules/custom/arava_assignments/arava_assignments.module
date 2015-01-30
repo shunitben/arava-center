@@ -2,15 +2,15 @@
 
 
 function arava_assignments_menu() {
-  $items['node/%/assignment/%'] = array(
+  $items['assignment/%'] = array(
     'title callback' => 'arava_assignments_do_assignment_title',
-    'title arguments' => array(3),
+    'title arguments' => array(1),
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('arava_assignments_do_assignment_form'),
+    'page arguments' => array('arava_assignments_do_assignment_form', 1),
     'file' => 'arava_assignments.do.inc',
     'type' => MENU_CALLBACK,
     'access callback' => 'arava_assignments_do_assignment_access',
-    'access arguments' => array(3),
+    'access arguments' => array(1),
   );
 
   return $items;
@@ -33,35 +33,27 @@ function arava_assignments_do_assignment_access($nid) {
   module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
   $dbAPI = new AravaCenterDbApi();
   if (!$dbAPI->isUserSignedUpToCourse($user->uid, $course->nid)) {
+    drupal_set_message(t('You are not signed up for this course (or did not complete your registration), so you cannot do this assignment'), 'warning');
     return false;
   }
 
   // then, make sure it is allowed:
   // homework and quizzes - if student was present / made up the class
   if ($type == 'homework' || $type == 'quiz') {
-    return $dbAPI->hasStudentAttendedClass($user->uid, $course->nid, $lesson);
+    $attended = $dbAPI->hasStudentAttendedClass($user->uid, $course->nid, $lesson);
+    if (!$attended) {
+      drupal_set_message(t('Our records show that you did not attend or make up this lesson, so you cannot do this assignment'), 'warning');
+    }
+    return $attended;
   }
   // tests - if all other assignments are complete
   // for the time being, we deem an assignment complete if a user began to answer it.
   else {
     // find any homework and quizzes for this course, which the user hadn't begun.
-    $query = db_select('node', 'assignments');
-    $query->join('field_data_field_course', 'course_ref', 'assignments.nid = course_ref.entity_id');
-    $query->join('field_data_field_lesson_num', 'lesson_num', 'assignments.nid = lesson_num.entity_id');
-    $query->join('field_data_field_assignment_type', 'type', 'assignments.nid = type.entity_id');
-    $query->leftJoin('assignment_completion', 'assignment_completion', 'course_ref.field_course_target_id = assignment_completion.assignment_id');
-    $query
-      ->condition('assignments.type', 'assignment')
-      ->condition('course_ref.field_course_target_id', $course->nid)
-      ->isNull('assignment_completion.student')
-      ->fields('lesson_num', array('field_lesson_num_value'))
-      ->fields('type', array('field_assignment_type_value'));
-    $results = $query->execute();
+    module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
+    $assignmentsAPI = new AssignmentsAPI();
+    $incomplete = $assignmentsAPI->incompleteAssignmentsForCourse($course->nid);
 
-    $incomplete = array();
-    foreach ($results as $row) {
-      $incomplete[$row->field_assignment_type_value][] = $row->field_lesson_num_value;
-    }
     if (empty($incomplete)) {
       return true;
     }
