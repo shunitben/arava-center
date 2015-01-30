@@ -47,6 +47,11 @@ function arava_assignments_schema() {
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+      ),
       'question' => array(
         'type' => 'int',
         'unsigned' => TRUE,
@@ -56,7 +61,7 @@ function arava_assignments_schema() {
         'type' => 'blob',
       ),
     ),
-    'primary key' => array('assignment_completion_id', 'question'),
+    'primary key' => array('assignment_completion_id', 'type', 'question'),
   );
 
   $schema['assignment_remarks'] = array(
@@ -64,6 +69,11 @@ function arava_assignments_schema() {
       'assignment_completion_id' => array(
         'type' => 'int',
         'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'type' => 'varchar',
+        'length' => 20,
         'not null' => TRUE,
       ),
       'question' => array(
@@ -75,7 +85,7 @@ function arava_assignments_schema() {
         'type' => 'blob',
       ),
     ),
-    'primary key' => array('assignment_completion_id', 'question'),
+    'primary key' => array('assignment_completion_id', 'type', 'question'),
   );
 
 

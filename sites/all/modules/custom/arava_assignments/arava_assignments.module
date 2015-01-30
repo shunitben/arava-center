@@ -90,3 +90,78 @@ function _arava_assignments_assignment_node_title($node) {
   }
   return $title;
 }
+
+/**
+ * Implements hook_block_info
+ * @return mixed
+ */
+function arava_assignments_block_info() {
+  $blocks['course_assignments'] = array(
+    'info' => t('Course Assignments'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view
+ * @param string $delta
+ * @return mixed
+ */
+function arava_assignments_block_view($delta = '') {
+  switch ($delta) {
+    case 'course_assignments':
+      $block['subject'] = t('Assignments');
+      $block['content'] = _arava_assignments_course_assignments();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Callback for course_assignments block.
+ * This block should be placed on a page where the assignment is the main object.
+ */
+function _arava_assignments_course_assignments() {
+  $course = menu_get_object('node');
+  if (!empty($course) && $course->type == 'course') {
+    module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
+    $assignmentsAPI = new AssignmentsAPI();
+    $assignments = $assignmentsAPI->getAssignmentsListForCourse($course->nid);
+
+    $map = array(
+      'homework' => t('Homework'),
+      'quiz' => t('Quiz'),
+      'finaltest' => t('Final Test'),
+    );
+
+    $rows = array();
+    foreach ($assignments as $key => $values) {
+      $rows[] = array($map[$key], '');
+      foreach ($values as $assignment) {
+        $rows[] = array(
+          l($map[$key] . ' ' . $assignment['lesson_num'], 'assignment/' . $assignment['assignment_id'], array('attributes' => array('target' => '_blank'))),
+          $assignment['completion'] ? t('Started') : t('Not Started'),
+        );
+      }
+    }
+
+    $headers = array(t('Assignment'), '');
+
+    return theme('table', array('header' => $headers, 'rows' => $rows));
+  }
+
+}
+
+function arava_assignments_page_build(&$page) {
+  $node = menu_get_object('node');
+  if (!empty($node) && $node->type == 'course') {
+    $block = module_invoke('arava_assignments', 'block_view', 'course_assignments');
+    $blocks['course_assignments'] = array(
+      'title' => $block['subject'],
+      '#markup' => $block['content'],
+      '#weight' => -10,
+    );
+    $page['content'] = array_merge($page['content'], $blocks);
+  }
+}

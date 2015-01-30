@@ -12,6 +12,7 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
   $node = node_load($nid);
   $node_wrp = entity_metadata_wrapper('node', $node);
   $questions = $node_wrp->field_questions->value();
+  $extras = $node_wrp->field_extra_assignments->value();
 
   module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
   $assignmentsAPI = new AssignmentsAPI();
@@ -22,7 +23,15 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
     $form['question_' . ($key+1)] = array(
       '#type' => 'textarea',
       '#title' => ($key+1) . '. ' . $question,
-      '#default_value' => (!empty($answers) && !empty($answers[$key+1])) ? $answers[$key+1] : null,
+      '#default_value' => (!empty($answers) && !empty($answers['question']) && !empty($answers['question'][$key+1])) ? $answers['question'][$key+1] : null,
+    );
+  }
+
+  foreach ($extras as $key => $extra) {
+    $form['extra_' . ($key+1)] = array(
+      '#type' => 'textarea',
+      '#title' => $extra,
+      '#default_value' => (!empty($answers) && !empty($answers['extra']) && !empty($answers['extra'][$key+1])) ? $answers['extra'][$key+1] : null,
     );
   }
 
@@ -64,7 +73,16 @@ function arava_assignments_do_assignment_form_submit($form, &$form_state) {
     if (strpos($key, 'question_') === 0) {
       $parts = explode('_', $key);
       $question = $parts[1];
-      $assignmentsAPI->setAnswerForAssignment($assignment_completion_id, $question, $value);
+      $assignmentsAPI->setAnswerForAssignment($assignment_completion_id, 'question', $question, $value);
+    }
+  }
+
+  // extra assignments
+  foreach ($form_state['values'] as $key => $value) {
+    if (strpos($key, 'extra_') === 0) {
+      $parts = explode('_', $key);
+      $question = $parts[1];
+      $assignmentsAPI->setAnswerForAssignment($assignment_completion_id, 'extra', $question, $value);
     }
   }
 
