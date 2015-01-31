@@ -162,12 +162,14 @@ class AssignmentsAPI {
   function getAssignmentsListForCourse($course_nid) {
     global $user;
     $query = db_select('node', 'assignments');
+    $query->join('field_data_field_available', 'available', 'assignments.nid = available.entity_id');
     $query->join('field_data_field_course', 'course_ref', 'assignments.nid = course_ref.entity_id');
     $query->leftJoin('field_data_field_lesson_num', 'lesson_num', 'assignments.nid = lesson_num.entity_id');
     $query->join('field_data_field_assignment_type', 'type', 'assignments.nid = type.entity_id');
     $query->leftJoin('assignment_completion', 'assignment_completion', 'assignments.nid = assignment_completion.assignment_id AND assignment_completion.student = ' . $user->uid);
     $query->join('attendance', 'attendance', 'attendance.student_uid = ' . $user->uid . ' AND attendance.course_nid = course_ref.field_course_target_id');
     $query
+      ->condition('available.field_available_value', '1')
       ->condition('assignments.type', 'assignment')
       ->condition('course_ref.field_course_target_id', $course_nid)
       ->condition('course_ref.bundle', 'assignment')

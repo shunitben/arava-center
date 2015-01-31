@@ -252,3 +252,11 @@ div#admin-toolbar div.admin-tab {
 #admin-toolbar ul.menu li a {
     height: 21px !important;
 }
+
+/**
+* Assignments
+**/
+
+#arava-assignments-do-assignment-form .field-suffix{
+color: #AD1818;
+}
