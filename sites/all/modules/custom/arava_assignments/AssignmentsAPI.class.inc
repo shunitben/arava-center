@@ -6,20 +6,26 @@ class AssignmentsAPI {
    * @param $assignment_id
    * @return array
    */
-  function getCompletionDataForAssignment($assignment_id) {
+  function getCompletionDataForAssignment($assignment_id, $assignment_completion_id = null) {
     global $user;
 
-    $data = db_select('assignment_completion')
+    $query = db_select('assignment_completion')
       ->condition('assignment_id', $assignment_id)
-      ->condition('student', $user->uid)
-      ->fields('assignment_completion', array('assignment_completion_id', 'checker', 'grade'))
-      ->execute()
+      ->fields('assignment_completion', array('assignment_completion_id', 'checker', 'grade'));
+    if ($assignment_completion_id) {
+      $query->condition('assignment_completion_id', $assignment_completion_id);
+    }
+    else {
+      $query->condition('student', $user->uid);
+    }
+    $data = $query->execute()
       ->fetchAssoc();
 
     $answers = empty($data) ? array() : $this->getAnswersForAssignment($data['assignment_completion_id']);
     $remarks = empty($data) ? array() : $this->getRemarksForAssignment($data['assignment_completion_id']);
 
     return array(
+      'assignment_completion_id' => $data['assignment_completion_id'],
       'checker' => empty($data) ? null : $data['checker'],
       'grade' => empty($data) ? null : $data['grade'],
       'answers' => $answers,
@@ -54,7 +60,7 @@ class AssignmentsAPI {
       ->execute();
     $data = array();
     foreach ($result as $row) {
-      $data[$row->type][$row->question] = $row->answer;
+      $data[$row->type][$row->question] = $row->remark;
     }
     return $data;
   }
@@ -64,7 +70,7 @@ class AssignmentsAPI {
    * @param null $checker
    * @return DatabaseStatementInterface|int|null
    */
-  function setCompletionDataForAssignment($assignment_id, $checker = null) {
+  function setAnswersCompletionDataForAssignment($assignment_id, $checker = null) {
     global $user;
 
     // see if the student has already begun this assignment
@@ -94,6 +100,17 @@ class AssignmentsAPI {
         ))
         ->execute();
     }
+  }
+
+  function setRemarksCompletionDataForAssignment($assignment_completion_id, $grade) {
+    if (empty($grade)) $grade = 0;
+
+    db_update('assignment_completion')
+      ->condition('assignment_completion_id', $assignment_completion_id)
+      ->fields(array(
+        'grade' => $grade,
+      ))
+      ->execute();
   }
 
   /**
@@ -149,10 +166,12 @@ class AssignmentsAPI {
     $query->leftJoin('field_data_field_lesson_num', 'lesson_num', 'assignments.nid = lesson_num.entity_id');
     $query->join('field_data_field_assignment_type', 'type', 'assignments.nid = type.entity_id');
     $query->leftJoin('assignment_completion', 'assignment_completion', 'assignments.nid = assignment_completion.assignment_id AND assignment_completion.student = ' . $user->uid);
+    $query->join('attendance', 'attendance', 'attendance.student_uid = ' . $user->uid . ' AND attendance.course_nid = course_ref.field_course_target_id');
     $query
       ->condition('assignments.type', 'assignment')
       ->condition('course_ref.field_course_target_id', $course_nid)
       ->condition('course_ref.bundle', 'assignment')
+      ->condition('attendance.attendance_status', array(1,2), 'IN')
       ->fields('assignments', array('nid'))
       ->fields('lesson_num', array('field_lesson_num_value'))
       ->fields('type', array('field_assignment_type_value'))
@@ -200,5 +219,41 @@ class AssignmentsAPI {
       $incomplete[$row->field_assignment_type_value][] = $row->field_lesson_num_value;
     }
     return $incomplete;
+  }
+
+  /**
+   * Get all assignments that the student has been assigned to check
+   * @return array
+   */
+  function getAssignmentsToCheck() {
+    global $user;
+
+    $query = db_select('assignment_completion', 'ac');
+    $query->join('node', 'assignment', 'ac.assignment_id = assignment.nid');
+    $query->leftJoin('field_data_field_lesson_num', 'lesson_num', 'assignment.nid = lesson_num.entity_id');
+    $query->join('field_data_field_course', 'course_ref', 'assignment.nid = course_ref.entity_id');
+    $query->join('node', 'course', 'course_ref.field_course_target_id = course.nid');
+    $query->join('field_data_field_assignment_type', 'type', 'assignment.nid = type.entity_id');
+    $query
+      ->condition('ac.checker', $user->uid)
+      ->condition('ac.grade', 0)
+      ->condition('course_ref.bundle', 'assignment')
+      ->fields('course', array('title', 'nid'))
+      ->fields('ac', array('assignment_completion_id'))
+      ->fields('assignment', array('nid'))
+      ->fields('lesson_num', array('field_lesson_num_value'))
+      ->fields('type', array('field_assignment_type_value'));
+    $results = $query->execute();
+
+    $assignments = array();
+    foreach ($results as $row) {
+      $assignments[$row->nid][$row->field_assignment_type_value][$row->field_lesson_num_value] = array(
+        'assignment_id' => $row->assignment_nid,
+        'assignment_completion_id' => $row->assignment_completion_id,
+        'lesson_num' => $row->field_lesson_num_value,
+        'course_name' => $row->title,
+      );
+    }
+    return $assignments;
   }
 }

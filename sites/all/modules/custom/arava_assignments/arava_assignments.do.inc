@@ -9,6 +9,12 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
 
   $form = array();
 
+  $form['intro'] = array(
+    '#markup' => t('If you are going to take a break in the middle of doing your assignment, please save it before you go,
+                    so that you don\'t loose your answers.<br>
+                    You can save as many times as you like.')
+  );
+
   $node = node_load($nid);
   $node_wrp = entity_metadata_wrapper('node', $node);
   $questions = $node_wrp->field_questions->value();
@@ -51,9 +57,17 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
     '#value' => $nid,
   );
 
-  $form['submit'] = array(
+  $form['submit_save'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
+    '#submit' => array('arava_assignments_do_assignment_form_submit'),
+  );
+
+  $form['submit_send_link'] = array(
+    '#type' => 'submit',
+    '#value' => t('Send link to checker'),
+    '#submit' => array('arava_assignments_send_link_to_checker_submit'),
+    '#validate' => array('arava_assignments_send_link_to_checker_validate')
   );
 
   return $form;
@@ -66,7 +80,7 @@ function arava_assignments_do_assignment_form_submit($form, &$form_state) {
 
   module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
   $assignmentsAPI = new AssignmentsAPI();
-  $assignment_completion_id = $assignmentsAPI->setCompletionDataForAssignment($assignment_id, $checker);
+  $assignment_completion_id = $assignmentsAPI->setAnswersCompletionDataForAssignment($assignment_id, $checker);
 
   // questions
   foreach ($form_state['values'] as $key => $value) {
@@ -86,4 +100,48 @@ function arava_assignments_do_assignment_form_submit($form, &$form_state) {
     }
   }
 
+}
+
+function arava_assignments_send_link_to_checker_submit($form, &$form_state) {
+
+  // trigger the normal submit first:
+  arava_assignments_do_assignment_form_submit($form, $form_state);
+
+  $assignment_id = $form_state['values']['assignment_id'];
+  $assignment = node_load($assignment_id);
+
+  $assignmentsAPI = new AssignmentsAPI();
+  $assignment_completion = $assignmentsAPI->getCompletionDataForAssignment($assignment_id);
+
+  $checker = user_load($form_state['values']['checker']);
+  global $user;
+  $user = user_load($user->uid);
+  $checker_name = $checker->field_user_name[LANGUAGE_NONE][0]['value'];
+  $link = url('assignment/' . $assignment_id . '/check/' . $assignment_completion['assignment_completion_id'], array('absolute' => true));
+  $params = array(
+    'checker_name' => $checker_name,
+    'doer_name' => $user->field_user_name[LANGUAGE_NONE][0]['value'],
+    'assignment_name' => $assignment->title,
+    'assignment_link' => $link,
+  );
+  $result = drupal_mail('arava_assignments', 'check_assignment_link', $checker->mail, 'en', $params);
+  if ($result['result']) {
+    drupal_set_message(t('An email was sent to @name', array('@name' => $checker_name)), 'status');
+  }
+  else {
+    drupal_set_message(t('There was a problem sending the email to @name. Please try again, or send them this link: @link',
+      array(
+        '@name' => $checker_name,
+        '@link' => $link,
+      )),
+      'error');
+
+  }
+
+}
+
+function arava_assignments_send_link_to_checker_validate($form, &$form_state) {
+  if ($form_state['values']['checker'] == 0) {
+    form_set_error('checker', t('Please choose who is going to check your assignment before sending them a link.'));
+  }
 }

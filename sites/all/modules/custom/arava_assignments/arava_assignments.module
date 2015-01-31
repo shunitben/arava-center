@@ -13,6 +13,25 @@ function arava_assignments_menu() {
     'access arguments' => array(1),
   );
 
+  $items['assignment/%/check/%'] = array(
+    'title callback' => 'arava_assignments_do_assignment_title',
+    'title arguments' => array(1),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arava_assignments_check_assignment_form', 1, 3),
+    'file' => 'arava_assignments.check.inc',
+    'type' => MENU_CALLBACK,
+    'access callback' => 'arava_assignments_check_assignment_access',
+    'access arguments' => array(1,3),
+  );
+
+  $items['assignments/check'] = array(
+    'title' => t('Assignments to check'),
+    'page callback' => '_arava_assignments_assignments_to_check',
+    'type' => MENU_CALLBACK,
+    // the check that the student is signed up to the course happens in the "do assignment" phase
+    'access arguments' => array('signup to courses and accommodation'),
+  );
+
   return $items;
 }
 
@@ -69,6 +88,26 @@ function arava_assignments_do_assignment_access($nid) {
       return false;
     }
   }
+}
+
+/**
+ * Checks that a user was indeed requested to check an assignment for another user
+ * @param $nid
+ * @param $assignment_completion_id
+ */
+function arava_assignments_check_assignment_access($nid, $assignment_completion_id) {
+  global $user;
+  $assignment_completion = db_select('assignment_completion', 'ac')
+    ->condition('ac.assignment_completion_id', $assignment_completion_id)
+    ->fields('ac', array('assignment_id', 'checker'))
+    ->execute()
+    ->fetchAssoc();
+  if (!empty($assignment_completion)) {
+    if ($assignment_completion['assignment_id'] == $nid && $assignment_completion['checker'] = $user->uid) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -129,30 +168,71 @@ function _arava_assignments_course_assignments() {
     $assignmentsAPI = new AssignmentsAPI();
     $assignments = $assignmentsAPI->getAssignmentsListForCourse($course->nid);
 
-    $map = array(
-      'homework' => t('Homework'),
-      'quiz' => t('Quiz'),
-      'finaltest' => t('Final Test'),
-    );
+    if (!empty($assignments)) {
+      $map = array(
+        'homework' => t('Homework'),
+        'quiz' => t('Quiz'),
+        'finaltest' => t('Final Test'),
+      );
 
-    $rows = array();
-    foreach ($assignments as $key => $values) {
-      $rows[] = array($map[$key], '');
-      foreach ($values as $assignment) {
-        $rows[] = array(
-          l($map[$key] . ' ' . $assignment['lesson_num'], 'assignment/' . $assignment['assignment_id'], array('attributes' => array('target' => '_blank'))),
-          $assignment['completion'] ? t('Started') : t('Not Started'),
-        );
+      $rows = array();
+      foreach ($assignments as $key => $values) {
+        $rows[] = array($map[$key], '');
+        foreach ($values as $assignment) {
+          $rows[] = array(
+            l($map[$key] . ' ' . $assignment['lesson_num'], 'assignment/' . $assignment['assignment_id'], array('attributes' => array('target' => '_blank'))),
+            $assignment['completion'] ? t('Started') : t('Not Started'),
+          );
+        }
       }
+
+      $headers = array(t('Assignments'), '');
+
+      return theme('table', array('header' => $headers, 'rows' => $rows));
     }
-
-    $headers = array(t('Assignment'), '');
-
-    return theme('table', array('header' => $headers, 'rows' => $rows));
+    return null;
   }
 
 }
 
+/**
+ * Callback for assignments to check list
+ */
+function _arava_assignments_assignments_to_check() {
+
+  module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
+  $assignmentsAPI = new AssignmentsAPI();
+  $to_check = $assignmentsAPI->getAssignmentsToCheck();
+
+  $map = array(
+    'homework' => t('Homework'),
+    'quiz' => t('Quiz'),
+    'finaltest' => t('Final Test'),
+  );
+
+  $rows = array();
+  foreach ($to_check as $types) {
+    foreach ($types as $key => $values) {
+      foreach ($values as $assignment) {
+        $rows[] = array(
+          $assignment['course_name'],
+          l($map[$key] . ' ' . $assignment['lesson_num'], 'assignment/' . $assignment['assignment_id'] . '/check/' . $assignment['assignment_completion_id'],
+            array('attributes' => array('target' => '_blank'))),
+        );
+      }
+    }
+  }
+
+  $headers = array(t('Course'), t('Assignment'));
+
+  return theme('table', array('header' => $headers, 'rows' => $rows));
+
+}
+
+/**
+ * Implements hook_page_build
+ * @param $page
+ */
 function arava_assignments_page_build(&$page) {
   $node = menu_get_object('node');
   if (!empty($node) && $node->type == 'course') {
@@ -163,5 +243,24 @@ function arava_assignments_page_build(&$page) {
       '#weight' => -10,
     );
     $page['content'] = array_merge($page['content'], $blocks);
+  }
+}
+
+function arava_assignments_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'check_assignment_link':
+      $message['subject'] = t('Please check my assignment');
+
+      $message['body'][] = '<div style="direction:rtl; text-align: right">';
+      $message['body'][] = t('Dear @name', array('@name' => $params['checker_name'])) . '<br><br>';
+      $message['body'][] = t('Please login to the site at:') . '<br><br>';
+      $message['body'][] = url('user', array('absolute' => true)) . '<br><br>';
+      $message['body'][] = t('and then click this link to check my assignment:') . '<br><br>';
+      $message['body'][] = $params['assignment_name'] . '<br><br>';
+      $message['body'][] = $params['assignment_link'] . '<br><br>';
+      $message['body'][] = t('Thank you :)') . '<br>';
+      $message['body'][] = $params['doer_name'];
+      $message['body'][] = '</div>';
+      break;
   }
 }
