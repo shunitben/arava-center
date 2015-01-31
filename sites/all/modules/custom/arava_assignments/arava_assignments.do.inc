@@ -24,12 +24,20 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
   $assignmentsAPI = new AssignmentsAPI();
   $completion_data = $assignmentsAPI->getCompletionDataForAssignment($nid);
   $answers = $completion_data['answers'];
+  $remarks = $completion_data['remarks'];
+
+  if (!empty($completion_data['grade'])) {
+    $form['grade'] = array(
+      '#markup' => '<br><br><div class="field-suffix">' . t('Grade') . ': ' . $completion_data['grade'] . '</div>',
+    );
+  }
 
   foreach ($questions as $key => $question) {
     $form['question_' . ($key+1)] = array(
       '#type' => 'textarea',
       '#title' => ($key+1) . '. ' . $question,
       '#default_value' => (!empty($answers) && !empty($answers['question']) && !empty($answers['question'][$key+1])) ? $answers['question'][$key+1] : null,
+      '#field_suffix' => (!empty($remarks) && !empty($remarks['question']) && !empty($remarks['question'][$key+1])) ? $remarks['question'][$key+1] : null,
     );
   }
 
@@ -38,6 +46,7 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
       '#type' => 'textarea',
       '#title' => $extra,
       '#default_value' => (!empty($answers) && !empty($answers['extra']) && !empty($answers['extra'][$key+1])) ? $answers['extra'][$key+1] : null,
+      '#field_suffix' => (!empty($remarks) && !empty($remarks['extra']) && !empty($remarks['extra'][$key+1])) ? $remarks['extra'][$key+1] : null,
     );
   }
 

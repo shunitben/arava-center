@@ -238,7 +238,6 @@ function arava_assignments_page_build(&$page) {
   if (!empty($node) && $node->type == 'course') {
     $block = module_invoke('arava_assignments', 'block_view', 'course_assignments');
     $blocks['course_assignments'] = array(
-      'title' => $block['subject'],
       '#markup' => $block['content'],
       '#weight' => -10,
     );

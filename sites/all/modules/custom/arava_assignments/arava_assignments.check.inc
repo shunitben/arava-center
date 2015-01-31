@@ -48,6 +48,7 @@ function arava_assignments_check_assignment_form($form, &$form_state, $nid, $ass
     '#type' => 'textfield',
     '#title' => t('Grade'),
     '#default_value' => $completion_data['grade'],
+    '#description' => t('At the moment, you also need to input the grades in the grades system.'),
   );
 
   $form['assignment_id'] = array(
