@@ -1071,6 +1071,124 @@ _arava_registration_print_lesson_times($data);
   $export['course_selection'] = $view;
 
   $view = new view();
+  $view->name = 'files_for_course';
+  $view->description = '';
+  $view->tag = 'default';
+  $view->base_table = 'field_collection_item';
+  $view->human_name = 'Files for course';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Files for course';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'table';
+  /* Header: Global: PHP */
+  $handler->display->display_options['header']['php']['id'] = 'php';
+  $handler->display->display_options['header']['php']['table'] = 'views';
+  $handler->display->display_options['header']['php']['field'] = 'php';
+  $handler->display->display_options['header']['php']['php_output'] = '<?php
+print _arava_center_files_title($view);
+?>';
+  /* Relationship: Field collection item: Entity with the חומרי קריאה ותרגול (field_pdf_files_comp) */
+  $handler->display->display_options['relationships']['field_pdf_files_comp_node']['id'] = 'field_pdf_files_comp_node';
+  $handler->display->display_options['relationships']['field_pdf_files_comp_node']['table'] = 'field_collection_item';
+  $handler->display->display_options['relationships']['field_pdf_files_comp_node']['field'] = 'field_pdf_files_comp_node';
+  $handler->display->display_options['relationships']['field_pdf_files_comp_node']['label'] = 'node';
+  $handler->display->display_options['relationships']['field_pdf_files_comp_node']['required'] = TRUE;
+  /* Field: Field collection item: קובץ */
+  $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
+  $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
+  $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
+  $handler->display->display_options['fields']['field_file']['label'] = '';
+  $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
+  /* Field: Field collection item: טקסט נוסף */
+  $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
+  $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
+  $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
+  $handler->display->display_options['fields']['field_description']['label'] = '';
+  $handler->display->display_options['fields']['field_description']['element_label_colon'] = FALSE;
+  /* Field: file date */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'file date';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+print _arava_center_get_file_date($data);
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: file size */
+  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['fields']['php_1']['table'] = 'views';
+  $handler->display->display_options['fields']['php_1']['field'] = 'php';
+  $handler->display->display_options['fields']['php_1']['ui_name'] = 'file size';
+  $handler->display->display_options['fields']['php_1']['label'] = '';
+  $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
+print _arava_center_get_file_size($data);
+?>';
+  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
+  /* Contextual filter: Field collection item: Field name */
+  $handler->display->display_options['arguments']['field_name']['id'] = 'field_name';
+  $handler->display->display_options['arguments']['field_name']['table'] = 'field_collection_item';
+  $handler->display->display_options['arguments']['field_name']['field'] = 'field_name';
+  $handler->display->display_options['arguments']['field_name']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_name']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_name']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_name']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_name']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_name']['limit'] = '0';
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'field_pdf_files_comp_node';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Global: Null */
+  $handler->display->display_options['arguments']['null']['id'] = 'null';
+  $handler->display->display_options['arguments']['null']['table'] = 'views';
+  $handler->display->display_options['arguments']['null']['field'] = 'null';
+  $handler->display->display_options['arguments']['null']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['null']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['null']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['null']['summary_options']['items_per_page'] = '25';
+
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block');
+  $translatables['files_for_course'] = array(
+    t('Master'),
+    t('Files for course'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('node'),
+    t('All'),
+    t('Block'),
+  );
+  $export['files_for_course'] = $view;
+
+  $view = new view();
   $view->name = 'registration_summary';
   $view->description = '';
   $view->tag = 'default';
