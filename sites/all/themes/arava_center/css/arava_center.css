@@ -85,6 +85,53 @@ ul.menu li a{
     text-align: right;
 }
 
+#header-top ul.sf-menu li .nolink:after {
+    line-height: 19px;
+}
+#header-top ul.sf-menu li .nolink:after {
+    content: "\f107";
+    font-family: "FontAwesome";
+    font-size: 12px;
+    line-height: 20px;
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    cursor: pointer;
+}
+#header-top .sf-menu  .nolink {
+    padding-right: 47px!important;
+    cursor: default;
+}
+#header-top ul.menu li .nolink {
+    border-left: 1px solid #215999;
+}
+#header-top ul.menu li .nolink {
+    border-bottom: 4px solid transparent;
+    border-left: 1px solid #363636;
+    color: #fff;
+    font-size: 16px;
+    padding: 16px 30px;
+    text-decoration: none;
+}
+ul.menu li .nolink {
+    text-align: right;
+    display: block;
+    line-height: 150%;
+    padding: 7px 0 8px 25px;
+}
+.header-top-area .nolink {
+    color: #fff;
+    text-decoration: underline;
+}
+.sf-menu .nolink {
+    display: block;
+    position: relative;
+}
+
+
+
+
+
 /* hello user */
 .hello-user {
     display: inline-block;
