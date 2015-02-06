@@ -113,8 +113,7 @@ function gradereg_course_export($node){
 	$query->join('users', 'users', "users.uid = field_user.field_user_target_id");
 	$query->join('field_data_field_user_name', 'field_user_name', "field_user_name.entity_type='user' and field_user_name.bundle='user' and field_user_name.entity_id=users.uid");
 	$query->leftJoin('grades_data', 'grades_data', "grades_data.nid=field_course.field_course_target_id and grades_data.uid=users.uid");
-	//$query->leftJoin('field_data_field_user_name', 'examiner_field_user_name', "examiner_field_user_name.entity_type='user' and examiner_field_user_name.bundle='user' and examiner_field_user_name.entity_id=grades_data.examiner_uid");
-	
+
 	$query->condition('node.type', 'my_semester');
 	$query->condition('node.status', '1');
 	$query->condition('field_semester.field_semester_target_id', $current_semester);
@@ -122,17 +121,13 @@ function gradereg_course_export($node){
 	$query->condition('field_course.field_course_target_id', $node->nid);
 	
 	$query->addField('users', 'uid');
+	$query->addField('users', 'mail');
 	$query->addField('field_user_name', 'field_user_name_value');
-	//$query->addField('grades_data', 'created');
-	//$query->addField('grades_data', 'examiner_uid', 'examiner_uid');
-	//$query->addField('examiner_field_user_name', 'field_user_name_value', 'examiner_name');
-	
+
 	$query->orderBy('field_user_name.field_user_name_value', 'ASC');
 	$find = $query->execute();
 	
-	//$filename = variable_get('file_temporary_path', '').'/'.time().'-'.rand(1, 1000).'.csv';
-	//$fp = fopen($filename, 'w');
-	$header = array(t('Student'));
+	$header = array(t('Student'), t('Student email'));
 	
 	$hm_num = (isset($node->field_number_of_homework['und'][0]['value']) && $node->field_number_of_homework['und'][0]['value'] > 0) ? $node->field_number_of_homework['und'][0]['value'] : 0;
 	$quiz_num = (isset($node->field_number_of_quizzes['und'][0]['value']) && $node->field_number_of_quizzes['und'][0]['value'] > 0) ? $node->field_number_of_quizzes['und'][0]['value'] : 0;
@@ -158,8 +153,7 @@ function gradereg_course_export($node){
 	foreach($find as $r){
 		$row = array(
 			$r->field_user_name_value,
-			//$r->examiner_name,
-			//$r->created ? date('Y-m-d h:i:s', $r->created) : '',
+      $r->mail,
 		);
 		
 		$grade = array();
