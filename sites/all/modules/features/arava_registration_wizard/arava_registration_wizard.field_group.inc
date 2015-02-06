@@ -136,8 +136,8 @@ function arava_registration_wizard_field_group_info() {
       1 => 'field_pdf_files',
       2 => 'field_files_restricted',
       3 => 'field_pdf_files_comp',
-      4 => 'field_field_audio_files_comp',
-      5 => 'field_field_tamlil_files_comp',
+      4 => 'field_audio_files_comp',
+      5 => 'field_tamlil_files_comp',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

@@ -236,20 +236,12 @@ function _arava_center_course_files() {
       }
     }
     // get the file tables
-    $output = _arava_center_get_course_files_view('field_pdf_files_comp', $node->nid, t('Text Files'));
-    $output .= _arava_center_get_course_files_view('field_audio_files_comp', $node->nid, t('Audio Files'));
-    $output .= _arava_center_get_course_files_view('field_tamlil_files_comp', $node->nid, t('Tamlil Files'));
+
+    $output = _arava_registration_generate_view('files_for_course', 'block', array($node->nid));
+    $output .= _arava_registration_generate_view('files_for_course', 'block_1', array($node->nid));
+    $output .= _arava_registration_generate_view('files_for_course', 'block_2', array($node->nid));
     return $output;
   }
-}
-
-function _arava_center_get_course_files_view($field, $nid, $title) {
-  $args = array($field, $nid, $title);
-  return _arava_registration_generate_view('files_for_course', 'block', $args);
-}
-
-function _arava_center_files_title($view) {
-  return $view->args[2];
 }
 
 function _arava_center_get_file_date($data) {

@@ -10,9 +10,9 @@
 function arava_registration_wizard_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'field_collection_item-field_field_audio_files_comp-field_description'
-  $field_instances['field_collection_item-field_field_audio_files_comp-field_description'] = array(
-    'bundle' => 'field_field_audio_files_comp',
+  // Exported field_instance: 'field_collection_item-field_audio_files_comp-field_description'
+  $field_instances['field_collection_item-field_audio_files_comp-field_description'] = array(
+    'bundle' => 'field_audio_files_comp',
     'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
@@ -44,9 +44,9 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'field_collection_item-field_field_audio_files_comp-field_file'
-  $field_instances['field_collection_item-field_field_audio_files_comp-field_file'] = array(
-    'bundle' => 'field_field_audio_files_comp',
+  // Exported field_instance: 'field_collection_item-field_audio_files_comp-field_file'
+  $field_instances['field_collection_item-field_audio_files_comp-field_file'] = array(
+    'bundle' => 'field_audio_files_comp',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -66,76 +66,6 @@ function arava_registration_wizard_field_default_field_instances() {
       'description_field' => 1,
       'file_directory' => 'audio_files',
       'file_extensions' => 'mp3 wav',
-      'max_filesize' => '50MB',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'file',
-      'settings' => array(
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'file_generic',
-      'weight' => 2,
-    ),
-  );
-
-  // Exported field_instance: 'field_collection_item-field_field_tamlil_files_comp-field_description'
-  $field_instances['field_collection_item-field_field_tamlil_files_comp-field_description'] = array(
-    'bundle' => 'field_field_tamlil_files_comp',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1,
-      ),
-    ),
-    'entity_type' => 'field_collection_item',
-    'field_name' => 'field_description',
-    'label' => 'טקסט נוסף',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 4,
-    ),
-  );
-
-  // Exported field_instance: 'field_collection_item-field_field_tamlil_files_comp-field_file'
-  $field_instances['field_collection_item-field_field_tamlil_files_comp-field_file'] = array(
-    'bundle' => 'field_field_tamlil_files_comp',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'file',
-        'settings' => array(),
-        'type' => 'file_default',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'field_collection_item',
-    'field_name' => 'field_file',
-    'label' => 'קובץ',
-    'required' => 0,
-    'settings' => array(
-      'description_field' => 1,
-      'file_directory' => 'pdf_files',
-      'file_extensions' => 'pdf doc docx',
       'max_filesize' => '50MB',
       'user_register_form' => FALSE,
     ),
@@ -290,6 +220,76 @@ function arava_registration_wizard_field_default_field_instances() {
       ),
       'type' => 'file_generic',
       'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_tamlil_files_comp-field_description'
+  $field_instances['field_collection_item-field_tamlil_files_comp-field_description'] = array(
+    'bundle' => 'field_tamlil_files_comp',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_description',
+    'label' => 'טקסט נוסף',
+    'required' => 0,
+    'settings' => array(
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_tamlil_files_comp-field_file'
+  $field_instances['field_collection_item-field_tamlil_files_comp-field_file'] = array(
+    'bundle' => 'field_tamlil_files_comp',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_file',
+    'label' => 'קובץ',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 1,
+      'file_directory' => 'pdf_files',
+      'file_extensions' => 'pdf doc docx',
+      'max_filesize' => '50MB',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'file',
+      'settings' => array(
+        'progress_indicator' => 'throbber',
+      ),
+      'type' => 'file_generic',
+      'weight' => 2,
     ),
   );
 
@@ -705,6 +705,42 @@ function arava_registration_wizard_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-course-field_audio_files_comp'
+  $field_instances['node-course-field_audio_files_comp'] = array(
+    'bundle' => 'course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 11,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_audio_files_comp',
+    'label' => 'הקלטות',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 24,
+    ),
+  );
+
   // Exported field_instance: 'node-course-field_classroom'
   $field_instances['node-course-field_classroom'] = array(
     'bundle' => 'course',
@@ -833,78 +869,6 @@ function arava_registration_wizard_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 9,
-    ),
-  );
-
-  // Exported field_instance: 'node-course-field_field_audio_files_comp'
-  $field_instances['node-course-field_field_audio_files_comp'] = array(
-    'bundle' => 'course',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 11,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_field_audio_files_comp',
-    'label' => 'הקלטות',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'field_collection',
-      'settings' => array(),
-      'type' => 'field_collection_embed',
-      'weight' => 24,
-    ),
-  );
-
-  // Exported field_instance: 'node-course-field_field_tamlil_files_comp'
-  $field_instances['node-course-field_field_tamlil_files_comp'] = array(
-    'bundle' => 'course',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 10,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_field_tamlil_files_comp',
-    'label' => 'תמלילי שיעור',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'field_collection',
-      'settings' => array(),
-      'type' => 'field_collection_embed',
-      'weight' => 25,
     ),
   );
 
@@ -1587,6 +1551,42 @@ function arava_registration_wizard_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'node-course-field_tamlil_files_comp'
+  $field_instances['node-course-field_tamlil_files_comp'] = array(
+    'bundle' => 'course',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 10,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_tamlil_files_comp',
+    'label' => 'תמלילי שיעור',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 25,
     ),
   );
 
