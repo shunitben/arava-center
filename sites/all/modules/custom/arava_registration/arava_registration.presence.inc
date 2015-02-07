@@ -50,7 +50,7 @@ function arava_registration_presence($form, &$form_state) {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Submit'),
+    '#value' => t('Continue'),
   );
 
   return $form;

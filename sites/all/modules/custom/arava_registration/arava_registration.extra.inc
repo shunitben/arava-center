@@ -46,7 +46,7 @@ function arava_registration_extra($form, &$form_state) {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Submit'),
+    '#value' => t('Continue'),
   );
 
   return $form;

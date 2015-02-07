@@ -68,7 +68,7 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
 
   $form['submit_save'] = array(
     '#type' => 'submit',
-    '#value' => t('Save'),
+    '#value' => t('Save without sending link'),
     '#submit' => array('arava_assignments_do_assignment_form_submit'),
   );
 
