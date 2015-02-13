@@ -290,7 +290,7 @@ class AssignmentsAPI {
       $lesson_num = $row->field_lesson_num_value;
       $assignment_type = $row->field_assignment_type_value;
       $student = $row->student;
-      $done[$lesson_num][$assignment_type] = $student;
+      $done[$lesson_num][$assignment_type][] = $student;
     }
     return $done;
   }
