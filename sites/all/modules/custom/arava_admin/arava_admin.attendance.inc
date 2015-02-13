@@ -226,20 +226,11 @@ function _arava_admin_get_attendance_list_for_lesson($course, $lesson) {
   $select_all = count($attendance) == 0;
 
 
-  // we already have a view that gets students per course, so let's use that:
-  $view = views_get_view('courses_reports');
-  $view->set_display('page_2');
-  // disable the pager to get all the results
-  $pager = $view->display_handler->get_option('pager');
-  $pager['type'] = 'none';
-  $view->display_handler->set_option('pager', $pager);
-  // execute the view
-  $view->pre_execute(array($course));
-  $view->execute();
+  $view_result = _arava_admin_get_students_per_course_view_results($course);
 
   // get the uids and names from the results
   $names = array();
-  foreach ($view->result as $result) {
+  foreach ($view_result as $result) {
     $uid = $result->users_field_data_field_user_uid;
     $names[$uid] = array(
       'name' => $result->field_field_user_name[0]['rendered']['#markup'],
@@ -250,6 +241,23 @@ function _arava_admin_get_attendance_list_for_lesson($course, $lesson) {
     'first_time' => $select_all,
     'names' => $names,
   );
+}
+
+/**
+ * we already have a view that gets students per course, so let's use that:
+ */
+function _arava_admin_get_students_per_course_view_results($course) {
+  // we already have a view that gets students per course, so let's use that:
+  $view = views_get_view('courses_reports');
+  $view->set_display('page_2');
+  // disable the pager to get all the results
+  $pager = $view->display_handler->get_option('pager');
+  $pager['type'] = 'none';
+  $view->display_handler->set_option('pager', $pager);
+  // execute the view
+  $view->pre_execute(array($course));
+  $view->execute();
+  return $view->result;
 }
 
 function arava_admin_take_attendance_form_submit($form, &$form_state) {
@@ -314,11 +322,16 @@ function arava_admin_attendance_report($course) {
     foreach ($attendance_data as $row) {
       $students[$row->student_uid][$row->lesson_num] = $row->attendance_status;
     }
-    foreach ($students as $student => $lessons) {
-      $student = user_load($student);
-      $student_row = array($student->field_user_name[LANGUAGE_NONE][0]['value']);
+
+    // get list of students from view
+    $view_result = _arava_admin_get_students_per_course_view_results($course->nid);
+    foreach ($view_result as $result) {
+      $student_lessons = $students[$result->users_field_data_field_user_uid];
+      $student_name = $result->field_field_user_name[0]['rendered']['#markup'];
+
+      $student_row = array($student_name);
       for ($i = 1; $i <= $num_lessons; $i++) {
-        $value = !empty($lessons[$i]) ? $lessons[$i] : 0;
+        $value = !empty($student_lessons[$i]) ? $student_lessons[$i] : 0;
         $student_row[] = '<span class="int-val int-val-' . $value . '">' . $value . '</span>';
       }
       $rows[] = $student_row;

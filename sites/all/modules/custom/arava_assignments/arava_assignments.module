@@ -175,9 +175,16 @@ function _arava_assignments_course_assignments() {
         'finaltest' => t('Final Test'),
       );
 
+      $map_titles = array(
+        'homework' => t('Homework'),
+        'quiz' => t('Quizzes'),
+        'finaltest' => t('Final Test'),
+      );
+
+
       $rows = array();
       foreach ($assignments as $key => $values) {
-        $rows[] = array($map[$key], '');
+        $rows[] = array($map_titles[$key], '');
         foreach ($values as $assignment) {
           $rows[] = array(
             l($map[$key] . ' ' . $assignment['lesson_num'], 'assignment/' . $assignment['assignment_id'], array('attributes' => array('target' => '_blank'))),

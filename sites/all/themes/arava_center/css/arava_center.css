@@ -300,10 +300,57 @@ div#admin-toolbar div.admin-tab {
     height: 21px !important;
 }
 
-/**
+/*********************************
 * Assignments
-**/
+*********************************/
 
 #arava-assignments-do-assignment-form .field-suffix{
 color: #AD1818;
 }
+
+/*********************************
+* compound file field - display
+*********************************/
+.view-files-for-course .views-table{
+    margin-top: 0;
+}
+.view-files-for-course .view-header {
+/*.node-type-course .field-type-field-collection .field-label{*/
+    display: inline-block;
+    padding: 10px 20px;
+    background: #4187d1;
+    color: #fff;
+    width: 748px;
+    margin: 15px 1px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+/*.node-type-course .field-type-field-collection .field-item{*/
+    /*margin-bottom: 0;*/
+/*}*/
+/*.node-type-course .field-type-field-collection .field-collection-view{*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*border: none;*/
+/*}*/
+/*.node-type-course .field-collection-container{*/
+    /*border: none;*/
+/*}*/
+/*.node-type-course .field-type-field-collection .content > .field {*/
+    /*display: inline-block;*/
+    /*padding: 10px 20px;*/
+    /*background: #E4E4E4;*/
+    /*margin-left: 1px;*/
+    /*box-sizing: border-box;*/
+/*}*/
+
+/*.field-name-field-file {*/
+    /*width: 350px;*/
+/*}*/
+/*.field-name-field-description {*/
+    /*width: 300px;*/
+/*}*/
+/*.node-type-course .field-type-field-collection .content > .field.field-name-field-uploaded-date {*/
+    /*width: 98px;*/
+    /*margin-left: 0;*/
+/*}*/

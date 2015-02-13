@@ -149,7 +149,9 @@ function gradereg_export_excel($filename, $header, $rows){
 		$rowindex++;
 		foreach($row as $index => $r){
 			$colid = $cols[$index].''.($rowindex+1);
-			$objPHPExcel->getActiveSheet()->setCellValue($colid, $r);
+      if (!empty($colid) && !empty($r)) {
+        $objPHPExcel->getActiveSheet()->setCellValue($colid, $r);
+      }
 		}
 	}
 	

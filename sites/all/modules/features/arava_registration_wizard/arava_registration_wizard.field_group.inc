@@ -130,11 +130,14 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'קבצים',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_audio_files',
       1 => 'field_pdf_files',
       2 => 'field_files_restricted',
+      3 => 'field_pdf_files_comp',
+      4 => 'field_audio_files_comp',
+      5 => 'field_tamlil_files_comp',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -547,7 +550,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'זמני השיעורים',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_lesson_times_type',
       1 => 'group_accordion',

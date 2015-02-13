@@ -236,6 +236,10 @@ function arava_registration_init() {
  */
 function arava_registration_node_presave($node) {
   if ($node->type == 'my_semester') {
+
+    // monitor semester change
+    _arava_registration_monitor_semester_change($node);
+
     // keep payment due up-to-date
     module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
     $mySemesterAPI = new MySemesterAPI($node->field_user[LANGUAGE_NONE][0]['target_id'], $node);
@@ -638,6 +642,11 @@ function arava_registration_mail($key, &$message, $params) {
       $message['subject'] = variable_get('arava_center_registration_approved_pay_accomodation_email_subject', '');
       $message['body'][] = _arava_registration_approved_pay_accomodation_email($params['name']);
       break;
+
+    case 'monitor_semester':
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['message'];
+      break;
   }
 }
 
@@ -777,3 +786,43 @@ function arava_registration_user_view($account, $view_mode, $langcode){
       );
     }
 }
+
+function arava_registration_field_attach_update($entity_type, $entity) {
+  _arava_registration_monitor_semester_change($entity);
+}
+
+/**
+ * Monitor if semester is being changed for my_semester. This should never happen, but somehow, it did.
+ * @param $node
+ */
+function _arava_registration_monitor_semester_change($node) {
+  if (isset($node->type) && $node->type == 'my_semester') {
+    if (!$node->is_new) {
+      $my_semester = entity_metadata_wrapper('node', $node);
+      $semester_title = $my_semester->field_semester->title->value();
+      if (strpos($node->title, $semester_title) === false) {
+        static $sent_email;
+        if (!$sent_email) {
+          $to = 'shunitben@yahoo.com';
+          $subject = 'MONITOR: semester changed for my semester';
+          $message = 'user: ' . $my_semester->field_user->field_user_name->value() . '<br>';
+          $message .= 'user ID: ' . $my_semester->field_user->getIdentifier() . '<br>';
+          $message .= 'my semester ID: ' . $my_semester->getIdentifier() . '<br>';
+          $message .= 'request: ' . json_encode($_GET) . '<br>';
+          $message .= 'date: ' . date('d.m.Y h:i:s') . '<br>';
+          drupal_mail('arava_registration', 'monitor_semester', $to, 'en', $params = array('subject' => $subject, 'message' => $message));
+          $sent_email = true;
+
+          if (!empty($node->original)) {
+            $message .= 'original node: ' . json_encode($node->original);
+          }
+          else {
+            $message .= 'current node: ' . json_encode($node);
+          }
+          watchdog('monitor semester', 'semester changed for my semester: ' . $message);;
+        }
+      }
+    }
+  }
+}
+

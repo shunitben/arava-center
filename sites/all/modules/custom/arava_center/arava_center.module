@@ -176,6 +176,10 @@ function arava_center_block_info() {
     'info' => t('Hello User'),
   );
 
+  $blocks['course_files'] = array(
+    'info' => t('Course Files'),
+  );
+
   return $blocks;
 }
 
@@ -190,9 +194,107 @@ function arava_center_block_view($delta = '') {
       $block['subject'] = null;
       $block['content'] = _arava_center_hello_user_block();
       break;
+
+    case 'course_files':
+      $block['subject'] = null;
+      $block['content'] = _arava_center_course_files();
+      break;
   }
 
   return $block;
+}
+
+/**
+ * Implements hook_page_build
+ * @param $page
+ */
+function arava_center_page_build(&$page) {
+  $node = menu_get_object('node');
+  if (!empty($node) && $node->type == 'course' && arg(2) == null) {
+    $block = module_invoke('arava_center', 'block_view', 'course_files');
+    $blocks['course_files'] = array(
+      '#markup' => $block['content'],
+      '#weight' => 10,
+    );
+    $page['content'] = array_merge($page['content'], $blocks);
+  }
+}
+
+
+/**
+ * Callback for course_files block.
+ */
+function _arava_center_course_files() {
+  $node = menu_get_object('node');
+  // only for course pages
+  if (!empty($node) && $node->type == 'course') {
+    $restricted = !empty($node->field_files_restricted) && $node->field_files_restricted[LANGUAGE_NONE][0]['value'] == 1;
+    // if restricted, check that user has access
+    if ($restricted) {
+      if (!_user_signed_up_to_course($node->nid)) {
+        return null;
+      }
+    }
+    // get the file tables
+
+    $output = _arava_registration_generate_view('files_for_course', 'block', array($node->nid));
+    $output .= _arava_registration_generate_view('files_for_course', 'block_1', array($node->nid));
+    $output .= _arava_registration_generate_view('files_for_course', 'block_2', array($node->nid));
+    return $output;
+  }
+}
+
+function _arava_center_get_file_date($data) {
+  if (!empty($data->field_field_file)) {
+    $timestamp = $data->field_field_file[0]['raw']['timestamp'];
+    return date('d.m.Y', $timestamp);
+  }
+  return null;
+}
+
+function _arava_center_get_file_size($data){
+  if (!empty($data->field_field_file)) {
+    $size = $data->field_field_file[0]['raw']['filesize'];
+    $pretty_size = round($size/1024);
+    $suffix = 'KB';
+    if ($pretty_size > 1024) {
+      $pretty_size = round($size/(1024*1024));
+      $suffix = 'MB';
+    }
+    return $pretty_size . $suffix;
+  }
+  return null;
+}
+
+// one time function to move from regular to compound file fields in courses
+function _arava_center_migrate_file_fields() {
+
+  foreach (array('pdf', 'audio') as $kind) {
+    $results = db_select('field_data_field_' . $kind . '_files', 'files')
+      ->fields('files', array('entity_id', 'field_'.$kind.'_files_fid', 'field_'.$kind.'_files_description'))
+      ->execute()
+      ->fetchAllAssoc('field_'.$kind.'_files_fid');
+
+    foreach ($results as $row) {
+      $course = node_load($row->entity_id);
+      $fid_column = 'field_'.$kind.'_files_fid';
+      $desc_column = 'field_'.$kind.'_files_description';
+      $file = file_load($row->$fid_column);
+      $file->display = 1;
+      $file->description = $row->$desc_column;
+
+      $file_field_collection = entity_create('field_collection_item', array('field_name' => 'field_'.$kind.'_files_comp'));
+      $file_field_collection->setHostEntity('node', $course);
+      $file_field_collection_wrapper = entity_metadata_wrapper('field_collection_item', $file_field_collection);
+      $file_field_collection_wrapper->field_file->set((array)$file);
+      $file_field_collection_wrapper->save(true);
+
+      field_attach_update('node', $course);
+    }
+  }
+
+
+
 }
 
 function _arava_center_hello_user_block() {
@@ -236,6 +338,7 @@ function arava_center_animals_term_description($view) {
 }
 
 /**
+ * @todo: remove this once we use the compound fields.
  * Implements hook_preprocess_node
  * @param $vars
  */
@@ -263,3 +366,17 @@ function _user_signed_up_to_course($course_id) {
   $dbApi = new AravaCenterDbApi();
   return $dbApi->isUserSignedUpToCourse($user->uid, $course_id);
 }
+
+//function arava_center_entity_presave($entity, $type) {
+//  if ($type == 'field_collection_item' && $entity->field_name == 'field_pdf_files_comp') {
+//    $collection = entity_metadata_wrapper('field_collection_item', $entity);
+//    $file = $collection->field_file->value();
+//    if (!empty($file)) {
+//      $file = file_load($file['fid']);
+//      $date = $file->timestamp;
+//      $entity->field_uploaded_date[LANGUAGE_NONE][0] = array(
+//        'value' => date('Y-m-d H:i:s', $date),
+//      );
+//    }
+//  }
+//}
