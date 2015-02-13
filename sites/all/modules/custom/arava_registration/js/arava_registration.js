@@ -31,7 +31,7 @@
 
             });
 
-            $('#arava-registration-extra input[type="checkbox"]').click(function(e){
+            $('#arava-registration-extra input[type="checkbox"]').not('#edit-no-printed-materials').click(function(e){
                 e.preventDefault();
                 var id = $(this).parents('.checkbox-field-wrapper').attr('takanon-id'),
                     link = $(this).siblings('label').find('.dialog-link').attr('href');

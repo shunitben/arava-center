@@ -797,7 +797,7 @@ function arava_registration_field_attach_update($entity_type, $entity) {
  */
 function _arava_registration_monitor_semester_change($node) {
   if (isset($node->type) && $node->type == 'my_semester') {
-    if (!$node->is_new) {
+    if (!isset($node->is_new) || !$node->is_new) {
       $my_semester = entity_metadata_wrapper('node', $node);
       $semester_title = $my_semester->field_semester->title->value();
       if (strpos($node->title, $semester_title) === false) {

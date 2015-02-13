@@ -99,14 +99,11 @@ function arava_registration_wizard_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'my_semester';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_meals';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Extra Meals',
-    'weight' => '10',
-    'children' => array(
-      0 => 'field_extra_days_present',
-      1 => 'field_extra_guests_num',
-    ),
+    'weight' => '8',
+    'children' => array(),
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',
@@ -291,7 +288,7 @@ function arava_registration_wizard_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'שדות לא רלוונטיים',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_extra_days_present',
       1 => 'field_extra_guests_num',
@@ -352,8 +349,8 @@ function arava_registration_wizard_field_group_info() {
       0 => 'field_days_present',
       1 => 'field_arrival_time',
       2 => 'field_departure_time',
-      3 => 'field_meals_present',
-      4 => 'field_guests_for_meals',
+      3 => 'field_guests_for_meals',
+      4 => 'field_meals_present',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
@@ -386,6 +383,7 @@ function arava_registration_wizard_field_group_info() {
       3 => 'field_takanon_school',
       4 => 'field_waver',
       5 => 'field_comments',
+      6 => 'field_no_printed_materials',
     ),
     'format_type' => 'tab',
     'format_settings' => array(

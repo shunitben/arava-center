@@ -44,6 +44,12 @@ function arava_registration_extra($form, &$form_state) {
     '#default_value' => $selected['comments'],
   );
 
+  $form['no_printed_materials'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('I do NOT wish to receive printed materials (homework, reading materials, etc.)'),
+    '#default_value' => $selected['no_printed_materials'],
+  );
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Continue'),
@@ -128,12 +134,14 @@ function arava_registration_extra_submit($form, &$form_state) {
 //  );
 
   $comments = $form_state['values']['comments'];
+  $no_printed_materials = $form_state['values']['no_printed_materials'];
 
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $mySemesterAPI = new MySemesterAPI();
 
   // save the information
   $mySemesterAPI->setComment($comments);
+  $mySemesterAPI->setNoPrintedMaterials($no_printed_materials);
 
 	$form_state['redirect'] = array('registration/confirm');
 }

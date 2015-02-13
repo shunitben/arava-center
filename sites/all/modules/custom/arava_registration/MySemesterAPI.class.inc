@@ -339,6 +339,7 @@ class MySemesterAPI {
       'takanon_amuta' => $this->user_semester->field_takanon_amuta->value(),
       'health_declaration' => $this->user_semester->field_health_declaration->value(),
       'waver' => $this->user_semester->field_waver->value(),
+      'no_printed_materials' => $this->user_semester->field_no_printed_materials->value(),
     );
 
     if ($extra_info['health_declaration'] == false && $this->healthDeclarationFilledThisYear()) {
@@ -435,6 +436,18 @@ class MySemesterAPI {
     $user_semester_node = node_load($this->user_semester->getIdentifier());
 
     $user_semester_node->field_comments[LANGUAGE_NONE][0]['value'] = $comment;
+
+    field_attach_update('node', $user_semester_node);
+  }
+
+  /**
+   * Set the user's no printed material preference to my_semester
+   * @param $no_printed_materials
+   */
+  public function setNoPrintedMaterials($no_printed_materials) {
+    $user_semester_node = node_load($this->user_semester->getIdentifier());
+
+    $user_semester_node->field_no_printed_materials[LANGUAGE_NONE][0]['value'] = $no_printed_materials;
 
     field_attach_update('node', $user_semester_node);
   }
