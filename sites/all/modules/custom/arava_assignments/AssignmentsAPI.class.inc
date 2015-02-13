@@ -188,7 +188,7 @@ class AssignmentsAPI {
       ->fields('assignments', array('nid'))
       ->fields('lesson_num', array('field_lesson_num_value'))
       ->fields('type', array('field_assignment_type_value'))
-      ->fields('assignment_completion', array('assignment_completion_id'));
+      ->fields('assignment_completion', array('assignment_completion_id', 'done'));
     $results = $query->execute();
 
     $assignments = array();
@@ -197,6 +197,7 @@ class AssignmentsAPI {
         'assignment_id' => $row->nid,
         'lesson_num' => $row->field_lesson_num_value,
         'completion' => isset($row->assignment_completion_id),
+        'done' => $row->done,
       );
     }
     // order
