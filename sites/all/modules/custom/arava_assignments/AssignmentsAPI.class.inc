@@ -287,7 +287,10 @@ class AssignmentsAPI {
 
     $done = array();
     foreach ($results as $row) {
-      $done[$row->field_lesson_num_value][$row->field_assignment_type_value] = [$row->student];
+      $lesson_num = $row->field_lesson_num_value;
+      $assignment_type = $row->field_assignment_type_value;
+      $student = $row->student;
+      $done[$lesson_num][$assignment_type] = $student;
     }
     return $done;
   }
