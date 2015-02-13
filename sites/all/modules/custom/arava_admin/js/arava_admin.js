@@ -38,19 +38,21 @@
 
             // remove from course
             $('.remove_from_course').click(function(){
-               var course = $(this).attr('course'),
-                   user = $(this).attr('user'),
-                   this_row = $(this).parents('tr');
-               if (!isNaN(course) && !isNaN(user)) {
-                   $(this).addClass('loading');
-                    $.ajax({url: '/admin/course/' + course + '/remove/' + user})
-                    .done(function( data ) {
-                        var response = JSON.parse(data);
-                        if (response.success) {
-                            this_row.remove();
-                        }
-                    });
-               }
+                if (window.confirm(Drupal.t('Are you sure you want to remove this user from the course?'))) {
+                   var course = $(this).attr('course'),
+                       user = $(this).attr('user'),
+                       this_row = $(this).parents('tr');
+                   if (!isNaN(course) && !isNaN(user)) {
+                       $(this).addClass('loading');
+                        $.ajax({url: '/admin/course/' + course + '/remove/' + user})
+                        .done(function( data ) {
+                            var response = JSON.parse(data);
+                            if (response.success) {
+                                this_row.remove();
+                            }
+                        });
+                   }
+                }
             });
 
         },
