@@ -72,6 +72,12 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
     '#submit' => array('arava_assignments_do_assignment_form_submit'),
   );
 
+  $form['submit_done'] = array(
+    '#type' => 'submit',
+    '#value' => t('Finished requirements for next lesson'),
+    '#submit' => array('arava_assignments_done_submit'),
+  );
+
   $form['submit_send_link'] = array(
     '#type' => 'submit',
     '#value' => t('Send link to checker'),
@@ -153,4 +159,18 @@ function arava_assignments_send_link_to_checker_validate($form, &$form_state) {
   if ($form_state['values']['checker'] == 0) {
     form_set_error('checker', t('Please choose who is going to check your assignment before sending them a link.'));
   }
+}
+
+function arava_assignments_done_submit($form, &$form_state) {
+
+  // trigger the normal submit first:
+  arava_assignments_do_assignment_form_submit($form, $form_state);
+
+  $assignment_id = $form_state['values']['assignment_id'];
+
+  $assignmentsAPI = new AssignmentsAPI();
+  $assignment_completion = $assignmentsAPI->getCompletionDataForAssignment($assignment_id);
+  $assignmentsAPI->setDoneForAssignment($assignment_completion['assignment_completion_id'], true);
+
+  drupal_set_message(t('We have noted that you finished the requirements for the next lesson for this assignment.'), 'status');
 }

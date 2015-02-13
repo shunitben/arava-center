@@ -11,7 +11,7 @@ class AssignmentsAPI {
 
     $query = db_select('assignment_completion')
       ->condition('assignment_id', $assignment_id)
-      ->fields('assignment_completion', array('assignment_completion_id', 'checker', 'grade'));
+      ->fields('assignment_completion', array('assignment_completion_id', 'checker', 'grade', 'done'));
     if ($assignment_completion_id) {
       $query->condition('assignment_completion_id', $assignment_completion_id);
     }
@@ -28,6 +28,7 @@ class AssignmentsAPI {
       'assignment_completion_id' => $data['assignment_completion_id'],
       'checker' => empty($data) ? null : $data['checker'],
       'grade' => empty($data) ? null : $data['grade'],
+      'done' => empty($data) ? null : $data['done'],
       'answers' => $answers,
       'remarks' => $remarks,
     );
@@ -109,6 +110,16 @@ class AssignmentsAPI {
       ->condition('assignment_completion_id', $assignment_completion_id)
       ->fields(array(
         'grade' => $grade,
+      ))
+      ->execute();
+  }
+
+  function setDoneForAssignment($assignment_completion_id, $done = true) {
+
+    db_update('assignment_completion')
+      ->condition('assignment_completion_id', $assignment_completion_id)
+      ->fields(array(
+        'done' => (int)$done,
       ))
       ->execute();
   }
@@ -257,5 +268,27 @@ class AssignmentsAPI {
       );
     }
     return $assignments;
+  }
+
+  function getDoneStatusForCourseReports($course_nid) {
+    $query = db_select('node', 'assignment');
+    $query->join('field_data_field_course', 'course_ref', 'assignment.nid = course_ref.entity_id');
+    $query->join('field_data_field_lesson_num', 'lesson_num', 'assignment.nid = lesson_num.entity_id');
+    $query->join('field_data_field_assignment_type', 'type', 'assignment.nid = type.entity_id');
+    $query->join('assignment_completion', 'ac', 'assignment.nid = ac.assignment_id');
+    $query
+      ->condition('assignment.type', 'assignment')
+      ->condition('course_ref.field_course_target_id', $course_nid)
+      ->condition('ac.done', 1)
+      ->fields('ac', array('student'))
+      ->fields('lesson_num', array('field_lesson_num_value'))
+      ->fields('type', array('field_assignment_type_value'));
+    $results = $query->execute();
+
+    $done = array();
+    foreach ($results as $row) {
+      $done[$row->field_lesson_num_value][$row->field_assignment_type_value] = [$row->student];
+    }
+    return $done;
   }
 }
