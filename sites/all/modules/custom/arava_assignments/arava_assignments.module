@@ -248,11 +248,32 @@ function arava_assignments_page_build(&$page) {
   $node = menu_get_object('node');
   $arg2 = arg(2);
   if (!empty($node) && $node->type == 'course' && empty($arg2)) {
+
+    if (user_access('administer nodes')) {
+      $link = l('>> ' . t('Let everyone know about the new assignments!'),
+          'admin/send-emails',
+          array(
+            'query' => array(
+              'view' => 'courses_reports',
+              'display' => 'page_2',
+              'args[0]' => $node->nid,
+              'predefined' => 'new_assignment',
+            ),
+            'attributes' => array('class' => array('blue-button'))))
+        . "<br>";
+
+      $blocks['course_assignments_inform'] = array(
+        '#markup' => $link,
+        '#weight' => -10,
+      );
+    }
+
     $block = module_invoke('arava_assignments', 'block_view', 'course_assignments');
     $blocks['course_assignments'] = array(
       '#markup' => $block['content'],
       '#weight' => -10,
     );
+
     $page['content'] = array_merge($page['content'], $blocks);
   }
 }
