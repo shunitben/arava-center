@@ -116,7 +116,8 @@ function _arava_admin_get_predefined_email($key) {
       $course = node_load($course);
       $subject = t('Course !course has been updated with new homework', array('!course' => $course->title));
       $message = t('To see the homework, please make sure you are logged in to the site, and go to:') . '<br>';
-      $message .= url('node/' . $course->nid, array('absolute' => true));
+      $link = url('node/' . $course->nid, array('absolute' => true));
+      $message .= l($link, $link);
       break;
   }
 
