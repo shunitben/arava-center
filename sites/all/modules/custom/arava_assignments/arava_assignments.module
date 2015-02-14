@@ -187,6 +187,9 @@ function _arava_assignments_course_assignments() {
         $rows[] = array($map_titles[$key], '');
         foreach ($values as $assignment) {
           $status = $assignment['done'] ? t('Finished requirements for next lesson') : ($assignment['completion'] ? t('Started') : t('Not Started'));
+          if ($assignment['grade']) {
+            $status .= ' - ' . t('Grade: @grade', array('@grade' => $assignment['grade']));
+          }
           $rows[] = array(
             l($map[$key] . ' ' . $assignment['lesson_num'], 'assignment/' . $assignment['assignment_id'], array('attributes' => array('target' => '_blank'))),
             $status,
