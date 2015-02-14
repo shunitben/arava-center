@@ -209,16 +209,14 @@ function carpoolingmod_pref_setup_form_submit($form, &$form_status){
 			'type' => $values['type'],
 			'available_seats' => isset($values['available_seats']) ? $values['available_seats'] : 0,
 			'location' => $values['location'],
-			//'departureday' => $values['departureday'] ? implode(',', $values['departureday']) : '',
 			'departureday' => $values['departureday'] ? $values['departureday'] : '',
 			'departuretime' => $values['departuretime'],
-			//'returnday' => $values['returnday'] ? implode(',', $values['returnday']) : '',
 			'returnday' => $values['returnday'] ? $values['returnday'] : '',
 			'returntime' => $values['returntime'],
       'semester' => $semester,
 		);
 		
-		drupal_write_record('carpooling_pref', $data, 'uid');
+		drupal_write_record('carpooling_pref', $data, array('uid', 'semester'));
 		drupal_set_message(t('Your car pooling preference setting has been updated.'));
 	}else{
 		$data = array(
