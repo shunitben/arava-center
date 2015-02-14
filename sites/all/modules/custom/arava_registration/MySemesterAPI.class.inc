@@ -497,7 +497,7 @@ class MySemesterAPI {
           $my_course = entity_load('field_collection_item', array($my_course['value']));
         }
         $my_course = array_shift($my_course);
-        $target_id = $my_course->field_course[LANGUAGE_NONE][0]['target_id'];
+        $target_id = !empty($my_course->field_course) ? $my_course->field_course[LANGUAGE_NONE][0]['target_id'] : null;
       }
       else {
         $target_id = $my_course['field_course'][LANGUAGE_NONE][0]['target_id'];

@@ -706,7 +706,7 @@ function _arava_registration_validate_all_registration() {
 
   // accommodation
   $accommodation = $mySemesterAPI->getAccomodationForUser();
-  if ($accommodation == null) {
+  if ($accommodation['accomodation'] == null) {
     $missing[] = t('Accommodation - please choose your accommodation.');
   }
 
