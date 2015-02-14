@@ -246,7 +246,8 @@ function _arava_assignments_assignments_to_check() {
  */
 function arava_assignments_page_build(&$page) {
   $node = menu_get_object('node');
-  if (!empty($node) && $node->type == 'course') {
+  $arg2 = arg(2);
+  if (!empty($node) && $node->type == 'course' && empty($arg2)) {
     $block = module_invoke('arava_assignments', 'block_view', 'course_assignments');
     $blocks['course_assignments'] = array(
       '#markup' => $block['content'],
