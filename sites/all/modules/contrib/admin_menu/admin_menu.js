@@ -219,6 +219,7 @@ Drupal.admin.behaviors.destination = function (context, settings, $adminMenu) {
  *   it will not run last.
  */
 Drupal.admin.behaviors.hover = function (context, settings, $adminMenu) {
+
   // Delayed mouseout.
   $('li.expandable', $adminMenu).hover(
     function () {
@@ -226,15 +227,15 @@ Drupal.admin.behaviors.hover = function (context, settings, $adminMenu) {
       clearTimeout(this.sfTimer);
       // Display child lists.
       $('> ul', this)
-        .css({left: 'auto', display: 'block'})
+          .addClass('hover')
         // Immediately hide nephew lists.
-        .parent().siblings('li').children('ul').css({left: '-999em', display: 'none'});
+          .parent().siblings('li').children('ul').removeClass('hover');
     },
     function () {
       // Start the timer.
       var uls = $('> ul', this);
       this.sfTimer = setTimeout(function () {
-        uls.css({left: '-999em', display: 'none'});
+          uls.removeClass('hover');
       }, 400);
     }
   );
