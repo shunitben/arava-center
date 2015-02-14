@@ -148,5 +148,5 @@ function arava_registration_meals_submit($form, &$form_state) {
   $mySemesterAPI->setMealsFoodInfo($allergies, $food['i_eat_dairy'], $food['i_eat_eggs']);
   $mySemesterAPI->setMealsPresenceInfo($food['meals_presence'], $guests);
 
-	$form_state['redirect'] = array('registration/extra');
+	$form_state['redirect'] = array('registration/carpooling-pref');
 }

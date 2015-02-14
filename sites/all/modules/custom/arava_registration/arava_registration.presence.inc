@@ -76,5 +76,5 @@ function arava_registration_presence_submit($form, &$form_state) {
   // save the information
   $mySemesterAPI->setPresenceInfo($presence, $arrival, $departure);
 
-	$form_state['redirect'] = array('registration/carpooling-pref');
+	$form_state['redirect'] = array('registration/meals');
 }

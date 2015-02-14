@@ -28,7 +28,7 @@ function carpoolingmod_update_position_page(){
 function carpoolingmod_pref_setup_page(){
 	global $user;
 
-	return drupal_get_form('carpoolingmod_pref_setup_form', $user, 'registration/meals');
+	return drupal_get_form('carpoolingmod_pref_setup_form', $user, 'registration/extra');
 }
 
 function carpoolingmod_pref_setup_form($form, &$form_status, $account, $redirect = ''){
