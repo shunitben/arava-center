@@ -270,34 +270,37 @@ Animals in the area
 .animals-breadcrumbs {
     margin-bottom: 20px;
 }
-.view-animals-taxonomy- .views-row {
+.view-animals li{
     border: 1px solid #ccc;
     padding: 7px;
     margin: 5px 0 10px 0;
     overflow: hidden;
 }
-.view-animals-taxonomy- .views-field-name {
+.view-animals .views-field-name {
     font-size: 18px;
     font-weight: bold;
 }
-.view-animals-taxonomy- .views-field-field-image {
+.view-animals .views-field-field-image {
     float: left;
     border: 1px solid #ccc;
     margin: 0 10px 10px 0;
 }
-.view-animals-taxonomy- .views-field-title {
+.view-animals .views-field-title {
     display: inline-block;
     font-weight: bold;
 }
-.view-animals-taxonomy- .views-field-title:after {
+.view-animals .views-field-title:after {
      content: " -";
 }
-.view-animals-taxonomy- .views-field-field-latin-name {
+.view-animals .views-field-field-latin-name {
      display: inline-block;
      font-weight: bold;
 }
-.view-animals-taxonomy- .views-field-body {
+.view-animals .views-field-body {
     margin-top: 10px;
+}
+.view-animals .ui-accordion .ui-accordion-content {
+    padding: 0;
 }
 
 /******************************
