@@ -25,6 +25,7 @@
 /*responsive menu*/
 #header-top-inside.mean-container{
     height: 46px;
+    padding-right:0px;
 }
 .mean-container .mean-nav ul li span{
      display: block;
