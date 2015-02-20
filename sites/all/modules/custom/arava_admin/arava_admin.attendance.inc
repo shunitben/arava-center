@@ -341,8 +341,13 @@ function arava_admin_attendance_report($course) {
         $value = !empty($student_lessons[$i]) ? $student_lessons[$i] : 0;
         $attendance_value = '<span class="int-val int-val-' . $value . '">' . $value . '</span>';
         foreach (array('homework', 'quiz') as $type) {
-          if (isset($done_data[$i]) && isset($done_data[$i][$type]) && in_array($result->users_field_data_field_user_uid, $done_data[$i][$type])) {
-            $attendance_value .= ' ' . t($type);
+          $uid = $result->users_field_data_field_user_uid;
+          if (isset($done_data[$i]) && isset($done_data[$i][$type]) && isset($done_data[$i][$type][$uid])) {
+            $assignment_id = $done_data[$i][$type]['assignment_id'];
+            $assignment_completion_id = $done_data[$i][$type][$uid];
+            $attendance_value .= ' ' . l(t($type),
+                                        'assignment/' . $assignment_id . '/check/' . $assignment_completion_id,
+                                        array('attributes' => array('target' => '_blank')));
           }
         }
         $student_row[] = $attendance_value;

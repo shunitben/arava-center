@@ -123,7 +123,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['view_node']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view_node']['text'] = 'מידע נוסף';
-  /* שדה: תוכן: Price */
+  /* שדה: תוכן: עלות לסמסטר */
   $handler->display->display_options['fields']['field_price']['id'] = 'field_price';
   $handler->display->display_options['fields']['field_price']['table'] = 'field_data_field_price';
   $handler->display->display_options['fields']['field_price']['field'] = 'field_price';
@@ -141,7 +141,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_type'] = '0';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
-  /* Sort criterion: תוכן: Price (field_price) */
+  /* Sort criterion: תוכן: עלות לסמסטר (field_price) */
   $handler->display->display_options['sorts']['field_price_value']['id'] = 'field_price_value';
   $handler->display->display_options['sorts']['field_price_value']['table'] = 'field_data_field_price';
   $handler->display->display_options['sorts']['field_price_value']['field'] = 'field_price_value';
@@ -172,7 +172,7 @@ function arava_registration_wizard_views_default_views() {
     t('Asc'),
     t('Desc'),
     t('מידע נוסף'),
-    t('Price'),
+    t('עלות לסמסטר'),
     t('<span class="hidden">nid:[nid]</span>'),
     t('Block'),
   );
@@ -1109,11 +1109,21 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['relationships']['field_pdf_files_comp_node']['field'] = 'field_pdf_files_comp_node';
   $handler->display->display_options['relationships']['field_pdf_files_comp_node']['label'] = 'פריט תוכן';
   $handler->display->display_options['relationships']['field_pdf_files_comp_node']['required'] = TRUE;
+  /* שדה: תוכן: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'field_audio_files_comp_node';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   /* שדה: Field collection item: קובץ */
   $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
   $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['label'] = '';
+  $handler->display->display_options['fields']['field_file']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
   $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
   /* שדה: Field collection item: טקסט נוסף */
@@ -1135,19 +1145,6 @@ print _arava_center_get_file_date($data);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* שדה: file size */
-  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
-  $handler->display->display_options['fields']['php_1']['table'] = 'views';
-  $handler->display->display_options['fields']['php_1']['field'] = 'php';
-  $handler->display->display_options['fields']['php_1']['ui_name'] = 'file size';
-  $handler->display->display_options['fields']['php_1']['label'] = '';
-  $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-print _arava_center_get_file_size($data);
-?>';
-  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Contextual filter: תוכן: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
@@ -1256,6 +1253,7 @@ print _arava_center_get_file_size($data);
     t('Desc'),
     t('חומרי קריאה ותרגול'),
     t('פריט תוכן'),
+    t('<a href="/file/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>'),
     t('הכל'),
     t('pdf block'),
     t('audio block'),
