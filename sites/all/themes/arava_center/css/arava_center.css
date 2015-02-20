@@ -302,6 +302,28 @@ Animals in the area
 .view-animals .ui-accordion .ui-accordion-content {
     padding: 0;
 }
+.view-animals .view-grouping-header {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    background-color: #e4e4e4;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    padding: 5px 10px;
+}
+.view-animals .view-grouping-header .toggle {
+    color: #2a68af;
+    font-weight: bold;
+    font-size: 22px;
+}
+.view-animals .view-grouping-content h3 {
+    font-size: 15px;
+    font-weight: normal;
+}
+.view-animals .view-grouping-content ul {
+    padding: 0;
+}
 
 /******************************
 * fixed for admin toolbar

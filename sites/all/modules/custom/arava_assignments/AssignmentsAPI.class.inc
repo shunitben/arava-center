@@ -282,7 +282,7 @@ class AssignmentsAPI {
       ->condition('assignment.type', 'assignment')
       ->condition('course_ref.field_course_target_id', $course_nid)
       ->condition('ac.done', 1)
-      ->fields('ac', array('student'))
+      ->fields('ac', array('student', 'assignment_completion_id', 'assignment_id'))
       ->fields('lesson_num', array('field_lesson_num_value'))
       ->fields('type', array('field_assignment_type_value'));
     $results = $query->execute();
@@ -292,7 +292,10 @@ class AssignmentsAPI {
       $lesson_num = $row->field_lesson_num_value;
       $assignment_type = $row->field_assignment_type_value;
       $student = $row->student;
-      $done[$lesson_num][$assignment_type][] = $student;
+      $assignment_completion_id = $row->assignment_completion_id;
+      $assignment_id = $row->assignment_id;
+      $done[$lesson_num][$assignment_type]['assignment_id'] = $assignment_id;
+      $done[$lesson_num][$assignment_type][$student] = $assignment_completion_id;
     }
     return $done;
   }
