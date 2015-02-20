@@ -301,15 +301,11 @@ function arava_admin_attendance_report($course) {
   if (!empty($course->field_num_lessons)) {
 
     $num_lessons = $course->field_num_lessons[LANGUAGE_NONE][0]['value'];
-    $attendance_data = db_select('attendance')
-      ->condition('attendance.course_nid', $course->nid)
-      ->fields('attendance', array('student_uid', 'lesson_num', 'attendance_status'))
-      ->execute();
-
     $headers = array(t('Student / Lesson'));
     $rows = array();
     $students = array();
 
+    // table headers
     for ($i = 1; $i <= $num_lessons; $i++) {
       $semester = $course->field_semester[LANGUAGE_NONE][0]['target_id'];
       $headers[] = $i . l(t('edit'), 'admin/attendance/take', array('query' => array(
@@ -319,11 +315,22 @@ function arava_admin_attendance_report($course) {
           'destination' => current_path())));
     }
 
+    // get the attendance data
+    $attendance_data = db_select('attendance')
+      ->condition('attendance.course_nid', $course->nid)
+      ->fields('attendance', array('student_uid', 'lesson_num', 'attendance_status'))
+      ->execute();
+
     foreach ($attendance_data as $row) {
       $students[$row->student_uid][$row->lesson_num] = $row->attendance_status;
     }
 
-    // get list of students from view
+    // get the done data
+    module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
+    $assignmentsAPI = new AssignmentsAPI();
+    $done_data = $assignmentsAPI->getDoneStatusForCourseReports($course->nid);
+
+    // get list of students from view, and add the attendance data and done data
     $view_result = _arava_admin_get_students_per_course_view_results($course->nid);
     foreach ($view_result as $result) {
       $student_lessons = $students[$result->users_field_data_field_user_uid];
@@ -332,7 +339,13 @@ function arava_admin_attendance_report($course) {
       $student_row = array($student_name);
       for ($i = 1; $i <= $num_lessons; $i++) {
         $value = !empty($student_lessons[$i]) ? $student_lessons[$i] : 0;
-        $student_row[] = '<span class="int-val int-val-' . $value . '">' . $value . '</span>';
+        $attendance_value = '<span class="int-val int-val-' . $value . '">' . $value . '</span>';
+        foreach (array('homework', 'quiz') as $type) {
+          if (isset($done_data[$i]) && isset($done_data[$i][$type]) && in_array($result->users_field_data_field_user_uid, $done_data[$i][$type])) {
+            $attendance_value .= ' ' . t($type);
+          }
+        }
+        $student_row[] = $attendance_value;
       }
       $rows[] = $student_row;
     }

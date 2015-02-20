@@ -44,6 +44,13 @@ function arava_center_personal_area_callback() {
   drupal_goto('user');
 }
 
+function arava_center_init() {
+  if (arg(0) == "animals") {
+    $path = drupal_get_path('module', 'arava_center');
+    drupal_add_js($path . '/js/arava_center.js');
+    drupal_add_library('system', 'ui.accordion');
+  }
+}
 
 /**
  * Implements hook_node_presave($node)

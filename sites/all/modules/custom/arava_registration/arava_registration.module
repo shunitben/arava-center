@@ -415,13 +415,13 @@ function _arava_registration_steps_block() {
       'title' => t('Presence days'),
       'href' => 'registration/presence',
     ),
-    'carpoolingpref' => array(
-      'title' => t('Car Pooling'),
-      'href' => 'registration/carpooling-pref',
-    ),
     'meals' => array(
       'title' => t('Meals'),
       'href' => 'registration/meals',
+    ),
+    'carpoolingpref' => array(
+      'title' => t('Car Pooling'),
+      'href' => 'registration/carpooling-pref',
     ),
     'extra' => array(
       'title' => t('Extra info'),
@@ -706,7 +706,7 @@ function _arava_registration_validate_all_registration() {
 
   // accommodation
   $accommodation = $mySemesterAPI->getAccomodationForUser();
-  if ($accommodation == null) {
+  if ($accommodation['accomodation'] == null) {
     $missing[] = t('Accommodation - please choose your accommodation.');
   }
 
@@ -797,7 +797,7 @@ function arava_registration_field_attach_update($entity_type, $entity) {
  */
 function _arava_registration_monitor_semester_change($node) {
   if (isset($node->type) && $node->type == 'my_semester') {
-    if (!$node->is_new) {
+    if (!isset($node->is_new) || !$node->is_new) {
       $my_semester = entity_metadata_wrapper('node', $node);
       $semester_title = $my_semester->field_semester->title->value();
       if (strpos($node->title, $semester_title) === false) {

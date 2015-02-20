@@ -36,8 +36,11 @@ function arava_registration_accommodation($form, &$form_state) {
 
   $form['accomodations'] = array(
     '#type' => 'radios',
+    '#title' => t('Accommodation type'),
+    '#title_display' => 'invisible',
     '#options' => $options,
     '#default_value' => $selected['accomodation'],
+    '#required' => true,
   );
 
   $form['roommates'] = array(

@@ -12,6 +12,10 @@ function arava_admin_send_emails_form($form, &$form_state) {
     $defaults[] = $address;
   }
 
+  if (isset($_GET['predefined'])) {
+    $predefined = _arava_admin_get_predefined_email($_GET['predefined']);
+  }
+
 
   $form['emails'] = array(
     '#type' => 'checkboxes',
@@ -26,12 +30,14 @@ function arava_admin_send_emails_form($form, &$form_state) {
     '#title' => t('Message subject'),
     '#required' => true,
     '#size' => 120,
+    '#default_value' => (!empty($predefined) && !empty($predefined['subject'])) ? $predefined['subject'] : null,
   );
 
   $form['message'] = array(
     '#type' => 'text_format',
     '#title' => t('Message'),
     '#required' => true,
+    '#default_value' => (!empty($predefined) && !empty($predefined['message'])) ? $predefined['message'] : null,
   );
 
   for ($i = 1; $i <= 5; $i++) {
@@ -101,6 +107,24 @@ function _arava_admin_get_emails_from_view() {
   }
 
   return $emails;
+}
+
+function _arava_admin_get_predefined_email($key) {
+  switch ($key) {
+    case 'new_assignment':
+      $course = $_GET['args'][0];
+      $course = node_load($course);
+      $subject = t('Course !course has been updated with new homework', array('!course' => $course->title));
+      $message = t('To see the homework, please make sure you are logged in to the site, and go to:') . '<br>';
+      $link = url('node/' . $course->nid, array('absolute' => true));
+      $message .= l($link, $link);
+      break;
+  }
+
+  return array(
+    'subject' => $subject,
+    'message' => $message,
+  );
 }
 
 function arava_admin_send_emails_form_validate($form, &$form_state) {

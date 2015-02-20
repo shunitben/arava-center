@@ -18,7 +18,7 @@ function gradereg_menu() {
     'access callback' => 'gradereg_node_grades_list_access',
     'access arguments' => array(1),
     'file' => 'gradereg.pages.php',
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_CALLBACK,
   );
 
   $items['user/%user/grades'] = array(
@@ -157,4 +157,22 @@ function gradereg_export_excel($filename, $header, $rows){
 	
 	$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
 	$objWriter->save($filename);
+}
+
+/**
+ * Implements hook_page_build
+ * @param $page
+ */
+function gradereg_page_build(&$page) {
+  $node = menu_get_object('node');
+  $arg2 = arg(2);
+  if (!empty($node) && $node->type == 'course' && empty($arg2)) {
+    if (gradereg_node_grades_list_access($node)) {
+      $blocks['grades'] = array(
+        '#markup' => l('>> ' . t('Course Student Grades'), 'node/' . $node->nid . '/grades', array('attributes' => array('class' => array('blue-button')))),
+        '#weight' => -10,
+      );
+      $page['content'] = array_merge($blocks, $page['content']);
+    }
+  }
 }

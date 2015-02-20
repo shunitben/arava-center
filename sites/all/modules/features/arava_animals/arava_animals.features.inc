@@ -21,7 +21,7 @@ function arava_animals_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('כותרת'),
       'help' => '',
     ),
   );
