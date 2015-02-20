@@ -317,9 +317,23 @@ function arava_center_view_only_file($node, $fid) {
     'type' => $file_mime,
   );
   drupal_add_js(array('file' => $file_info), 'setting');
-  return '';
+  $path=drupal_get_path("module", "arava_center");
+  drupal_add_js($path."/soundmanager/script/soundmanager2-jsmin.js");
+  drupal_add_js($path."/soundmanager/script/bar-ui.js");
+  drupal_add_css($path."/soundmanager/css/bar-ui.css");
+  return theme('mp3_player', array("file" => $file_url));
 }
 
+
+function arava_center_theme()
+{
+ return array (
+     'mp3_player'=> array(
+         'template' => 'template/mp3',
+         "variables" => array("teacher"=>"", "course_name"=> "", "file" => "")
+         )
+ ); 
+}
 
 
 
