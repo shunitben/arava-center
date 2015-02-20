@@ -22,6 +22,27 @@
     height:300px;
     border:none
 }
+/*responsive menu*/
+#header-top-inside.mean-container{
+    height: 46px;
+}
+.mean-container .mean-nav ul li span{
+     display: block;
+    float: left;
+    margin: 0;
+    padding: 1em 5%;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 90%;
+    
+        border-bottom: 1px solid #323232;
+    border-top: medium none;
+    color: #fff;
+    line-height: 21px;
+    text-decoration: none;
+    text-transform: none;
+}
 /*accommodation*/
 .node-type-accomodation .field-slideshow-pager{
     position:absolute;
