@@ -1122,7 +1122,6 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
   $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['label'] = '';
-  $handler->display->display_options['fields']['field_file']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
   $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
@@ -1183,6 +1182,43 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['relationships']['field_audio_files_comp_node']['field'] = 'field_audio_files_comp_node';
   $handler->display->display_options['relationships']['field_audio_files_comp_node']['label'] = 'פריט תוכן';
   $handler->display->display_options['relationships']['field_audio_files_comp_node']['required'] = TRUE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* שדה: תוכן: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'field_audio_files_comp_node';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* שדה: Field collection item: קובץ */
+  $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
+  $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
+  $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
+  $handler->display->display_options['fields']['field_file']['label'] = '';
+  $handler->display->display_options['fields']['field_file']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
+  $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
+  /* שדה: Field collection item: טקסט נוסף */
+  $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
+  $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
+  $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
+  $handler->display->display_options['fields']['field_description']['label'] = '';
+  $handler->display->display_options['fields']['field_description']['element_label_colon'] = FALSE;
+  /* שדה: file date */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'file date';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+print _arava_center_get_file_date($data);
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: תוכן: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
