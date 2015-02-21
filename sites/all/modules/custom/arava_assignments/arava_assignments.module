@@ -229,12 +229,13 @@ function _arava_assignments_assignments_to_check() {
           $assignment['course_name'],
           l($map[$key] . ' ' . $assignment['lesson_num'], 'assignment/' . $assignment['assignment_id'] . '/check/' . $assignment['assignment_completion_id'],
             array('attributes' => array('target' => '_blank'))),
+          $assignment['student_name'],
         );
       }
     }
   }
 
-  $headers = array(t('Course'), t('Assignment'));
+  $headers = array(t('Course'), t('Assignment'), t('For student'));
 
   return theme('table', array('header' => $headers, 'rows' => $rows));
 

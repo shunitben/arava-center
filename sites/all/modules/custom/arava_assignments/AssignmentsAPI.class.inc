@@ -254,7 +254,7 @@ class AssignmentsAPI {
       ->condition('ac.grade', 0)
       ->condition('course_ref.bundle', 'assignment')
       ->fields('course', array('title', 'nid'))
-      ->fields('ac', array('assignment_completion_id'))
+      ->fields('ac', array('assignment_completion_id', 'student'))
       ->fields('assignment', array('nid'))
       ->fields('lesson_num', array('field_lesson_num_value'))
       ->fields('type', array('field_assignment_type_value'));
@@ -262,11 +262,13 @@ class AssignmentsAPI {
 
     $assignments = array();
     foreach ($results as $row) {
+      $student = user_load($row->student);
       $assignments[$row->nid][$row->field_assignment_type_value][$row->field_lesson_num_value] = array(
         'assignment_id' => $row->assignment_nid,
         'assignment_completion_id' => $row->assignment_completion_id,
         'lesson_num' => $row->field_lesson_num_value,
         'course_name' => $row->title,
+        'student_name' => $student->field_user_name[LANGUAGE_NONE][0]['value'],
       );
     }
     return $assignments;
