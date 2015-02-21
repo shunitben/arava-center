@@ -309,30 +309,37 @@ function arava_center_view_only_file($node, $fid) {
     return '';
   }
 
+  $course_wrp = entity_metadata_wrapper('node', $node);
+  $teacher_name = $course_wrp->field_teacher->title->value();
+  $course_name = $course_wrp->title->value();
+
   $file = file_load($fid);
   $file_url = file_create_url($file->uri);
-  $file_mime = $file->filemime; // application/pdf
-  $file_info = array(
-    'url' => $file_url,
-    'type' => $file_mime,
-  );
-  drupal_add_js(array('file' => $file_info), 'setting');
+
   $path=drupal_get_path("module", "arava_center");
   drupal_add_js($path."/soundmanager/script/soundmanager2-jsmin.js");
   drupal_add_js($path."/soundmanager/script/bar-ui.js");
   drupal_add_css($path."/soundmanager/css/bar-ui.css");
-  return theme('mp3_player', array("file" => $file_url));
+  return theme('mp3_player', array(
+    "file" => $file_url,
+    "teacher_name" => $teacher_name,
+    "course_name" => $course_name,
+  ));
 }
 
 
-function arava_center_theme()
-{
+function arava_center_theme() {
+  $path = drupal_get_path('module', 'arava_center');
  return array (
      'mp3_player'=> array(
-         'template' => 'template/mp3',
-         "variables" => array("teacher"=>"", "course_name"=> "", "file" => "")
+         "path" => $path,
+         'template' => 'templates/mp3',
+         "variables" => array(
+           "teacher_name"=>"",
+           "course_name"=> "",
+           "file" => "")
          )
- ); 
+     );
 }
 
 

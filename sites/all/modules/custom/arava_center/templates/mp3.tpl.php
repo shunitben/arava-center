@@ -16,7 +16,7 @@
   <div class="sm2-inline-element sm2-inline-status">
 
    <div class="sm2-playlist">
-    <div class="sm2-playlist-target"><ul class="sm2-playlist-bd"><li><b>Teacher name</b> - Course name</li></ul></div>
+    <div class="sm2-playlist-target"><ul class="sm2-playlist-bd"><li><b><?php print $teacher_name; ?></b> - <?php print $course_name; ?></li></ul></div>
    </div>
 
    <div class="sm2-progress">
@@ -53,7 +53,7 @@
 
   <div class="sm2-playlist-wrapper">
     <ul class="sm2-playlist-bd">
-     <li class="selected"><a href="<?php print $file; ?>"><b>Teacher name</b> - Course name</a></li>
+     <li class="selected"><a href="<?php print $file; ?>"><b><?php print $teacher_name; ?></b> - <?php print $course_name; ?></a></li>
     </ul>
   </div>
 
