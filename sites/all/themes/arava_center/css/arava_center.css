@@ -328,14 +328,15 @@ Animals in the area
     display: block;
     cursor: pointer;
     position: relative;
-    background-color: #e4e4e4;
+    background-color: #2a68af;
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 2px;
     padding: 5px 10px;
+    color: #fff;
 }
 .view-animals .view-grouping-header .toggle {
-    color: #2a68af;
+    color: #fff;
     font-weight: bold;
     font-size: 22px;
 }
