@@ -372,7 +372,8 @@ user page
 .edit-my-semester-block,
 .remaining-payment-block,
 .my-messages-block,
-.profile{
+.profile,
+.assignments-to-check-block{
     border: 1px solid #CFD0D2;
     width: 610px;
     padding: 20px;

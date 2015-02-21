@@ -54,6 +54,13 @@
 </div>
 <?php endif; ?>
 
+<div class="assignments-to-check-block">
+  <?php
+  $block = module_invoke('arava_assignments','block_view','check_assignment_link');
+  print render($block['content']);
+  ?>
+</div>
+
 <!--<div class="remaining-payment-block">
   <?php
   //$block = module_invoke('arava_registration','block_view','remaining_payment');

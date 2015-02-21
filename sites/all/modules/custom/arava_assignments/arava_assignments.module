@@ -138,6 +138,9 @@ function arava_assignments_block_info() {
   $blocks['course_assignments'] = array(
     'info' => t('Course Assignments'),
   );
+  $blocks['check_assignment_link'] = array(
+    'info' => t('Check Assignments Link'),
+  );
   return $blocks;
 }
 
@@ -151,6 +154,11 @@ function arava_assignments_block_view($delta = '') {
     case 'course_assignments':
       $block['subject'] = t('Assignments');
       $block['content'] = _arava_assignments_course_assignments();
+      break;
+
+    case 'check_assignment_link':
+      $block['subject'] = '';
+      $block['content'] = l(t('Assignments for me to check'), 'assignments/check');
       break;
   }
 
