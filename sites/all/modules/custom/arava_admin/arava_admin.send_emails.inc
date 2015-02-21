@@ -25,6 +25,28 @@ function arava_admin_send_emails_form($form, &$form_state) {
     '#required' => true,
   );
 
+  $vocabulary = taxonomy_vocabulary_machine_name_load('emails');
+  $email_terms = taxonomy_get_tree($vocabulary->vid, 0, null, true);
+  $site_name = variable_get('site_name');
+  $site_mail = variable_get('site_mail');
+  $site_address = $site_name . '<' . $site_mail . '>';
+  $from_emails = array(
+    $site_address => $site_address,
+  );
+  foreach ($email_terms as &$email) {
+    $address = $email->field_department_email[LANGUAGE_NONE][0]['value'];
+    $email_address = $email->name . '<' . $address . '>';
+    $from_emails[$email_address] = $email_address;
+  }
+
+  $form['from_email'] = array(
+    '#type' => 'select',
+    '#title' => t('From email'),
+    '#options' => $from_emails,
+    '#default_value' => array('admin@moar.co.il'),
+    '#required' => true,
+  );
+
   $form['subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Message subject'),
@@ -162,6 +184,7 @@ function arava_admin_send_emails_form_submit($form, &$form_state) {
   }
 
   $params = array(
+    'from' => $form_state['values']['from_email'],
     'subject' => $form_state['values']['subject'],
     'body' => '<div style="direction:rtl; text-align: right">' . $form_state['values']['message']['value'] . '</div>',
     'attachments' => $attachments,

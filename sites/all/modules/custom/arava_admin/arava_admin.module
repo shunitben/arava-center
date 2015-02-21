@@ -262,7 +262,11 @@ function arava_admin_finished($success, $results, $operations) {
 function arava_admin_send_emails_op($emails, $params) {
   foreach ($emails as $email) {
     if (!empty($email)) {
-      $result = drupal_mail('arava_admin', 'send_email', $email, 'en', $params);
+      $from_parts = explode('<', $params['from']);
+      $from_name = trim($from_parts[0]);
+      $from_email = trim(str_replace('>', '', $from_parts[1]));
+      $from_array = array('mail' => $from_email, 'name' => $from_name);
+      $result = drupal_mail('arava_admin', 'send_email', $email, 'en', $params, $from_array);
     }
   }
 }
