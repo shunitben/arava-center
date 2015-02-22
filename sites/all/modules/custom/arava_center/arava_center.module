@@ -23,10 +23,11 @@ function arava_center_menu() {
     'access callback' => true,
   );
 
-  $items['file/%node/%'] = array(
+  // arg1 = type: mp3 / swf
+  $items['file/%/%node/%'] = array(
     'title' => '',
     'page callback' => 'arava_center_view_only_file',
-    'page arguments' => array(1,2),
+    'page arguments' => array(2,3),
     'type' => MENU_CALLBACK,
     'access callback' => true,
   );

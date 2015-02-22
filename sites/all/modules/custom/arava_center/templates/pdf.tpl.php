@@ -1,7 +1,8 @@
 <div id="myContent">
 
   <script type="text/javascript">
-    swfobject.embedSWF(<?php print $file; ?>, "myContent", "100%", "100%", "9.0.0");
+    var height = window.innerHeight;
+    swfobject.embedSWF("<?php print $file; ?>", "myContent", "100%", height, "9.0.0");
   </script>
 
 </div>
