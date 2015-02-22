@@ -315,31 +315,55 @@ function arava_center_view_only_file($node, $fid) {
 
   $file = file_load($fid);
   $file_url = file_create_url($file->uri);
+  $file_mime = $file->filemime;
+
+  // tell the difference between audio/mp3, swf. blank page for anything else.
 
   $path=drupal_get_path("module", "arava_center");
-  drupal_add_js($path."/soundmanager/script/soundmanager2-jsmin.js");
-  drupal_add_js($path."/soundmanager/script/bar-ui.js");
-  drupal_add_css($path."/soundmanager/css/bar-ui.css");
-  return theme('mp3_player', array(
-    "file" => $file_url,
-    "teacher_name" => $teacher_name,
-    "course_name" => $course_name,
-  ));
+  // MP3:
+  if ($file_mime == 'audio/mpeg') {
+    drupal_add_js($path."/soundmanager/script/soundmanager2-jsmin.js");
+    drupal_add_js($path."/soundmanager/script/bar-ui.js");
+    drupal_add_css($path."/soundmanager/css/bar-ui.css");
+    return theme('mp3_player', array(
+      "file" => $file_url,
+      "teacher_name" => $teacher_name,
+      "course_name" => $course_name,
+    ));
+  }
+  // SWF:
+  elseif ($file_mime == 'application/x-shockwave-flash') {
+    drupal_add_js('//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', 'external');
+    return theme('flash_pdf', array(
+      'file' => $file_url,
+    ));
+  }
+  else {
+    return '';
+  }
+
 }
 
 
-function arava_center_theme() {
+function arava_center_theme()
+{
   $path = drupal_get_path('module', 'arava_center');
- return array (
-     'mp3_player'=> array(
-         "path" => $path,
-         'template' => 'templates/mp3',
-         "variables" => array(
-           "teacher_name"=>"",
-           "course_name"=> "",
-           "file" => "")
-         )
-     );
+  return array(
+    'mp3_player' => array(
+      "path" => $path,
+      'template' => 'templates/mp3',
+      "variables" => array(
+        "teacher_name" => "",
+        "course_name" => "",
+        "file" => "")
+    ),
+    'flash_pdf' => array(
+      "path" => $path,
+      'template' => 'templates/pdf',
+      "variables" => array(
+        "file" => "")
+    ),
+  );
 }
 
 
