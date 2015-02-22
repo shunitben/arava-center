@@ -1122,7 +1122,8 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
   $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['label'] = '';
-  $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
+  $handler->display->display_options['fields']['field_file']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/mp3/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
   $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
   /* שדה: Field collection item: טקסט נוסף */
@@ -1165,23 +1166,6 @@ print _arava_center_get_file_date($data);
 
   /* Display: pdf block */
   $handler = $view->new_display('block', 'pdf block', 'block');
-
-  /* Display: audio block */
-  $handler = $view->new_display('block', 'audio block', 'block_1');
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* כותרת: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'הקלטות';
-  $handler->display->display_options['header']['area']['format'] = 'html';
-  $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Field collection item: Entity with the הקלטות (field_audio_files_comp) */
-  $handler->display->display_options['relationships']['field_audio_files_comp_node']['id'] = 'field_audio_files_comp_node';
-  $handler->display->display_options['relationships']['field_audio_files_comp_node']['table'] = 'field_collection_item';
-  $handler->display->display_options['relationships']['field_audio_files_comp_node']['field'] = 'field_audio_files_comp_node';
-  $handler->display->display_options['relationships']['field_audio_files_comp_node']['label'] = 'פריט תוכן';
-  $handler->display->display_options['relationships']['field_audio_files_comp_node']['required'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* שדה: תוכן: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -1197,7 +1181,7 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['label'] = '';
   $handler->display->display_options['fields']['field_file']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
+  $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/swf/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
   $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
   /* שדה: Field collection item: טקסט נוסף */
@@ -1219,6 +1203,23 @@ print _arava_center_get_file_date($data);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+
+  /* Display: audio block */
+  $handler = $view->new_display('block', 'audio block', 'block_1');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* כותרת: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'הקלטות';
+  $handler->display->display_options['header']['area']['format'] = 'html';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Field collection item: Entity with the הקלטות (field_audio_files_comp) */
+  $handler->display->display_options['relationships']['field_audio_files_comp_node']['id'] = 'field_audio_files_comp_node';
+  $handler->display->display_options['relationships']['field_audio_files_comp_node']['table'] = 'field_collection_item';
+  $handler->display->display_options['relationships']['field_audio_files_comp_node']['field'] = 'field_audio_files_comp_node';
+  $handler->display->display_options['relationships']['field_audio_files_comp_node']['label'] = 'פריט תוכן';
+  $handler->display->display_options['relationships']['field_audio_files_comp_node']['required'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: תוכן: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
@@ -1257,6 +1258,43 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['relationships']['field_tamlil_files_comp_node']['field'] = 'field_tamlil_files_comp_node';
   $handler->display->display_options['relationships']['field_tamlil_files_comp_node']['label'] = 'פריט תוכן';
   $handler->display->display_options['relationships']['field_tamlil_files_comp_node']['required'] = TRUE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* שדה: תוכן: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'field_audio_files_comp_node';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* שדה: Field collection item: קובץ */
+  $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
+  $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
+  $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
+  $handler->display->display_options['fields']['field_file']['label'] = '';
+  $handler->display->display_options['fields']['field_file']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/swf/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
+  $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
+  /* שדה: Field collection item: טקסט נוסף */
+  $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
+  $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
+  $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
+  $handler->display->display_options['fields']['field_description']['label'] = '';
+  $handler->display->display_options['fields']['field_description']['element_label_colon'] = FALSE;
+  /* שדה: file date */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'file date';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+print _arava_center_get_file_date($data);
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: תוכן: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
@@ -1289,9 +1327,10 @@ print _arava_center_get_file_date($data);
     t('Desc'),
     t('חומרי קריאה ותרגול'),
     t('פריט תוכן'),
-    t('<a href="/file/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>'),
+    t('<a href="/file/mp3/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>'),
     t('הכל'),
     t('pdf block'),
+    t('<a href="/file/swf/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>'),
     t('audio block'),
     t('הקלטות'),
     t('tamlil block'),

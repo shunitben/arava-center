@@ -218,7 +218,7 @@ function arava_registration_wizard_field_default_field_instances() {
     'settings' => array(
       'description_field' => 1,
       'file_directory' => 'pdf_files',
-      'file_extensions' => 'pdf doc docx',
+      'file_extensions' => 'pdf doc docx swf',
       'max_filesize' => '50MB',
       'user_register_form' => FALSE,
     ),
@@ -226,16 +226,6 @@ function arava_registration_wizard_field_default_field_instances() {
       'active' => 1,
       'module' => 'file',
       'settings' => array(
-        'insert' => 0,
-        'insert_absolute' => FALSE,
-        'insert_class' => '',
-        'insert_default' => array(
-          0 => 'auto',
-        ),
-        'insert_styles' => array(
-          0 => 'auto',
-        ),
-        'insert_width' => '',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
@@ -298,7 +288,7 @@ function arava_registration_wizard_field_default_field_instances() {
     'settings' => array(
       'description_field' => 1,
       'file_directory' => 'pdf_files',
-      'file_extensions' => 'pdf doc docx',
+      'file_extensions' => 'pdf doc docx swf',
       'max_filesize' => '50MB',
       'user_register_form' => FALSE,
     ),
@@ -306,16 +296,6 @@ function arava_registration_wizard_field_default_field_instances() {
       'active' => 1,
       'module' => 'file',
       'settings' => array(
-        'insert' => 0,
-        'insert_absolute' => FALSE,
-        'insert_class' => '',
-        'insert_default' => array(
-          0 => 'auto',
-        ),
-        'insert_styles' => array(
-          0 => 'auto',
-        ),
-        'insert_width' => '',
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
