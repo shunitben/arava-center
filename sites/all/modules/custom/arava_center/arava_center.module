@@ -320,39 +320,77 @@ function arava_center_view_only_file($node, $fid) {
     return '';
   }
 
-  $course_wrp = entity_metadata_wrapper('node', $node);
-  $teacher_name = $course_wrp->field_teacher->title->value();
-  $course_name = $course_wrp->title->value();
-
-  $file = file_load($fid);
-  $file_url = file_create_url($file->uri);
-  $file_mime = $file->filemime;
-
-  // tell the difference between audio/mp3, swf. blank page for anything else.
-
-  $path=drupal_get_path("module", "arava_center");
-  // MP3:
-  if ($file_mime == 'audio/mpeg') {
-    drupal_add_js($path."/soundmanager/script/soundmanager2-jsmin.js");
-    drupal_add_js($path."/soundmanager/script/bar-ui.js");
-    drupal_add_css($path."/soundmanager/css/bar-ui.css");
-    return theme('mp3_player', array(
-      "file" => $file_url,
-      "teacher_name" => $teacher_name,
-      "course_name" => $course_name,
-    ));
+  $show_file = false;
+  if (isset($_COOKIE['moar_file_restriction'])) {
+    $cookie = $_COOKIE['moar_file_restriction'];
+    if ($cookie == $fid) {
+      $show_file = true;
+    }
   }
-  // SWF:
-  elseif ($file_mime == 'application/x-shockwave-flash') {
-    drupal_add_js('//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', 'external');
-    return theme('flash_pdf', array(
-      'file' => $file_url,
-    ));
+
+  if ($show_file) {
+    $course_wrp = entity_metadata_wrapper('node', $node);
+    $teacher_name = $course_wrp->field_teacher->title->value();
+    $course_name = $course_wrp->title->value();
+
+    $file = file_load($fid);
+    $file_url = file_create_url($file->uri);
+    $file_mime = $file->filemime;
+
+    // tell the difference between audio/mp3, swf. blank page for anything else.
+
+    $path=drupal_get_path("module", "arava_center");
+    // MP3:
+    if ($file_mime == 'audio/mpeg') {
+      drupal_add_js($path."/soundmanager/script/soundmanager2-jsmin.js");
+      drupal_add_js($path."/soundmanager/script/bar-ui.js");
+      drupal_add_css($path."/soundmanager/css/bar-ui.css");
+      return theme('mp3_player', array(
+        "file" => $file_url,
+        "teacher_name" => $teacher_name,
+        "course_name" => $course_name,
+      ));
+    }
+    // SWF:
+    elseif ($file_mime == 'application/x-shockwave-flash') {
+      drupal_add_js('//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', 'external');
+      return theme('flash_pdf', array(
+        'file' => $file_url,
+      ));
+    }
+    else {
+      return '';
+    }
   }
+  // request password before showing file
   else {
-    return '';
+    $form = drupal_get_form('arava_center_view_only_file_form');
+    return drupal_render($form);
   }
+}
 
+function arava_center_view_only_file_form($form, &$form_state) {
+  $form['password'] = array(
+    '#type' => 'password',
+    '#title' => t('Please re-enter your password to this site to view this file:'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Continue'),
+  );
+
+  return $form;
+}
+
+function arava_center_view_only_file_form_submit($form, &$form_state) {
+  $password = $form_state['values']['password'];
+  global $user;
+  require_once DRUPAL_ROOT . '/' . variable_get('password_inc', 'includes/password.inc');
+  $match = user_check_password($password, $user);
+  if ($match) {
+    setcookie('moar_file_restriction', arg(3), time()+60);
+  }
 }
 
 
