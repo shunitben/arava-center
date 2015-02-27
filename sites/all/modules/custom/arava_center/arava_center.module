@@ -255,19 +255,29 @@ function _arava_center_course_files() {
   }
 }
 
-function arava_center_views_pre_render(&$view) {
-  if ($view->name == 'files_for_course') {
-    $node = node_load($view->args[0]);
-    $restricted = !empty($node->field_files_restricted) && $node->field_files_restricted[LANGUAGE_NONE][0]['value'] == 1;
-    if (!$restricted) {
-      $view->field['field_file']->options['alter']['alter_text'] = 0;
+function arava_center_link_to_file($data, $view) {
+  $file = $data->field_field_file[0]['raw'];
+  $node = node_load($view->args[0]);
+  $restricted = !empty($node->field_files_restricted) && $node->field_files_restricted[LANGUAGE_NONE][0]['value'] == 1;
+
+  $type = 'other';
+  if ($restricted) {
+    switch ($file['filemime']) {
+      case 'application/x-shockwave-flash':
+        $type = 'swf';
+        break;
+      case 'audio/mpeg':
+        $type = 'mp3';
+        break;
     }
   }
-}
 
-function _arava_center_show_unalter_file_field($view) {
-  $view->field['field_file']->options['alter']['alter_text'] = 0;
-  return $view;
+  if ($type == 'other') {
+    print l($file['description'], file_create_url($file['uri']), array('attributes' => array('target' => '_blank')));
+  }
+  else {
+    print l($file['description'], 'file/'.$type.'/'.$node->nid.'/'.$file['fid'], array('attributes' => array('target' => '_blank')));
+  }
 }
 
 function _arava_center_user_has_access_to_files($node) {

@@ -4,7 +4,6 @@ package = Features
 dependencies[] = arava_registration_wizard
 dependencies[] = features
 dependencies[] = image
-dependencies[] = node
 dependencies[] = options
 dependencies[] = taxonomy
 dependencies[] = text

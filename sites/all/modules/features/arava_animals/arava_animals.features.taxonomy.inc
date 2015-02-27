@@ -13,7 +13,7 @@ function arava_animals_taxonomy_default_vocabularies() {
       'name' => 'Animals',
       'machine_name' => 'animals',
       'description' => '',
-      'hierarchy' => 1,
+      'hierarchy' => 0,
       'module' => 'taxonomy',
       'weight' => 0,
       'rdf_mapping' => array(
