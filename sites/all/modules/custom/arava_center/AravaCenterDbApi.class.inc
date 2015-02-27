@@ -77,4 +77,11 @@ class AravaCenterDbApi {
     return $semesters;
   }
 
+  public function hasSemesterStartedYet($semester_id) {
+    $semester = node_load($semester_id);
+    $dates = $semester->field_semester_dates;
+    $start_date = $dates[LANGUAGE_NONE][0]['value'];
+    return $start_date < time();
+  }
+
 }

@@ -167,7 +167,10 @@ function gradereg_page_build(&$page) {
   $node = menu_get_object('node');
   $arg2 = arg(2);
   if (!empty($node) && $node->type == 'course' && empty($arg2)) {
-    if (gradereg_node_grades_list_access($node)) {
+    module_load_include('inc', 'arava_center', 'AravaCenterDbApi.class');
+    $dbAPI = new AravaCenterDbApi();
+    $semester_id = $node->field_semester[LANGUAGE_NONE][0]['target_id'];
+    if (gradereg_node_grades_list_access($node) && $dbAPI->hasSemesterStartedYet($semester_id)) {
       $blocks['grades'] = array(
         '#markup' => l('>> ' . t('Course Student Grades'), 'node/' . $node->nid . '/grades', array('attributes' => array('class' => array('blue-button')))),
         '#weight' => -10,
