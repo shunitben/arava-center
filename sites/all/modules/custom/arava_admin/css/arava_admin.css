@@ -72,3 +72,10 @@ label.absent {
 #arava-admin-semesters-dropdown-form .form-item-semesters{
     display: inline-block;
 }
+
+/**
+* send emails
+**/
+#edit-extra-emails {
+    direction: ltr;
+}

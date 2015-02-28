@@ -2,6 +2,9 @@
 
 function arava_admin_send_emails_form($form, &$form_state) {
 
+  $path = drupal_get_path('module', 'arava_admin');
+  drupal_add_css($path . '/css/arava_admin.css');
+
   $emails = _arava_admin_get_emails_from_view();
   $options = array();
   $defaults = array();
@@ -23,6 +26,13 @@ function arava_admin_send_emails_form($form, &$form_state) {
     '#options' => $options,
     '#default_value' => $defaults,
     '#required' => true,
+  );
+
+  $form['extra_emails'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Also send this email to these addresses:'),
+    '#description' => t('Write one or more emails, separated by a commas.'),
+    '#size' => 120,
   );
 
   $vocabulary = taxonomy_vocabulary_machine_name_load('emails');
@@ -190,7 +200,10 @@ function arava_admin_send_emails_form_submit($form, &$form_state) {
     'attachments' => $attachments,
   );
 
-  $batch = arava_admin_send_emails_batch($form_state['values']['emails'], $params);
+  $to = $form_state['values']['emails'];
+  $to[] = $form_state['values']['extra_emails'];
+
+  $batch = arava_admin_send_emails_batch($to, $params);
   batch_set($batch);
 }
 
