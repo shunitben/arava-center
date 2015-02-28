@@ -423,3 +423,11 @@ color: #AD1818;
     /*width: 98px;*/
     /*margin-left: 0;*/
 /*}*/
+
+
+/*password restriction*/
+#arava-center-view-only-file-form {
+    width:50%;
+    margin-left: auto;
+    margin-right: auto;
+}
