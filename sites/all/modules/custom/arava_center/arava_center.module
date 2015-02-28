@@ -143,7 +143,7 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
     global $user;
     $user = user_load($user->uid);
-    if (!in_array('Site Manager', $user->roles) && $user->uid != 1) {
+    if (!user_access('administer users')) {
       $form['field_dairy']['#access'] = false;
       $form['field_gluten']['#access'] = false;
       $form['field_soy']['#access'] = false;
