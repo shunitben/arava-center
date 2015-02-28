@@ -367,6 +367,16 @@ div#admin-toolbar div.admin-tab {
 color: #AD1818;
 }
 
+.page-assignment .text-format-wrapper > a,
+.page-assignment .text-format-wrapper > fieldset {
+    display: none !important;
+}
+
+.page-assignment .text-format-wrapper {
+    margin-bottom: 40px;
+}
+
+
 /*********************************
 * compound file field - display
 *********************************/
