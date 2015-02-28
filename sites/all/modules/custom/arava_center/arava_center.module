@@ -151,6 +151,7 @@ function arava_center_form_alter(&$form, &$form_state, $form_id) {
       $form['field_peanuts']['#access'] = false;
       $form['field_i_eat_dairy']['#access'] = false;
       $form['field_i_eat_eggs']['#access'] = false;
+      $form['field_guest']['#access'] = false;
       $form['ckeditor']['#access'] = false;
       $form['timezone']['#access'] = false;
       $form['locale']['#access'] = false;
