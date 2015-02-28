@@ -107,3 +107,38 @@ function arava_assignments_update_7002() {
 
   db_add_field('assignment_completion', 'done', $spec);
 }
+
+/**
+ * Update all answers to use br's
+ */
+function arava_assignments_update_7003() {
+  $answers = db_query("SELECT * FROM assignment_answers");
+  foreach ($answers as $answer) {
+    db_update('assignment_answers')
+      ->condition('assignment_completion_id', $answer->assignment_completion_id)
+      ->condition('type', $answer->type)
+      ->condition('question', $answer->question)
+      ->fields(array(
+        'answer' => nl2br($answer->answer)
+      ))
+      ->execute();
+  }
+}
+
+/**
+ * Update all remarks to use br's
+ */
+function arava_assignments_update_7004() {
+  $remarks = db_query("SELECT * FROM assignment_remarks");
+  foreach ($remarks as $remark) {
+    db_update('assignment_remarks')
+      ->condition('assignment_completion_id', $remark->assignment_completion_id)
+      ->condition('type', $remark->type)
+      ->condition('question', $remark->question)
+      ->fields(array(
+        'remark' => nl2br($remark->remark)
+      ))
+      ->execute();
+  }
+}
+

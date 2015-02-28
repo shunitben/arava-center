@@ -34,7 +34,8 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
 
   foreach ($questions as $key => $question) {
     $form['question_' . ($key+1)] = array(
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'filtered_html',
       '#title' => ($key+1) . '. ' . $question,
       '#default_value' => (!empty($answers) && !empty($answers['question']) && !empty($answers['question'][$key+1])) ? $answers['question'][$key+1] : null,
       '#field_suffix' => (!empty($remarks) && !empty($remarks['question']) && !empty($remarks['question'][$key+1])) ? $remarks['question'][$key+1] : null,
@@ -43,7 +44,8 @@ function arava_assignments_do_assignment_form($form, &$form_state, $nid) {
 
   foreach ($extras as $key => $extra) {
     $form['extra_' . ($key+1)] = array(
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'filtered_html',
       '#title' => $extra,
       '#default_value' => (!empty($answers) && !empty($answers['extra']) && !empty($answers['extra'][$key+1])) ? $answers['extra'][$key+1] : null,
       '#field_suffix' => (!empty($remarks) && !empty($remarks['extra']) && !empty($remarks['extra'][$key+1])) ? $remarks['extra'][$key+1] : null,
@@ -102,7 +104,7 @@ function arava_assignments_do_assignment_form_submit($form, &$form_state) {
     if (strpos($key, 'question_') === 0) {
       $parts = explode('_', $key);
       $question = $parts[1];
-      $assignmentsAPI->setAnswerForAssignment($assignment_completion_id, 'question', $question, $value);
+      $assignmentsAPI->setAnswerForAssignment($assignment_completion_id, 'question', $question, $value['value']);
     }
   }
 
@@ -111,7 +113,7 @@ function arava_assignments_do_assignment_form_submit($form, &$form_state) {
     if (strpos($key, 'extra_') === 0) {
       $parts = explode('_', $key);
       $question = $parts[1];
-      $assignmentsAPI->setAnswerForAssignment($assignment_completion_id, 'extra', $question, $value);
+      $assignmentsAPI->setAnswerForAssignment($assignment_completion_id, 'extra', $question, $value['value']);
     }
   }
 
