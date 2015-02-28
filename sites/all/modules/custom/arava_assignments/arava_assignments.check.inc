@@ -1,74 +1,79 @@
 <?php
 
 function arava_assignments_check_assignment_form($form, &$form_state, $nid, $assignment_completion_id) {
-  $path = path_to_theme();
-  drupal_add_js($path . '/chosen/chosen.jquery.min.js');
-  drupal_add_css($path . '/chosen/chosen.css');
-  $path = drupal_get_path('module', 'arava_assignments');
-  drupal_add_js($path . '/js/arava_assignments.js');
 
-  $form = array();
+  if (arava_assignments_do_assignment_access($nid)) {
 
-  $form['intro'] = array(
-    '#markup' => t('If you are going to take a break in the middle of checking this assignment, please save it before you go,
-                    so that you don\'t loose your answers.<br>
-                    You can save as many times as you like.')
-  );
+    $path = path_to_theme();
+    drupal_add_js($path . '/chosen/chosen.jquery.min.js');
+    drupal_add_css($path . '/chosen/chosen.css');
+    $path = drupal_get_path('module', 'arava_assignments');
+    drupal_add_js($path . '/js/arava_assignments.js');
 
-  $node = node_load($nid);
-  $node_wrp = entity_metadata_wrapper('node', $node);
-  $questions = $node_wrp->field_questions->value();
-  $extras = $node_wrp->field_extra_assignments->value();
+    $form = array();
 
-  module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
-  $assignmentsAPI = new AssignmentsAPI();
-  $completion_data = $assignmentsAPI->getCompletionDataForAssignment($nid, $assignment_completion_id);
-  $answers = $completion_data['answers'];
-  $remarks = $completion_data['remarks'];
-
-  foreach ($questions as $key => $question) {
-    $form['question_' . ($key+1)] = array(
-      '#type' => 'text_format',
-      '#format' => 'filtered_html',
-      '#title' => ($key+1) . '. ' . $question,
-      '#field_prefix' => (!empty($answers) && !empty($answers['question']) && !empty($answers['question'][$key+1])) ? $answers['question'][$key+1] : null,
-      '#default_value' => (!empty($remarks) && !empty($remarks['question']) && !empty($remarks['question'][$key+1])) ? $remarks['question'][$key+1] : null,
+    $form['intro'] = array(
+      '#markup' => t('If you are going to take a break in the middle of checking this assignment, please save it before you go,
+                      so that you don\'t loose your answers.<br>
+                      You can save as many times as you like.')
     );
-  }
 
-  foreach ($extras as $key => $extra) {
-    $form['extra_' . ($key+1)] = array(
-      '#type' => 'text_format',
-      '#format' => 'filtered_html',
-      '#title' => $extra,
-      '#field_prefix' => (!empty($answers) && !empty($answers['extra']) && !empty($answers['extra'][$key+1])) ? $answers['extra'][$key+1] : null,
-      '#default_value' => (!empty($remarks) && !empty($remarks['extra']) && !empty($remarks['extra'][$key+1])) ? $remarks['extra'][$key+1] : null,
+    $node = node_load($nid);
+    $node_wrp = entity_metadata_wrapper('node', $node);
+    $questions = $node_wrp->field_questions->value();
+    $extras = $node_wrp->field_extra_assignments->value();
+
+    module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
+    $assignmentsAPI = new AssignmentsAPI();
+    $completion_data = $assignmentsAPI->getCompletionDataForAssignment($nid, $assignment_completion_id);
+    $answers = $completion_data['answers'];
+    $remarks = $completion_data['remarks'];
+
+    foreach ($questions as $key => $question) {
+      $form['question_' . ($key+1)] = array(
+        '#type' => 'text_format',
+        '#format' => 'filtered_html',
+        '#title' => ($key+1) . '. ' . $question,
+        '#field_prefix' => (!empty($answers) && !empty($answers['question']) && !empty($answers['question'][$key+1])) ? $answers['question'][$key+1] : null,
+        '#default_value' => (!empty($remarks) && !empty($remarks['question']) && !empty($remarks['question'][$key+1])) ? $remarks['question'][$key+1] : null,
+      );
+    }
+
+    foreach ($extras as $key => $extra) {
+      $form['extra_' . ($key+1)] = array(
+        '#type' => 'text_format',
+        '#format' => 'filtered_html',
+        '#title' => $extra,
+        '#field_prefix' => (!empty($answers) && !empty($answers['extra']) && !empty($answers['extra'][$key+1])) ? $answers['extra'][$key+1] : null,
+        '#default_value' => (!empty($remarks) && !empty($remarks['extra']) && !empty($remarks['extra'][$key+1])) ? $remarks['extra'][$key+1] : null,
+      );
+    }
+
+    $form['grade'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Grade'),
+      '#default_value' => $completion_data['grade'],
+      '#description' => t('At the moment, you also need to input the grades in the grades system.'),
     );
+
+    $form['assignment_id'] = array(
+      '#type' => 'hidden',
+      '#value' => $nid,
+    );
+
+    $form['assignment_completion_id'] = array(
+      '#type' => 'hidden',
+      '#value' => $assignment_completion_id,
+    );
+
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save'),
+    );
+
+    return $form;
+
   }
-
-  $form['grade'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Grade'),
-    '#default_value' => $completion_data['grade'],
-    '#description' => t('At the moment, you also need to input the grades in the grades system.'),
-  );
-
-  $form['assignment_id'] = array(
-    '#type' => 'hidden',
-    '#value' => $nid,
-  );
-
-  $form['assignment_completion_id'] = array(
-    '#type' => 'hidden',
-    '#value' => $assignment_completion_id,
-  );
-
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save'),
-  );
-
-  return $form;
 }
 
 function arava_assignments_check_assignment_form_submit($form, &$form_state) {

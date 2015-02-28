@@ -9,8 +9,7 @@ function arava_assignments_menu() {
     'page arguments' => array('arava_assignments_do_assignment_form', 1),
     'file' => 'arava_assignments.do.inc',
     'type' => MENU_CALLBACK,
-    'access callback' => 'arava_assignments_do_assignment_access',
-    'access arguments' => array(1),
+    'access arguments' => array('signup to courses and accommodation'),
   );
 
   $items['assignment/%/check/%'] = array(
@@ -20,8 +19,7 @@ function arava_assignments_menu() {
     'page arguments' => array('arava_assignments_check_assignment_form', 1, 3),
     'file' => 'arava_assignments.check.inc',
     'type' => MENU_CALLBACK,
-    'access callback' => 'arava_assignments_check_assignment_access',
-    'access arguments' => array(1,3),
+    'access arguments' => array('signup to courses and accommodation'),
   );
 
   $items['assignments/check'] = array(
