@@ -91,7 +91,7 @@ function arava_assignments_check_assignment_form_submit($form, &$form_state) {
     if (strpos($key, 'question_') === 0) {
       $parts = explode('_', $key);
       $question = $parts[1];
-      $assignmentsAPI->setRemarkForAssignment($assignment_completion_id, 'question', $question, $value);
+      $assignmentsAPI->setRemarkForAssignment($assignment_completion_id, 'question', $question, $value['value']);
     }
   }
 
@@ -100,7 +100,7 @@ function arava_assignments_check_assignment_form_submit($form, &$form_state) {
     if (strpos($key, 'extra_') === 0) {
       $parts = explode('_', $key);
       $question = $parts[1];
-      $assignmentsAPI->setRemarkForAssignment($assignment_completion_id, 'extra', $question, $value);
+      $assignmentsAPI->setRemarkForAssignment($assignment_completion_id, 'extra', $question, $value['value']);
     }
   }
 
