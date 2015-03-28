@@ -24,7 +24,7 @@ function arava_center_menu() {
   );
 
   // arg1 = type: mp3 / swf
-  $items['file/%/%node/%'] = array(
+  $items['file-view/%/%node/%'] = array(
     'title' => '',
     'page callback' => 'arava_center_view_only_file',
     'page arguments' => array(2,3),
@@ -277,7 +277,7 @@ function arava_center_link_to_file($data, $view) {
     print l($file['description'], file_create_url($file['uri']), array('attributes' => array('target' => '_blank')));
   }
   else {
-    print l($file['description'], 'file/'.$type.'/'.$node->nid.'/'.$file['fid'], array('attributes' => array('target' => '_blank')));
+    print l($file['description'], 'file-view/'.$type.'/'.$node->nid.'/'.$file['fid'], array('attributes' => array('target' => '_blank')));
   }
 }
 

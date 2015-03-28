@@ -495,6 +495,7 @@ function arava_registration_wizard_field_group_info() {
       1 => 'field_user_name',
       2 => 'field_user_phone',
       3 => 'account',
+      4 => 'field_guest',
     ),
     'format_type' => 'tab',
     'format_settings' => array(
