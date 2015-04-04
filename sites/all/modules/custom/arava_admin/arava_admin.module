@@ -81,6 +81,13 @@ function arava_admin_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/arava-reports/courses-students'] = array(
+    'title' => t('Courses students'),
+    'page callback' => 'arava_courses_students_page',
+    'access arguments' => array('view arava administration reports'),
+    'type' => MENU_CALLBACK,
+    'file' => 'arava_admin.courses_students.inc'
+  );
 
   return $items;
 }
