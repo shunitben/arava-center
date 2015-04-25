@@ -49,11 +49,14 @@ function arava_assignments_check_assignment_form($form, &$form_state, $nid, $ass
       );
     }
 
+    module_load_include('php', 'gradereg', 'gradereg.pages'); // this if for the validation function
+
     $form['grade'] = array(
       '#type' => 'textfield',
       '#title' => t('Grade'),
       '#default_value' => $completion_data['grade'],
-      '#description' => t('At the moment, you also need to input the grades in the grades system.'),
+      '#description' => t('New - grades are now automatically copied into the grades system!'),
+      '#element_validate' => array('_gradereg_grade_validate'),
     );
 
     $form['assignment_id'] = array(
@@ -84,7 +87,7 @@ function arava_assignments_check_assignment_form_submit($form, &$form_state) {
 
   module_load_include('inc', 'arava_assignments', 'AssignmentsAPI.class');
   $assignmentsAPI = new AssignmentsAPI();
-  $assignmentsAPI->setRemarksCompletionDataForAssignment($assignment_completion_id, $grade);
+  $assignmentsAPI->setRemarksCompletionDataForAssignment($assignment_id, $assignment_completion_id, $grade);
 
   // questions
   foreach ($form_state['values'] as $key => $value) {

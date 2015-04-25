@@ -283,28 +283,40 @@ function gradereg_edit_grade_submit($form, &$form_state){
 	}else{
 		db_query("delete from {grades} where nid=:nid and uid=:uid and field=:field and delta=:delta", array(':nid' => $node->nid, ':uid' => $account->uid, ':field' => 'finaltest', ':delta' => 0));
 		}
-	
-	$hw = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $account->uid, ':field' => 'homework'))->fetchField();
-	$data = array(
-		'nid' => $node->nid,
-		'uid' => $account->uid,
-		'homework_avg' => $hw,
-	);
-	
-	db_query("delete from {grades_data} where nid=:nid and uid=:uid", array(':uid' => $account->uid, ':nid' => $node->nid));
-	if($quiz_num){
-		$quiz = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $account->uid, ':field' => 'quiz'))->fetchField();
-		$data['quiz_avg'] = $quiz;
-	}
-	if($finaltest){
-		$finaltest_score = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $node->nid, ':uid' => $account->uid, ':field' => 'finaltest'))->fetchField();
-		$data['finaltest_avg'] = $finaltest_score;
-	}
-	drupal_write_record('grades_data', $data);
+
+  gradereg_update_grades_data($node->nid, $account->uid);
 	
 	unset($form_state['storage']);
 	drupal_set_message(t('The grades have been saved'));
 	$form_state['redirect'] = 'node/'.$node->nid.'/grades/'.$node->field_semester['und'][0]['target_id'];
+}
+
+/**
+ * @param $nid (course nid)
+ * @param $uid (user id)
+ */
+function gradereg_update_grades_data($nid, $uid) {
+  // delete old data
+  db_query("delete from {grades_data} where nid=:nid and uid=:uid", array(':uid' => $uid, ':nid' => $nid));
+
+  // get homework average
+  $hw = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $nid, ':uid' => $uid, ':field' => 'homework'))->fetchField();
+  $data = array(
+    'nid' => $nid,
+    'uid' => $uid,
+    'homework_avg' => $hw,
+  );
+
+  // get quiz average
+  $quiz = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $nid, ':uid' => $uid, ':field' => 'quiz'))->fetchField();
+  $data['quiz_avg'] = $quiz;
+
+  // get test score
+  $finaltest_score = db_query("select avg(score) from {grades} where nid=:nid and uid=:uid and field=:field", array(':nid' => $nid, ':uid' => $uid, ':field' => 'finaltest'))->fetchField();
+  $data['finaltest_avg'] = $finaltest_score;
+
+  // write updated data
+  drupal_write_record('grades_data', $data);
 }
 
 function gradereg_user_grades_list($account){

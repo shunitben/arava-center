@@ -103,7 +103,7 @@ class AssignmentsAPI {
     }
   }
 
-  function setRemarksCompletionDataForAssignment($assignment_completion_id, $grade) {
+  function setRemarksCompletionDataForAssignment($assignment_id, $assignment_completion_id, $grade) {
     if (empty($grade)) $grade = 0;
 
     db_update('assignment_completion')
@@ -112,6 +112,37 @@ class AssignmentsAPI {
         'grade' => $grade,
       ))
       ->execute();
+
+    // update the score in the grades system too
+    if (!empty($grade)) {
+
+      global $user;
+      $assignment = node_load($assignment_id);
+      $assignment_type = $assignment->field_assignment_type[LANGUAGE_NONE][0]['value'];
+      $lesson_num = $assignment->field_lesson_num[LANGUAGE_NONE][0]['value'] - 1; // in the grades module, lesson_num is zero-based
+      $course_nid = $assignment->field_course[LANGUAGE_NONE][0]['target_id'];
+
+      $student = db_select('assignment_completion', 'ac')
+        ->condition('ac.assignment_completion_id', $assignment_completion_id)
+        ->fields('ac', array('student'))
+        ->execute()->fetchAssoc();
+
+      db_merge('grades')
+        ->key(array(
+          'nid' => $course_nid,
+          'uid' => $student['student'],
+          'field' => $assignment_type,
+          'delta' => $lesson_num,
+        ))
+        ->fields(array(
+          'score' => $grade,
+          'created' => time(),
+          'examiner_uid' => $user->uid,
+        ))
+        ->execute();
+
+      gradereg_update_grades_data($course_nid, $student['student']);
+    }
   }
 
   function setDoneForAssignment($assignment_completion_id, $done = true) {
