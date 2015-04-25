@@ -138,15 +138,17 @@ function arava_assignments_send_link_to_checker_submit($form, &$form_state) {
   $checker = user_load($form_state['values']['checker']);
   global $user;
   $user = user_load($user->uid);
+  $from = $user->mail;
   $checker_name = $checker->field_user_name[LANGUAGE_NONE][0]['value'];
   $link = url('assignment/' . $assignment_id . '/check/' . $assignment_completion['assignment_completion_id'], array('absolute' => true));
   $params = array(
     'checker_name' => $checker_name,
     'doer_name' => $user->field_user_name[LANGUAGE_NONE][0]['value'],
+    'doer_email' => $from,
     'assignment_name' => $assignment->title,
     'assignment_link' => $link,
   );
-  $result = drupal_mail('arava_assignments', 'check_assignment_link', $checker->mail, 'en', $params);
+  $result = drupal_mail('arava_assignments', 'check_assignment_link', $checker->mail, 'en', $params, $from);
   if ($result['result']) {
     drupal_set_message(t('An email was sent to @name', array('@name' => $checker_name)), 'status');
   }

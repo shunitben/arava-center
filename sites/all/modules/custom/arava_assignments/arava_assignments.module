@@ -300,6 +300,10 @@ function arava_assignments_mail($key, &$message, $params) {
       $message['body'][] = t('Thank you :)') . '<br>';
       $message['body'][] = $params['doer_name'];
       $message['body'][] = '</div>';
+
+      $message['from'] = $message['headers']['From'] = '"'.$params['doer_name'].'" <'.$params['doer_email'].'>';
+      $message['from'] = $message['headers']['Sender'] = '"'.$params['doer_name'].'" <'.$params['doer_email'].'>';
+      $message['from'] = $message['headers']['Reply-To'] = '"'.$params['doer_name'].'" <'.$params['doer_email'].'>';
       break;
   }
 }
