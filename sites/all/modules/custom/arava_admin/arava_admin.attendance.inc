@@ -269,25 +269,40 @@ function arava_admin_take_attendance_form_submit($form, &$form_state) {
       $made_up = !empty($attendance[2]);
       $status = $present ? 1 : ($made_up ? 2 : 0);
 
-      db_merge('attendance')
-        ->key(array(
-          'student_uid' => (int)$uid,
-          'course_nid' => (int)$form_state['values']['course'],
-          'lesson_num' => (int)$form_state['values']['lesson'],
-        ))
-        ->fields(array(
-          'attendance_taker_uid' => $user->uid,
-          'attendance_status' => $status,
-          'updated_date' => time(),
-        ))
-        ->execute();
+      _arava_admin_attendance_save($uid, $form_state['values']['course'], $form_state['values']['lesson'], $user->uid, $status);
     }
   }
-
   drupal_set_message('The attendance data you submitted has been saved.');
 }
 
+function _arava_admin_attendance_save($uid, $course, $lesson, $attendance_taker_uid, $status) {
+  db_merge('attendance')
+    ->key(array(
+      'student_uid' => (int)$uid,
+      'course_nid' => (int)$course,
+      'lesson_num' => (int)$lesson,
+    ))
+    ->fields(array(
+      'attendance_taker_uid' => (int)$attendance_taker_uid,
+      'attendance_status' => (int)$status,
+      'updated_date' => time(),
+    ))
+    ->execute();
+}
+
+function arava_admin_change_attendance_status($uid, $course, $lesson, $status) {
+  global $user;
+  _arava_admin_attendance_save($uid, $course, $lesson, $user->uid, $status);
+  print "ok";
+}
+
 function arava_admin_attendance_report($course) {
+
+  $path = drupal_get_path('module', 'arava_admin');
+  drupal_add_js($path . '/js/arava_admin.js');
+  drupal_add_css($path . '/css/arava_admin.css');
+  drupal_add_library('system', 'ui.dialog');
+
   $course = node_load(check_plain($course));
 
   $intro = '<h3>' . t('Course: @course', array('@course' => $course->title)) . '</h3>';
@@ -334,12 +349,15 @@ function arava_admin_attendance_report($course) {
     $view_result = _arava_admin_get_students_per_course_view_results($course->nid);
     foreach ($view_result as $result) {
       $student_lessons = $students[$result->users_field_data_field_user_uid];
-      $student_name = $result->field_field_user_name[0]['rendered']['#markup'];
+      $student_name = '<span class="student-name">' . $result->field_field_user_name[0]['rendered']['#markup'] . '</span>';
+      $student_id = $result->users_field_data_field_user_uid;
+      $student_name .= '<span class="hidden student-id">'.$student_id.'</span><span class="hidden course-id">'.$course->nid.'</span>';
 
       $student_row = array($student_name);
       for ($i = 1; $i <= $num_lessons; $i++) {
         $value = !empty($student_lessons[$i]) ? $student_lessons[$i] : 0;
-        $attendance_value = '<span class="int-val int-val-' . $value . '">' . $value . '</span>';
+        $unique_class = 'attendance-' . $student_id . '-' . $i;
+        $attendance_value = '<span class="attendance-value int-val int-val-' . $value . ' ' . $unique_class . '">' . $value . '</span><span class="hidden lesson-num">'.$i.'</span>';
         foreach (array('homework', 'quiz') as $type) {
           $uid = $result->users_field_data_field_user_uid;
           if (isset($done_data[$i]) && isset($done_data[$i][$type]) && isset($done_data[$i][$type][$uid])) {

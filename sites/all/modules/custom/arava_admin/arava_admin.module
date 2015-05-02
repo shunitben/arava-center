@@ -64,6 +64,19 @@ function arava_admin_menu() {
     'file' => 'arava_admin.attendance.inc'
   );
 
+  // arg3 = uid (of the student)
+  // arg4 = course nid
+  // arg5 = lesson number
+  // arg6 = new status
+  $items['admin/attendance/change-status/%/%/%/%'] = array(
+    'title' => t('Change attendance status'),
+    'page callback' => 'arava_admin_change_attendance_status',
+    'page arguments' => array(3,4,5,6),
+    'access arguments' => array('take attendance'),
+    'type' => MENU_CALLBACK,
+    'file' => 'arava_admin.attendance.inc'
+  );
+
   $items['admin/arava-reports/course/%/attendance'] = array(
     'title' => t('Attendance Report'),
     'page callback' => 'arava_admin_attendance_report',

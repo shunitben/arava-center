@@ -36,9 +36,56 @@
                 Drupal.behaviors.arava_admin.colorUncheckedRed();
             })
 
+            // change attendance status
+            $('.attendance-value').click(function(){
+                var current = $(this).text(),
+                    user_name = $(this).parents('tr').find('.student-name').text(),
+                    buttons = [],
+                    uid =  $(this).parents('tr').find('.student-id').text(),
+                    course_id = $(this).parents('tr').find('.course-id').text(),
+                    lesson_num = $(this).siblings('.lesson-num').text();
+
+                if (current !== '0') {
+                    buttons.push({
+                        text: Drupal.t("Absent"),
+                        click: function() {
+                            Drupal.behaviors.arava_admin.changeAttendanceStatus(uid, course_id, lesson_num, 0);
+                            $( this ).dialog( "close" );
+                        }
+                    });
+                }
+                if (current !== '1') {
+                    buttons.push({
+                        text: Drupal.t("Present"),
+                        click: function() {
+                            Drupal.behaviors.arava_admin.changeAttendanceStatus(uid, course_id, lesson_num, 1);
+                            $( this ).dialog( "close" );
+                        }
+                    });
+                }
+                if (current !== '2') {
+                    buttons.push({
+                        text: Drupal.t("Made up"),
+                        click: function() {
+                            Drupal.behaviors.arava_admin.changeAttendanceStatus(uid, course_id, lesson_num, 2);
+                            $( this ).dialog( "close" );
+                        }
+                    });
+                }
+
+                var choose = '<div>' + Drupal.t('What status do you want to change @name\'s status to?', {'@name': user_name}) + '</div>';
+                $(choose).dialog({
+                    height: 200,
+                    width: 300,
+                    modal: true,
+                    buttons: buttons
+                });
+            });
+
             // remove from course
             $('.remove_from_course').click(function(){
-                if (window.confirm(Drupal.t('Are you sure you want to remove this user from the course?'))) {
+                var user_name = $(this).parents('tr').find('.views-field-field-user-name').text();
+                if (window.confirm(Drupal.t('Are you sure you want to remove @name from the course?', {'@name': user_name}))) {
                    var course = $(this).attr('course'),
                        user = $(this).attr('user'),
                        this_row = $(this).parents('tr');
@@ -68,6 +115,20 @@
                     $(this).find('label').removeClass('absent');
                 }
             })
+        },
+
+        changeAttendanceStatus: function(uid, course_id, lesson_num, status) {
+            var square = '.attendance-' + uid + '-' + lesson_num;
+            $(square).addClass('loading');
+            $.ajax({url: '/admin/attendance/change-status/'+uid+'/'+course_id+'/'+lesson_num+'/'+status})
+            .done(function() {
+                $(square).removeClass('int-val-0');
+                $(square).removeClass('int-val-1');
+                $(square).removeClass('int-val-2');
+                $(square).removeClass('loading');
+                $(square).addClass('int-val-' + status);
+                $(square).text(status);
+            });
         }
 
 

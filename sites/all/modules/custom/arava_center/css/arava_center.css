@@ -23,6 +23,14 @@ Show values of 0,1,2 visually.
     color: orange;
 }
 
+.int-val.loading{
+    background: transparent;
+    color: transparent;
+    background-image:  url("../../../../../../misc/throbber-active.gif");
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
 .remove_from_course.loading:after {
     content: '';
     background-image:  url("../../../../../../misc/throbber-active.gif");

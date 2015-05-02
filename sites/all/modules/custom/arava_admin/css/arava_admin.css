@@ -79,3 +79,13 @@ label.absent {
 #edit-extra-emails {
     direction: ltr;
 }
+
+/**
+* general
+**/
+.hidden {
+    display: none;
+}
+.loading{
+
+}
