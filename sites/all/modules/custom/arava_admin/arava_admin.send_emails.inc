@@ -4,6 +4,7 @@ function arava_admin_send_emails_form($form, &$form_state) {
 
   $path = drupal_get_path('module', 'arava_admin');
   drupal_add_css($path . '/css/arava_admin.css');
+  drupal_add_js($path . '/js/arava_admin.js');
 
   $emails = _arava_admin_get_emails_from_view();
   $options = array();
@@ -23,6 +24,7 @@ function arava_admin_send_emails_form($form, &$form_state) {
   $form['emails'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Email addresses to send message to:'),
+    '#prefix' => '<a class="uncheck-all">' . t('>> uncheck all') . '</a><a class="check-all hidden">' . t('>> check all') . '</a>',
     '#options' => $options,
     '#default_value' => $defaults,
     '#required' => true,

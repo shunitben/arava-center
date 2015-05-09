@@ -102,6 +102,20 @@
                 }
             });
 
+            // uncheck all
+            $('.uncheck-all').click(function(e) {
+                e.preventDefault();
+                $('.form-item-emails input').removeAttr('checked');
+                $(this).addClass('hidden');
+                $('.check-all').removeClass('hidden');
+            });
+            // check all
+            $('.check-all').click(function(e) {
+                e.preventDefault();
+                $('.form-item-emails input').attr('checked', 'checked');
+                $(this).addClass('hidden');
+                $('.uncheck-all').removeClass('hidden');
+            });
         },
 
         hasChanges: false,
