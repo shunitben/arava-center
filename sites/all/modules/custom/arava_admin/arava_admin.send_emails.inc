@@ -31,10 +31,9 @@ function arava_admin_send_emails_form($form, &$form_state) {
   );
 
   $form['extra_emails'] = array(
-    '#type' => 'textfield',
+    '#type' => 'textarea',
     '#title' => t('Also send this email to these addresses:'),
-    '#description' => t('Write one or more emails, separated by a commas.'),
-    '#size' => 120,
+    '#description' => t('Write one or more emails, separated by commas.'),
   );
 
   $vocabulary = taxonomy_vocabulary_machine_name_load('emails');
