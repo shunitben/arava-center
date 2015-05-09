@@ -202,7 +202,13 @@ function arava_admin_send_emails_form_submit($form, &$form_state) {
   );
 
   $to = $form_state['values']['emails'];
-  $to[] = $form_state['values']['extra_emails'];
+  $extra_emails = explode(',', $form_state['values']['extra_emails']);
+  if (!empty($extra_emails)) {
+    foreach ($extra_emails as $email) {
+      $email = trim($email);
+      $to[] = $email;
+    }
+  }
 
   $batch = arava_admin_send_emails_batch($to, $params);
   batch_set($batch);
