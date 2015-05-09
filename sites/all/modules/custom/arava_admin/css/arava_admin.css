@@ -68,6 +68,9 @@
 label.absent {
     color: red;
 }
+.attendance-value {
+    cursor: pointer;
+}
 
 #arava-admin-semesters-dropdown-form .form-item-semesters{
     display: inline-block;
