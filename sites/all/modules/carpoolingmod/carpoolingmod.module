@@ -174,17 +174,14 @@ function carpoolingmod_form_alter(&$form, $form_state, $form_id){
 
 function carpoolingmod_user_view($account, $view_mode, $langcode){
 	global $user;
-	if($view_mode == 'full' && $user->uid == $account->uid && (user_access('setup carpooling pref') || user_access('join ride'))){
-		$data = carpoolingmod_load_pref($account);
-		
-//		if($data && ($data['type'] == 'offer' || $data['type'] == 'lookfor')){
-			$account->content['transportation'] = array(
-				'#type' => 'markup',
-				'#markup' => '<ul class="item-list"><li>'.l(t('Car Pooling Preference Setting'), 'MyRides').'</li>
-					<li>'.l(t('Users of Offering Ride'), 'rides-carpooling/offer-ride').'</li>
-					<li>'.l(t('Users of Looking for Ride'), 'rides-carpooling/look-for-ride').'</li></ul>',
-			);
-//		}
+	if ($view_mode == 'full' && $user->uid == $account->uid && (user_access('setup carpooling pref') || user_access('join ride')) && arava_registration_have_active_semester()){
+
+    $account->content['transportation'] = array(
+      '#type' => 'markup',
+      '#markup' => '<ul class="item-list"><li>'.l(t('Car Pooling Preference Setting'), 'MyRides').'</li>
+        <li>'.l(t('Users of Offering Ride'), 'rides-carpooling/offer-ride').'</li>
+        <li>'.l(t('Users of Looking for Ride'), 'rides-carpooling/look-for-ride').'</li></ul>',
+    );
 	}
 }
 
@@ -293,6 +290,10 @@ function carpoolingmod_load_pref($account = null){
 	}
 
   $semester = _get_current_semester();
+
+  if ($semester === false) {
+    return false;
+  }
 	
 	$data = db_query("select * from {carpooling_pref} where uid=:uid and semester=:semester", array(':uid' => $account->uid, ':semester' => $semester))->fetchAssoc();
 	

@@ -22,5 +22,8 @@ function arava_center_preprocess_page(&$vars) {
 }
 
 function arava_center_preprocess_user_profile(&$vars) {
+  if (!arava_registration_have_active_semester()) {
+    $vars['no_active_semester'] = true;
+  }
   unset($vars['user_profile']['mimemail']);
 }

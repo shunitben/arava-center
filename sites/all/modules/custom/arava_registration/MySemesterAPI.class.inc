@@ -62,7 +62,8 @@ class MySemesterAPI {
 											INNER JOIN field_data_field_semester_dates dates ON open_reg.entity_id = dates.entity_id
 											WHERE field_open_for_registration_value = 1
 											ORDER BY dates.field_semester_dates_value ASC");
-		foreach ($query as $row) {
+		$result = null;
+    foreach ($query as $row) {
 			$result = $row->entity_id; // override to get the latest open semester, just in case.
 		}
 		$this->semester_id = $result;
@@ -78,6 +79,11 @@ class MySemesterAPI {
 	 * @return bool|mixed|null
 	 */
 	protected function getUserSemester($semester_id) {
+    if ($semester_id === null) {
+      $this->user_semester = null;
+      return;
+    }
+
 		$query = db_query(" SELECT user.entity_id
  											FROM field_data_field_user user
  											INNER JOIN field_data_field_semester semester ON user.entity_id = semester.entity_id
@@ -597,6 +603,9 @@ class MySemesterAPI {
   }
 
   public function getComplete() {
+    if ($this->user_semester === null) {
+      return false;
+    }
     return $this->user_semester->field_registration_complete->value();
   }
 
@@ -610,6 +619,9 @@ class MySemesterAPI {
   }
 
   public function getMySemesterId() {
+    if ($this->user_semester === null) {
+      return null;
+    }
     return $this->user_semester->getIdentifier();
   }
   

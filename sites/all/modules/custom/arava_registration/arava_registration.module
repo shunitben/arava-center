@@ -302,7 +302,7 @@ function arava_registration_user_login(&$edit, $account) {
     module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
     $mySemesterAPI = new MySemesterAPI();
     $courses = $mySemesterAPI->getAllCoursesForUser();
-    if (empty($courses)) {
+    if (empty($courses) && arava_registration_have_active_semester()) {
       $GLOBALS['destination'] = 'registration/course';
     }
   }
@@ -548,6 +548,9 @@ function _arava_registration_generate_all_timetables($display) {
   module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
   $MySemesterApi = new MySemesterAPI();
   $semester_id = $MySemesterApi->getSemesterId();
+  if ($semester_id === null) {
+    return t('A timetable will be available when the next semester is nearer.');
+  }
   $semester = entity_metadata_wrapper('node', node_load($semester_id));
 
   $semester_dates = $semester->field_semester_dates->value();
@@ -774,7 +777,7 @@ function arava_registration_views_post_execute(&$view) {
  */
 function arava_registration_user_view($account, $view_mode, $langcode){
   global $user;
-  if($view_mode == 'full' && $user->uid == $account->uid){
+  if($view_mode == 'full' && $user->uid == $account->uid && arava_registration_have_active_semester()){
       $account->content['one_time_rides'] = array(
         '#type' => 'markup',
         '#weight' => 4,
@@ -826,3 +829,13 @@ function _arava_registration_monitor_semester_change($node) {
   }
 }
 
+/**
+ * Do we have an active (open for registration) semester?
+ * @return bool
+ */
+function arava_registration_have_active_semester() {
+  module_load_include('inc', 'arava_registration', 'MySemesterAPI.class');
+  $MySemesterApi = new MySemesterAPI();
+  $semester_id = $MySemesterApi->getSemesterId();
+  return $semester_id !== null;
+}

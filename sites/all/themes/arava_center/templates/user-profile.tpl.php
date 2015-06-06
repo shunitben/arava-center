@@ -34,18 +34,20 @@
  * @ingroup themeable
  */
 ?>
-<div class="timetable-print">
-  <?php print l(t('Timetable print version'), 'my_timetable', array('attributes' => array('target' => '_blank'))); ?>
-</div>
-<div class="my-timetable-block">
+<?php if (empty($no_active_semester)) : ?>
+  <div class="timetable-print">
+    <?php print l(t('Timetable print version'), 'my_timetable', array('attributes' => array('target' => '_blank'))); ?>
+  </div>
+  <div class="my-timetable-block">
 
-  <?php
-  $block = module_invoke('arava_registration','block_view','semester_timetable');
-  print render($block['content']);
-  ?>
-</div>
+    <?php
+    $block = module_invoke('arava_registration','block_view','semester_timetable');
+    print render($block['content']);
+    ?>
+  </div>
+<?php endif; ?>
 
-<?php if (arava_registration_access(true)): ?>
+<?php if (arava_registration_access(true) && empty($no_active_semester)): ?>
 <div class="edit-my-semester-block">
   <?php
   $block = module_invoke('arava_registration','block_view','edit_my_semester');

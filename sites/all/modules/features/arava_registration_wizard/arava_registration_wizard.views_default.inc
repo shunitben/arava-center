@@ -33,33 +33,33 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '100';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Sort criterion: Content: Title */
+  /* Sort criterion: תוכן: כותרת */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['sorts']['title']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: תוכן: מפורסם */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
+  /* Filter criterion: תוכן: סוג */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'accomodation' => 'accomodation',
   );
-  /* Filter criterion: Content: Nid */
+  /* Filter criterion: תוכן: Nid */
   $handler->display->display_options['filters']['nid']['id'] = 'nid';
   $handler->display->display_options['filters']['nid']['table'] = 'node';
   $handler->display->display_options['filters']['nid']['field'] = 'nid';
@@ -107,14 +107,14 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Link */
+  /* שדה: תוכן: קישור */
   $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
   $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
@@ -123,7 +123,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['view_node']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view_node']['text'] = 'מידע נוסף';
-  /* Field: Content: עלות לסמסטר */
+  /* שדה: תוכן: עלות לסמסטר */
   $handler->display->display_options['fields']['field_price']['id'] = 'field_price';
   $handler->display->display_options['fields']['field_price']['table'] = 'field_data_field_price';
   $handler->display->display_options['fields']['field_price']['field'] = 'field_price';
@@ -131,7 +131,7 @@ function arava_registration_wizard_views_default_views() {
     'thousand_separator' => ',',
     'prefix_suffix' => 1,
   );
-  /* Field: Content: Nid */
+  /* שדה: תוכן: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
@@ -141,18 +141,18 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_type'] = '0';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
-  /* Sort criterion: Content: עלות לסמסטר (field_price) */
+  /* Sort criterion: תוכן: עלות לסמסטר (field_price) */
   $handler->display->display_options['sorts']['field_price_value']['id'] = 'field_price_value';
   $handler->display->display_options['sorts']['field_price_value']['table'] = 'field_data_field_price';
   $handler->display->display_options['sorts']['field_price_value']['field'] = 'field_price_value';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: תוכן: מפורסם */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
+  /* Filter criterion: תוכן: סוג */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -227,14 +227,14 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['field_semester_target_id']['relationship'] = 'field_my_courses_node';
   $handler->display->display_options['relationships']['field_semester_target_id']['label'] = 'semester';
   $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
-  /* Field: Content: Nid */
+  /* שדה: תוכן: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -248,7 +248,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
@@ -262,7 +262,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['title_1']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: Lesson times */
+  /* שדה: תוכן: Lesson times */
   $handler->display->display_options['fields']['field_lesson_times']['id'] = 'field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['table'] = 'field_data_field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['field'] = 'field_lesson_times';
@@ -279,7 +279,7 @@ function arava_registration_wizard_views_default_views() {
   );
   $handler->display->display_options['fields']['field_lesson_times']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_lesson_times']['delta_offset'] = '0';
-  /* Field: Global: Custom text */
+  /* שדה: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
@@ -293,11 +293,11 @@ function arava_registration_wizard_views_default_views() {
 </div>
 </div>';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Lesson times -  start date (field_lesson_times) */
+  /* Sort criterion: תוכן: Lesson times -  start date (field_lesson_times) */
   $handler->display->display_options['sorts']['field_lesson_times_value']['id'] = 'field_lesson_times_value';
   $handler->display->display_options['sorts']['field_lesson_times_value']['table'] = 'field_data_field_lesson_times';
   $handler->display->display_options['sorts']['field_lesson_times_value']['field'] = 'field_lesson_times_value';
-  /* Filter criterion: Content: Open for registration (field_open_for_registration) */
+  /* Filter criterion: תוכן: Open for registration (field_open_for_registration) */
   $handler->display->display_options['filters']['field_open_for_registration_value']['id'] = 'field_open_for_registration_value';
   $handler->display->display_options['filters']['field_open_for_registration_value']['table'] = 'field_data_field_open_for_registration';
   $handler->display->display_options['filters']['field_open_for_registration_value']['field'] = 'field_open_for_registration_value';
@@ -326,7 +326,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['row_options']['colors']['legend'] = 'type';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Date: Date (node) */
+  /* Contextual filter: תאריך: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
@@ -338,7 +338,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['arguments']['date_argument']['date_fields'] = array(
     'field_data_field_lesson_times.field_lesson_times_value' => 'field_data_field_lesson_times.field_lesson_times_value',
   );
-  /* Contextual filter: Content: User (field_user) */
+  /* Contextual filter: תוכן: User (field_user) */
   $handler->display->display_options['arguments']['field_user_target_id']['id'] = 'field_user_target_id';
   $handler->display->display_options['arguments']['field_user_target_id']['table'] = 'field_data_field_user';
   $handler->display->display_options['arguments']['field_user_target_id']['field'] = 'field_user_target_id';
@@ -378,7 +378,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Date: Date (node) */
+  /* Contextual filter: תאריך: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
@@ -417,7 +417,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Date: Date (node) */
+  /* Contextual filter: תאריך: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
@@ -455,7 +455,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -464,7 +464,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Lesson times */
+  /* שדה: תוכן: Lesson times */
   $handler->display->display_options['fields']['field_lesson_times']['id'] = 'field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['table'] = 'field_data_field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['field'] = 'field_lesson_times';
@@ -482,7 +482,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['field_lesson_times']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_lesson_times']['delta_offset'] = '0';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Date: Date (node) */
+  /* Contextual filter: תאריך: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
@@ -521,7 +521,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Date: Date (node) */
+  /* Contextual filter: תאריך: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
@@ -551,14 +551,14 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: תוכן: מפורסם */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Date: Date (node) */
+  /* Filter criterion: תאריך: Date (node) */
   $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
   $handler->display->display_options['filters']['date_filter']['table'] = 'node';
   $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
@@ -595,14 +595,14 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['field_semester_target_id']['field'] = 'field_semester_target_id';
   $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Nid */
+  /* שדה: תוכן: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -616,7 +616,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
@@ -629,7 +629,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['title_1']['alter']['max_length'] = '12';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: Lesson times */
+  /* שדה: תוכן: Lesson times */
   $handler->display->display_options['fields']['field_lesson_times']['id'] = 'field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['table'] = 'field_data_field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['field'] = 'field_lesson_times';
@@ -646,7 +646,7 @@ function arava_registration_wizard_views_default_views() {
   );
   $handler->display->display_options['fields']['field_lesson_times']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_lesson_times']['delta_offset'] = '0';
-  /* Field: Global: Custom text */
+  /* שדה: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
@@ -661,7 +661,7 @@ function arava_registration_wizard_views_default_views() {
 </div>';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Date: Date (node) */
+  /* Contextual filter: תאריך: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
@@ -709,7 +709,7 @@ function arava_registration_wizard_views_default_views() {
     t('Upcoming'),
     t('Upcoming events block'),
     t('Catalog'),
-    t('Content entity referenced from field_semester'),
+    t('תוכן entity referenced from field_semester'),
   );
   $export['calendar'] = $view;
 
@@ -747,7 +747,18 @@ function arava_registration_wizard_views_default_views() {
     ),
   );
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Content: פקולטה (field_faculty) */
+  /* No results behavior: Global: PHP */
+  $handler->display->display_options['empty']['php']['id'] = 'php';
+  $handler->display->display_options['empty']['php']['table'] = 'views';
+  $handler->display->display_options['empty']['php']['field'] = 'php';
+  $handler->display->display_options['empty']['php']['empty'] = TRUE;
+  $handler->display->display_options['empty']['php']['php_output'] = '<?php print t(\'The courses list will be published as the next semester approaches.\') ?><br>
+<?php 
+$link = url(\'courses-archive\');
+print t(\'You can find the list of courses from the previous semesters in the <a href="@link">courses archive</a>.\', array(\'@link\' => $link)); 
+?>
+';
+  /* Relationship: תוכן: פקולטה (field_faculty) */
   $handler->display->display_options['relationships']['field_faculty_tid']['id'] = 'field_faculty_tid';
   $handler->display->display_options['relationships']['field_faculty_tid']['table'] = 'field_data_field_faculty';
   $handler->display->display_options['relationships']['field_faculty_tid']['field'] = 'field_faculty_tid';
@@ -757,7 +768,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['field_semester_target_id']['field'] = 'field_semester_target_id';
   $handler->display->display_options['relationships']['field_semester_target_id']['label'] = 'semester';
   $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
-  /* Field: Taxonomy term: Term ID */
+  /* שדה: סיווג במילון: מזהה מושג */
   $handler->display->display_options['fields']['tid']['id'] = 'tid';
   $handler->display->display_options['fields']['tid']['table'] = 'taxonomy_term_data';
   $handler->display->display_options['fields']['tid']['field'] = 'tid';
@@ -770,14 +781,14 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['tid']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['tid']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['tid']['separator'] = '';
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: All taxonomy terms */
+  /* שדה: תוכן: All taxonomy terms */
   $handler->display->display_options['fields']['term_node_tid']['id'] = 'term_node_tid';
   $handler->display->display_options['fields']['term_node_tid']['table'] = 'node';
   $handler->display->display_options['fields']['term_node_tid']['field'] = 'term_node_tid';
@@ -789,12 +800,12 @@ function arava_registration_wizard_views_default_views() {
     'faculties' => 0,
     'tags' => 0,
   );
-  /* Field: Content: ימי השיעור */
+  /* שדה: תוכן: ימי השיעור */
   $handler->display->display_options['fields']['field_lesson_days']['id'] = 'field_lesson_days';
   $handler->display->display_options['fields']['field_lesson_days']['table'] = 'field_data_field_lesson_days';
   $handler->display->display_options['fields']['field_lesson_days']['field'] = 'field_lesson_days';
   $handler->display->display_options['fields']['field_lesson_days']['delta_offset'] = '0';
-  /* Field: Content: Body */
+  /* שדה: תוכן: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -803,7 +814,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['body']['settings'] = array(
     'trim_length' => '1000',
   );
-  /* Field: Content: מורה */
+  /* שדה: תוכן: מורה */
   $handler->display->display_options['fields']['field_teacher']['id'] = 'field_teacher';
   $handler->display->display_options['fields']['field_teacher']['table'] = 'field_data_field_teacher';
   $handler->display->display_options['fields']['field_teacher']['field'] = 'field_teacher';
@@ -812,7 +823,7 @@ function arava_registration_wizard_views_default_views() {
     'view_mode' => 'default',
     'links' => 0,
   );
-  /* Field: Content: Nid */
+  /* שדה: תוכן: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
@@ -824,30 +835,30 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['nid']['element_default_classes'] = FALSE;
-  /* Sort criterion: Field: Weight (field_weight) */
+  /* Sort criterion: שדה: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value_1']['id'] = 'field_weight_value_1';
   $handler->display->display_options['sorts']['field_weight_value_1']['table'] = 'field_data_field_weight';
   $handler->display->display_options['sorts']['field_weight_value_1']['field'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value_1']['relationship'] = 'field_faculty_tid';
-  /* Sort criterion: Field: Weight (field_weight) */
+  /* Sort criterion: שדה: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
   $handler->display->display_options['sorts']['field_weight_value']['field'] = 'field_weight_value';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: תוכן: מפורסם */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
+  /* Filter criterion: תוכן: סוג */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'course' => 'course',
   );
-  /* Filter criterion: Content: Open for registration (field_open_for_registration) */
+  /* Filter criterion: תוכן: Open for registration (field_open_for_registration) */
   $handler->display->display_options['filters']['field_open_for_registration_value']['id'] = 'field_open_for_registration_value';
   $handler->display->display_options['filters']['field_open_for_registration_value']['table'] = 'field_data_field_open_for_registration';
   $handler->display->display_options['filters']['field_open_for_registration_value']['field'] = 'field_open_for_registration_value';
@@ -855,7 +866,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['filters']['field_open_for_registration_value']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Content: הסתרה בקטלוג (field_hide_from_catalog) */
+  /* Filter criterion: תוכן: הסתרה בקטלוג (field_hide_from_catalog) */
   $handler->display->display_options['filters']['field_hide_from_catalog_value']['id'] = 'field_hide_from_catalog_value';
   $handler->display->display_options['filters']['field_hide_from_catalog_value']['table'] = 'field_data_field_hide_from_catalog';
   $handler->display->display_options['filters']['field_hide_from_catalog_value']['field'] = 'field_hide_from_catalog_value';
@@ -928,7 +939,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['field_semester_target_id']['field'] = 'field_semester_target_id';
   $handler->display->display_options['relationships']['field_semester_target_id']['label'] = 'semester';
   $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
-  /* Relationship: Content: Taxonomy terms on node */
+  /* Relationship: תוכן: Taxonomy terms on node */
   $handler->display->display_options['relationships']['term_node_tid']['id'] = 'term_node_tid';
   $handler->display->display_options['relationships']['term_node_tid']['table'] = 'node';
   $handler->display->display_options['relationships']['term_node_tid']['field'] = 'term_node_tid';
@@ -937,11 +948,11 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['relationships']['term_node_tid']['vocabularies'] = array(
     'faculties' => 'faculties',
   );
-  /* Relationship: Content: פקולטה (field_faculty) */
+  /* Relationship: תוכן: פקולטה (field_faculty) */
   $handler->display->display_options['relationships']['field_faculty_tid']['id'] = 'field_faculty_tid';
   $handler->display->display_options['relationships']['field_faculty_tid']['table'] = 'field_data_field_faculty';
   $handler->display->display_options['relationships']['field_faculty_tid']['field'] = 'field_faculty_tid';
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -951,7 +962,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Link */
+  /* שדה: תוכן: קישור */
   $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
   $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
@@ -960,7 +971,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['view_node']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['view_node']['text'] = 'מידע נוסף';
-  /* Field: Content: מורה */
+  /* שדה: תוכן: מורה */
   $handler->display->display_options['fields']['field_teacher']['id'] = 'field_teacher';
   $handler->display->display_options['fields']['field_teacher']['table'] = 'field_data_field_teacher';
   $handler->display->display_options['fields']['field_teacher']['field'] = 'field_teacher';
@@ -970,7 +981,7 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['field_teacher']['settings'] = array(
     'link' => 0,
   );
-  /* Field: Content: Nid */
+  /* שדה: תוכן: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
@@ -980,14 +991,14 @@ function arava_registration_wizard_views_default_views() {
   $handler->display->display_options['fields']['nid']['element_type'] = '0';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['nid']['element_wrapper_type'] = '0';
-  /* Field: Content: פקולטה */
+  /* שדה: תוכן: פקולטה */
   $handler->display->display_options['fields']['field_faculty']['id'] = 'field_faculty';
   $handler->display->display_options['fields']['field_faculty']['table'] = 'field_data_field_faculty';
   $handler->display->display_options['fields']['field_faculty']['field'] = 'field_faculty';
   $handler->display->display_options['fields']['field_faculty']['label'] = '';
   $handler->display->display_options['fields']['field_faculty']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_faculty']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Content: Lesson times */
+  /* שדה: תוכן: Lesson times */
   $handler->display->display_options['fields']['field_lesson_times']['id'] = 'field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['table'] = 'field_data_field_lesson_times';
   $handler->display->display_options['fields']['field_lesson_times']['field'] = 'field_lesson_times';
@@ -1002,7 +1013,7 @@ function arava_registration_wizard_views_default_views() {
     'multiple_to' => '',
   );
   $handler->display->display_options['fields']['field_lesson_times']['delta_offset'] = '0';
-  /* Field: Global: PHP */
+  /* שדה: Global: PHP */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
@@ -1015,30 +1026,30 @@ _arava_registration_print_lesson_times($data);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Sort criterion: Field: Weight (field_weight) */
+  /* Sort criterion: שדה: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value']['id'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['table'] = 'field_data_field_weight';
   $handler->display->display_options['sorts']['field_weight_value']['field'] = 'field_weight_value';
   $handler->display->display_options['sorts']['field_weight_value']['relationship'] = 'field_faculty_tid';
-  /* Sort criterion: Field: Weight (field_weight) */
+  /* Sort criterion: שדה: Weight (field_weight) */
   $handler->display->display_options['sorts']['field_weight_value_1']['id'] = 'field_weight_value_1';
   $handler->display->display_options['sorts']['field_weight_value_1']['table'] = 'field_data_field_weight';
   $handler->display->display_options['sorts']['field_weight_value_1']['field'] = 'field_weight_value';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: תוכן: מפורסם */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
+  /* Filter criterion: תוכן: סוג */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'course' => 'course',
   );
-  /* Filter criterion: Content: Open for registration (field_open_for_registration) */
+  /* Filter criterion: תוכן: Open for registration (field_open_for_registration) */
   $handler->display->display_options['filters']['field_open_for_registration_value']['id'] = 'field_open_for_registration_value';
   $handler->display->display_options['filters']['field_open_for_registration_value']['table'] = 'field_data_field_open_for_registration';
   $handler->display->display_options['filters']['field_open_for_registration_value']['field'] = 'field_open_for_registration_value';
@@ -1046,7 +1057,7 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['filters']['field_open_for_registration_value']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Content: הסתרה בקטלוג (field_hide_from_catalog) */
+  /* Filter criterion: תוכן: הסתרה בקטלוג (field_hide_from_catalog) */
   $handler->display->display_options['filters']['field_hide_from_catalog_value']['id'] = 'field_hide_from_catalog_value';
   $handler->display->display_options['filters']['field_hide_from_catalog_value']['table'] = 'field_data_field_hide_from_catalog';
   $handler->display->display_options['filters']['field_hide_from_catalog_value']['field'] = 'field_hide_from_catalog_value';
@@ -1097,7 +1108,7 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'איתחול';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['style_plugin'] = 'table';
-  /* Header: Global: Text area */
+  /* כותרת: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
@@ -1109,7 +1120,7 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['relationships']['field_pdf_files_comp_node']['field'] = 'field_pdf_files_comp_node';
   $handler->display->display_options['relationships']['field_pdf_files_comp_node']['label'] = 'פריט תוכן';
   $handler->display->display_options['relationships']['field_pdf_files_comp_node']['required'] = TRUE;
-  /* Field: Content: Nid */
+  /* שדה: תוכן: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
@@ -1117,7 +1128,7 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Field collection item: קובץ */
+  /* שדה: Field collection item: קובץ */
   $handler->display->display_options['fields']['field_file']['id'] = 'field_file';
   $handler->display->display_options['fields']['field_file']['table'] = 'field_data_field_file';
   $handler->display->display_options['fields']['field_file']['field'] = 'field_file';
@@ -1127,7 +1138,7 @@ _arava_registration_print_lesson_times($data);
   $handler->display->display_options['fields']['field_file']['alter']['text'] = '<a href="/file/mp3/[nid]/[field_file-fid]" target="_blank">[field_file-description]</a>';
   $handler->display->display_options['fields']['field_file']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_file']['click_sort_column'] = 'fid';
-  /* Field: Global: PHP */
+  /* שדה: Global: PHP */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
   $handler->display->display_options['fields']['php_1']['field'] = 'php';
@@ -1139,13 +1150,13 @@ print arava_center_link_to_file($data, $view);
 ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
-  /* Field: Field collection item: טקסט נוסף */
+  /* שדה: Field collection item: טקסט נוסף */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['label'] = '';
   $handler->display->display_options['fields']['field_description']['element_label_colon'] = FALSE;
-  /* Field: file date */
+  /* שדה: file date */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
@@ -1158,7 +1169,7 @@ print _arava_center_get_file_date($data);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Contextual filter: Content: Nid */
+  /* Contextual filter: תוכן: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
@@ -1169,7 +1180,7 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Field collection item: Field name */
+  /* Filter criterion: Field collection item: שם שדה */
   $handler->display->display_options['filters']['field_name']['id'] = 'field_name';
   $handler->display->display_options['filters']['field_name']['table'] = 'field_collection_item';
   $handler->display->display_options['filters']['field_name']['field'] = 'field_name';
@@ -1183,7 +1194,7 @@ print _arava_center_get_file_date($data);
   /* Display: audio block */
   $handler = $view->new_display('block', 'audio block', 'block_1');
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
+  /* כותרת: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
@@ -1197,7 +1208,7 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['relationships']['field_audio_files_comp_node']['label'] = 'פריט תוכן';
   $handler->display->display_options['relationships']['field_audio_files_comp_node']['required'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Nid */
+  /* Contextual filter: תוכן: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
@@ -1210,7 +1221,7 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Field collection item: Field name */
+  /* Filter criterion: Field collection item: שם שדה */
   $handler->display->display_options['filters']['field_name']['id'] = 'field_name';
   $handler->display->display_options['filters']['field_name']['table'] = 'field_collection_item';
   $handler->display->display_options['filters']['field_name']['field'] = 'field_name';
@@ -1221,7 +1232,7 @@ print _arava_center_get_file_date($data);
   /* Display: tamlil block */
   $handler = $view->new_display('block', 'tamlil block', 'block_2');
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
+  /* כותרת: Global: Text area */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
@@ -1235,7 +1246,7 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['relationships']['field_tamlil_files_comp_node']['label'] = 'פריט תוכן';
   $handler->display->display_options['relationships']['field_tamlil_files_comp_node']['required'] = TRUE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Nid */
+  /* Contextual filter: תוכן: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
@@ -1248,7 +1259,7 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Field collection item: Field name */
+  /* Filter criterion: Field collection item: שם שדה */
   $handler->display->display_options['filters']['field_name']['id'] = 'field_name';
   $handler->display->display_options['filters']['field_name']['table'] = 'field_collection_item';
   $handler->display->display_options['filters']['field_name']['field'] = 'field_name';
@@ -1300,7 +1311,7 @@ print _arava_center_get_file_date($data);
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'table';
-  /* Header: Global: PHP */
+  /* כותרת: Global: PHP */
   $handler->display->display_options['header']['php']['id'] = 'php';
   $handler->display->display_options['header']['php']['table'] = 'views';
   $handler->display->display_options['header']['php']['field'] = 'php';
@@ -1313,7 +1324,7 @@ print view_get_link_to_send_emails($view);
   $handler->display->display_options['relationships']['field_user_target_id']['field'] = 'field_user_target_id';
   $handler->display->display_options['relationships']['field_user_target_id']['label'] = 'משתמש';
   $handler->display->display_options['relationships']['field_user_target_id']['required'] = TRUE;
-  /* Field: Content: My Accomodation */
+  /* שדה: תוכן: My Accomodation */
   $handler->display->display_options['fields']['field_my_accomodation']['id'] = 'field_my_accomodation';
   $handler->display->display_options['fields']['field_my_accomodation']['table'] = 'field_data_field_my_accomodation';
   $handler->display->display_options['fields']['field_my_accomodation']['field'] = 'field_my_accomodation';
@@ -1321,44 +1332,44 @@ print view_get_link_to_send_emails($view);
   $handler->display->display_options['fields']['field_my_accomodation']['settings'] = array(
     'link' => 0,
   );
-  /* Field: User: שם מלא */
+  /* שדה: משתמש: שם מלא */
   $handler->display->display_options['fields']['field_user_name']['id'] = 'field_user_name';
   $handler->display->display_options['fields']['field_user_name']['table'] = 'field_data_field_user_name';
   $handler->display->display_options['fields']['field_user_name']['field'] = 'field_user_name';
   $handler->display->display_options['fields']['field_user_name']['relationship'] = 'field_user_target_id';
   $handler->display->display_options['fields']['field_user_name']['label'] = 'שם';
-  /* Field: User: שם מלא */
+  /* שדה: משתמש: שם מלא */
   $handler->display->display_options['fields']['field_user_name_1']['id'] = 'field_user_name_1';
   $handler->display->display_options['fields']['field_user_name_1']['table'] = 'field_data_field_user_name';
   $handler->display->display_options['fields']['field_user_name_1']['field'] = 'field_user_name';
   $handler->display->display_options['fields']['field_user_name_1']['relationship'] = 'field_user_target_id';
-  /* Field: User: טלפון */
+  /* שדה: משתמש: טלפון */
   $handler->display->display_options['fields']['field_user_phone']['id'] = 'field_user_phone';
   $handler->display->display_options['fields']['field_user_phone']['table'] = 'field_data_field_user_phone';
   $handler->display->display_options['fields']['field_user_phone']['field'] = 'field_user_phone';
   $handler->display->display_options['fields']['field_user_phone']['relationship'] = 'field_user_target_id';
-  /* Filter criterion: Content: Type */
+  /* Filter criterion: תוכן: סוג */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'my_semester' => 'my_semester',
   );
-  /* Filter criterion: Content: registration complete (field_registration_complete) */
+  /* Filter criterion: תוכן: registration complete (field_registration_complete) */
   $handler->display->display_options['filters']['field_registration_complete_value']['id'] = 'field_registration_complete_value';
   $handler->display->display_options['filters']['field_registration_complete_value']['table'] = 'field_data_field_registration_complete';
   $handler->display->display_options['filters']['field_registration_complete_value']['field'] = 'field_registration_complete_value';
   $handler->display->display_options['filters']['field_registration_complete_value']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Content: No Printed Materials (field_no_printed_materials) */
+  /* Filter criterion: תוכן: No Printed Materials (field_no_printed_materials) */
   $handler->display->display_options['filters']['field_no_printed_materials_value']['id'] = 'field_no_printed_materials_value';
   $handler->display->display_options['filters']['field_no_printed_materials_value']['table'] = 'field_data_field_no_printed_materials';
   $handler->display->display_options['filters']['field_no_printed_materials_value']['field'] = 'field_no_printed_materials_value';
   $handler->display->display_options['filters']['field_no_printed_materials_value']['value'] = array(
     1 => '1',
   );
-  /* Filter criterion: Custom: Semester */
+  /* Filter criterion: מותאם: סמסטר */
   $handler->display->display_options['filters']['semester']['id'] = 'semester';
   $handler->display->display_options['filters']['semester']['table'] = 'field_data_field_semester';
   $handler->display->display_options['filters']['semester']['field'] = 'semester';
@@ -1392,18 +1403,18 @@ print view_get_link_to_send_emails($view);
   $handler = $view->new_display('page', 'No printed materials', 'page');
   $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: User: שם מלא */
+  /* שדה: משתמש: שם מלא */
   $handler->display->display_options['fields']['field_user_name']['id'] = 'field_user_name';
   $handler->display->display_options['fields']['field_user_name']['table'] = 'field_data_field_user_name';
   $handler->display->display_options['fields']['field_user_name']['field'] = 'field_user_name';
   $handler->display->display_options['fields']['field_user_name']['relationship'] = 'field_user_target_id';
   $handler->display->display_options['fields']['field_user_name']['label'] = 'שם';
-  /* Field: User: טלפון */
+  /* שדה: משתמש: טלפון */
   $handler->display->display_options['fields']['field_user_phone']['id'] = 'field_user_phone';
   $handler->display->display_options['fields']['field_user_phone']['table'] = 'field_data_field_user_phone';
   $handler->display->display_options['fields']['field_user_phone']['field'] = 'field_user_phone';
   $handler->display->display_options['fields']['field_user_phone']['relationship'] = 'field_user_target_id';
-  /* Field: User: E-mail */
+  /* שדה: משתמש: כתובת דוא"ל */
   $handler->display->display_options['fields']['mail']['id'] = 'mail';
   $handler->display->display_options['fields']['mail']['table'] = 'users';
   $handler->display->display_options['fields']['mail']['field'] = 'mail';
@@ -1465,20 +1476,20 @@ print view_get_link_to_send_emails($view);
   $handler->display->display_options['relationships']['field_semester_target_id']['field'] = 'field_semester_target_id';
   $handler->display->display_options['relationships']['field_semester_target_id']['label'] = 'semester';
   $handler->display->display_options['relationships']['field_semester_target_id']['required'] = TRUE;
-  /* Relationship: Content: My Courses (field_my_courses) */
+  /* Relationship: תוכן: My Courses (field_my_courses) */
   $handler->display->display_options['relationships']['field_my_courses_value']['id'] = 'field_my_courses_value';
   $handler->display->display_options['relationships']['field_my_courses_value']['table'] = 'field_data_field_my_courses';
   $handler->display->display_options['relationships']['field_my_courses_value']['field'] = 'field_my_courses_value';
   $handler->display->display_options['relationships']['field_my_courses_value']['label'] = 'my_courses';
   $handler->display->display_options['relationships']['field_my_courses_value']['delta'] = '-1';
-  /* Field: Content: Title */
+  /* שדה: תוכן: כותרת */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
   $handler->display->display_options['fields']['title_1']['relationship'] = 'field_semester_target_id';
   $handler->display->display_options['fields']['title_1']['label'] = 'סמסטר';
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: My Accomodation */
+  /* שדה: תוכן: My Accomodation */
   $handler->display->display_options['fields']['field_my_accomodation']['id'] = 'field_my_accomodation';
   $handler->display->display_options['fields']['field_my_accomodation']['table'] = 'field_data_field_my_accomodation';
   $handler->display->display_options['fields']['field_my_accomodation']['field'] = 'field_my_accomodation';
@@ -1486,7 +1497,7 @@ print view_get_link_to_send_emails($view);
   $handler->display->display_options['fields']['field_my_accomodation']['settings'] = array(
     'link' => 0,
   );
-  /* Field: Content: My Courses */
+  /* שדה: תוכן: My Courses */
   $handler->display->display_options['fields']['field_my_courses']['id'] = 'field_my_courses';
   $handler->display->display_options['fields']['field_my_courses']['table'] = 'field_data_field_my_courses';
   $handler->display->display_options['fields']['field_my_courses']['field'] = 'field_my_courses';
@@ -1497,12 +1508,12 @@ print view_get_link_to_send_emails($view);
   );
   $handler->display->display_options['fields']['field_my_courses']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_my_courses']['multi_type'] = 'ul';
-  /* Sort criterion: Content: Post date */
+  /* Sort criterion: תוכן: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Contextual filter: Content: User (field_user) */
+  /* Contextual filter: תוכן: User (field_user) */
   $handler->display->display_options['arguments']['field_user_target_id']['id'] = 'field_user_target_id';
   $handler->display->display_options['arguments']['field_user_target_id']['table'] = 'field_data_field_user';
   $handler->display->display_options['arguments']['field_user_target_id']['field'] = 'field_user_target_id';
@@ -1512,21 +1523,21 @@ print view_get_link_to_send_emails($view);
   $handler->display->display_options['arguments']['field_user_target_id']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_user_target_id']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_user_target_id']['summary_options']['items_per_page'] = '25';
-  /* Filter criterion: Content: Published */
+  /* Filter criterion: תוכן: מפורסם */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
+  /* Filter criterion: תוכן: סוג */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'my_semester' => 'my_semester',
   );
-  /* Filter criterion: Content: Open for registration (field_open_for_registration) */
+  /* Filter criterion: תוכן: Open for registration (field_open_for_registration) */
   $handler->display->display_options['filters']['field_open_for_registration_value']['id'] = 'field_open_for_registration_value';
   $handler->display->display_options['filters']['field_open_for_registration_value']['table'] = 'field_data_field_open_for_registration';
   $handler->display->display_options['filters']['field_open_for_registration_value']['field'] = 'field_open_for_registration_value';
